@@ -25,25 +25,6 @@
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(255, 71, 126, 0.5);
     }
-    
-    /* Pogas stils groza iztīrīšanai */
-    .iztirit-grozu-poga {
-      background-color: #ff477e; 
-      color: white; 
-      border: none; 
-      padding: 8px 15px; 
-      border-radius: 8px; 
-      font-weight: bold; 
-      cursor: pointer; 
-      margin-top: 10px;
-      margin-bottom: 15px; 
-      width: 100%;
-      max-width: 400px;
-      transition: background 0.2s;
-    }
-    .iztirit-grozu-poga:hover {
-      background-color: #ff2a63;
-    }
 
     /* Paziņojuma stils, kad prece pievienota grozam */
     .pievienots-pazinojums {
@@ -99,7 +80,7 @@
             <button onclick="mainitKartesDaudzumu('Takis Blue Heat (90g)', 1)">+</button>
           </div>
           <div id="pazinojums-Takis Blue Heat (90g)" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Takis Blue Heat (90g)', 4.00, 'https://thumbor.candypop.lt/fit-in/402x402/e7/04/463750be9855c152faeaf660e5c3.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Takis Blue Heat (90g)', 4.00, 'https://thumbor.candypop.lt/fit-in/402x402/e7/04/463750be9855c152faeaf660e5c3.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -113,7 +94,7 @@
             <button onclick="mainitKartesDaudzumu('Herrs Carolina Reaper', 1)">+</button>
           </div>
           <div id="pazinojums-Herrs Carolina Reaper" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Herrs Carolina Reaper', 3.30, 'https://thumbor.candypop.lt/fit-in/402x402/02/7c/b8f93349a3169d1a77a7d87b035c.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Herrs Carolina Reaper', 3.30, 'https://thumbor.candypop.lt/fit-in/402x402/02/7c/b8f93349a3169d1a77a7d87b035c.jpg', event)">Pievienot grozam</button>
         </div>
       </div>
     </div>
@@ -133,7 +114,7 @@
             <button onclick="mainitKartesDaudzumu('Reeses', 1)">+</button>
           </div>
           <div id="pazinojums-Reeses" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Reeses', 2.00, 'https://thumbor.candypop.lt/fit-in/402x402/73/08/393a5f964f0ae85f1c283c74536a.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Reeses', 2.00, 'https://thumbor.candypop.lt/fit-in/402x402/73/08/393a5f964f0ae85f1c283c74536a.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -147,7 +128,7 @@
             <button onclick="mainitKartesDaudzumu('Sour Patch Kids', 1)">+</button>
           </div>
           <div id="pazinojums-Sour Patch Kids" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Sour Patch Kids', 1.50, 'https://thumbor.candypop.lt/fit-in/402x402/6e/de/f5e9c7d9919bc8b13e20e25300cd.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Sour Patch Kids', 1.50, 'https://thumbor.candypop.lt/fit-in/402x402/6e/de/f5e9c7d9919bc8b13e20e25300cd.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -161,7 +142,7 @@
             <button onclick="mainitKartesDaudzumu('Nerds Rope', 1)">+</button>
           </div>
           <div id="pazinojums-Nerds Rope" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Nerds Rope', 2.20, 'https://thumbor.candypop.lt/fit-in/402x402/8b/fb/2e5d40384b04b45b3d3967d3dd38.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Nerds Rope', 2.20, 'https://thumbor.candypop.lt/fit-in/402x402/8b/fb/2e5d40384b04b45b3d3967d3dd38.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -175,7 +156,7 @@
             <button onclick="mainitKartesDaudzumu('Nerds (Watermelon & Cherry)', 1)">+</button>
           </div>
           <div id="pazinojums-Nerds (Watermelon & Cherry)" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Nerds (Watermelon & Cherry)', 2.00, 'https://thumbor.candypop.lt/fit-in/402x402/ef/b3/a4d225f0bb3b55c88b2c90cb9d02.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Nerds (Watermelon & Cherry)', 2.00, 'https://thumbor.candypop.lt/fit-in/402x402/ef/b3/a4d225f0bb3b55c88b2c90cb9d02.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -189,7 +170,7 @@
             <button onclick="mainitKartesDaudzumu('Mike and Ike (Tropical Typhoon)', 1)">+</button>
           </div>
           <div id="pazinojums-Mike and Ike (Tropical Typhoon)" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Mike and Ike (Tropical Typhoon)', 1.00, 'https://thumbor.candypop.lt/fit-in/402x402/41/a5/d820cc8954600400b551b7f84dc6.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Mike and Ike (Tropical Typhoon)', 1.00, 'https://thumbor.candypop.lt/fit-in/402x402/41/a5/d820cc8954600400b551b7f84dc6.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -203,7 +184,7 @@
             <button onclick="mainitKartesDaudzumu('Hersheys Cookies N Creme', 1)">+</button>
           </div>
           <div id="pazinojums-Hersheys Cookies N Creme" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Hersheys Cookies N Creme', 1.80, 'https://thumbor.candypop.lt/fit-in/402x402/d9/0b/113eaf88a725f13f1599b68bf976.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Hersheys Cookies N Creme', 1.80, 'https://thumbor.candypop.lt/fit-in/402x402/d9/0b/113eaf88a725f13f1599b68bf976.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -217,7 +198,7 @@
             <button onclick="mainitKartesDaudzumu('Brain Blasterz Brain Bitz', 1)">+</button>
           </div>
           <div id="pazinojums-Brain Blasterz Brain Bitz" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Brain Blasterz Brain Bitz', 1.40, 'https://thumbor.candypop.lt/fit-in/402x402/c7/58/a8d8362fcb29af6f0687040d240a.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Brain Blasterz Brain Bitz', 1.40, 'https://thumbor.candypop.lt/fit-in/402x402/c7/58/a8d8362fcb29af6f0687040d240a.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -231,7 +212,7 @@
             <button onclick="mainitKartesDaudzumu('Brain Blasterz Brain Breakerz', 1)">+</button>
           </div>
           <div id="pazinojums-Brain Blasterz Brain Breakerz" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Brain Blasterz Brain Breakerz', 1.20, 'https://thumbor.candypop.lt/fit-in/402x402/66/54/7f2f4d00356fa1f3bd93fc8d9829.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Brain Blasterz Brain Breakerz', 1.20, 'https://thumbor.candypop.lt/fit-in/402x402/66/54/7f2f4d00356fa1f3bd93fc8d9829.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -245,7 +226,7 @@
             <button onclick="mainitKartesDaudzumu('Jelly Belly Bean Boozled', 1)">+</button>
           </div>
           <div id="pazinojums-Jelly Belly Bean Boozled" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Jelly Belly Bean Boozled', 4.20, 'https://thumbor.candypop.lt/fit-in/402x402/b7/7c/d75f67e519e9af20e6e96fa61c17.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Jelly Belly Bean Boozled', 4.20, 'https://thumbor.candypop.lt/fit-in/402x402/b7/7c/d75f67e519e9af20e6e96fa61c17.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -259,7 +240,7 @@
             <button onclick="mainitKartesDaudzumu('Jolly Rancher želenes', 1)">+</button>
           </div>
           <div id="pazinojums-Jolly Rancher želenes" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Jolly Rancher želenes', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/cc/b1/fb6d5e00258a474a09ba53e9a4d6.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Jolly Rancher želenes', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/cc/b1/fb6d5e00258a474a09ba53e9a4d6.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -273,7 +254,7 @@
             <button onclick="mainitKartesDaudzumu('MrBeast Feastables Egg', 1)">+</button>
           </div>
           <div id="pazinojums-MrBeast Feastables Egg" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('MrBeast Feastables Egg', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/61/a0/45ffc060ebf03dedafa1f35d3320.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('MrBeast Feastables Egg', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/61/a0/45ffc060ebf03dedafa1f35d3320.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -287,7 +268,7 @@
             <button onclick="mainitKartesDaudzumu('Feastables Peanut Butter', 1)">+</button>
           </div>
           <div id="pazinojums-Feastables Peanut Butter" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Feastables Peanut Butter', 3.20, 'https://thumbor.candypop.lt/fit-in/402x402/41/d8/3e6479e823450b135b3d3e2e0159.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Feastables Peanut Butter', 3.20, 'https://thumbor.candypop.lt/fit-in/402x402/41/d8/3e6479e823450b135b3d3e2e0159.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -301,7 +282,7 @@
             <button onclick="mainitKartesDaudzumu('Twizzlers Strawberry', 1)">+</button>
           </div>
           <div id="pazinojums-Twizzlers Strawberry" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Twizzlers Strawberry', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/c8/e4/0ba05a20a779861e18f5d70d6e15.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Twizzlers Strawberry', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/c8/e4/0ba05a20a779861e18f5d70d6e15.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -315,7 +296,7 @@
             <button onclick="mainitKartesDaudzumu('Bubs Skulls', 1)">+</button>
           </div>
           <div id="pazinojums-Bubs Skulls" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Bubs Skulls', 2.60, 'https://thumbor.candypop.lt/fit-in/402x402/b7/85/301acbfe9e90e38da85004b4b95d.jpg')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Bubs Skulls', 2.60, 'https://thumbor.candypop.lt/fit-in/402x402/b7/85/301acbfe9e90e38da85004b4b95d.jpg', event)">Pievienot grozam</button>
         </div>
       </div>
     </div>
@@ -335,7 +316,7 @@
             <button onclick="mainitKartesDaudzumu('Freeze Dried Skittles', 1)">+</button>
           </div>
           <div id="pazinojums-Freeze Dried Skittles" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Freeze Dried Skittles', 3.20, 'https://thumbor.candypop.lt/fit-in/180x180/90/4e/bcee68af14543f9870581e6bc34f.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Freeze Dried Skittles', 3.20, 'https://thumbor.candypop.lt/fit-in/180x180/90/4e/bcee68af14543f9870581e6bc34f.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte">
@@ -349,58 +330,64 @@
             <button onclick="mainitKartesDaudzumu('Freeze Dried Jolly Rancher', 1)">+</button>
           </div>
           <div id="pazinojums-Freeze Dried Jolly Rancher" class="pievienots-pazinojums">✓ Pievienots grozam!</div>
-          <button class="grozam-poga" onclick="pievienotArEfektu('Freeze Dried Jolly Rancher', 4.00, 'https://thumbor.candypop.lt/fit-in/402x402/0f/60/ca9c40b32c71ffece0e5b4a9390b.png')">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotArEfektu('Freeze Dried Jolly Rancher', 4.00, 'https://thumbor.candypop.lt/fit-in/402x402/0f/60/ca9c40b32c71ffece0e5b4a9390b.png', event)">Pievienot grozam</button>
         </div>
       </div>
     </div>
 
   </div>
 
-  <div class="groza-sekcija" id="groza-sekcija-mērķis">
-    <h2>Tavs iepirkumu grozs</h2>
-    
-    <center>
-      <button class="iztirit-grozu-poga" onclick="iztiritVisuGrozu()">🗑️ Iztīrīt visu grozu</button>
-    </center>
-
-    <ul id="groza-saraksts">
-      <li class="tukss">Grozs ir tukšs</li>
-    </ul>
-
-    <p id="piegades-pazinojums" style="font-weight: bold; color: #ff477e; background-color: #ffeef2; padding: 10px; border-radius: 8px; display: none; margin: 10px auto; font-size: 0.95rem; max-width: 400px; text-align: center; box-sizing: border-box;"></p>
-    
-    <p class="kopa">Kopā: <span id="groza-kopa">0.00</span> €</p>
-    
-    <div style="margin-top: 20px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
-      <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Tavs Vārds, Uzvārds:</label>
-      <input type="text" id="klients-vards" placeholder="Jānis Bērziņš" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none;">
-
-      <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Telefona numurs:</label>
-      <input type="tel" id="klients-telefons" placeholder="+371 20000000" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none;">
-
-      <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Meklēt un izvēlēties Omniva pakomātu:</label>
-      <input type="text" id="pakomatu-mekletajs" placeholder="Sāc rakstīt pilsētu vai adresi... (piem. Smiltene)" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none; margin-bottom: 2px;">
+  <div id="groza-sanjosla" class="groza-sanjosla">
+    <div class="sanjoslas-saturs">
+      <div class="sanjoslas-augsa">
+        <h2>Iepirkumu grozs</h2>
+        <button class="aizvert-grozu" onclick="parslēgtGrozaSanjoslu()">✕</button>
+      </div>
       
-      <select id="klients-pakomats" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none; background-color: white;">
-        <option value="" disabled selected>Lādē pakomātu sarakstu...</option>
-      </select>
+      <div class="piegades-progress-konteiners">
+        <div id="piegades-progress-teksts">Ieliec preces grozā, lai redzētu piegādes statusu!</div>
+        <div class="progress-bar-fons">
+          <div id="piegades-progress-josla" class="progress-bar-aizpildijums"></div>
+        </div>
+      </div>
+
+      <ul id="groza-saraksts">
+        <li class="tukss" style="text-align: center; padding: 15px; color: #888;">Grozs ir tukšs</li>
+      </ul>
+      
+      <div class="kopa">Kopā: <span id="groza-kopa">0.00</span> €</div>
+      
+      <div class="groza-forma">
+        <label style="font-weight: bold; color: #ff477e; font-size: 0.85rem; margin-bottom: -4px;">Tavs Vārds, Uzvārds:</label>
+        <input type="text" id="klients-vards" placeholder="Jānis Bērziņš">
+        
+        <label style="font-weight: bold; color: #ff477e; font-size: 0.85rem; margin-bottom: -4px;">Telefona numurs:</label>
+        <input type="tel" id="klients-telefons" placeholder="+371 20000000">
+        
+        <label style="font-weight: bold; color: #ff477e; font-size: 0.85rem; margin-bottom: -4px;">Meklēt Omniva pakomātu:</label>
+        <input type="text" id="pakomatu-mekletajs" placeholder="Sāc rakstīt pilsētu (piem. Smiltene)...">
+        <select id="klients-pakomats">
+          <option value="" disabled selected>Lādē pakomātu sarakstu...</option>
+        </select>
+      </div>
+
+      <div id="lapas-pasutijuma-nr" style="display:none; text-align:center; margin: 12px 0; font-weight:bold; color:#ff477e; font-size: 1rem;"></div>
+
+      <div style="background-color: #f0f4ff; border: 1px solid #d0e0ff; padding: 10px; border-radius: 10px; margin: 15px 0 5px 0; text-align: center; box-sizing: border-box;">
+        <p style="margin: 0; font-size: 0.85rem; color: #4e6488; font-weight: bold;">⚡ Ātra apmaksa ar Revolut:</p>
+        <a href="https://revolut.me/igorsyeqd" target="_blank" style="display: inline-block; margin-top: 3px; color: #0075ff; font-weight: bold; text-decoration: underline; font-size: 0.9rem;">
+          revolut.me/igorsyeqd
+        </a>
+      </div>
+
+      <button class="maksa-poga" onclick="sutitUzWhatsApp()">Maksāt (Pasūtīt WhatsApp) 💬</button>
+      <button class="iztirit-poga" onclick="iztiritVisuGrozu()">Iztīrīt grozu ❌</button>
     </div>
-
-    <p id="lapas-pasutijuma-nr" style="text-align: center; font-weight: bold; color: #ff477e; margin-bottom: 12px; font-size: 1.1rem; display: none;"></p>
-
-    <div style="background-color: #f0f4ff; border: 1px solid #d0e0ff; padding: 12px; border-radius: 10px; margin-bottom: 15px; text-align: center; max-width: 400px; margin-left: auto; margin-right: auto; box-sizing: border-box;">
-      <p style="margin: 0; font-size: 0.9rem; color: #4e6488; font-weight: bold;">
-        ⚡ Ātra apmaksa ar Revolut:
-      </p>
-      <a href="https://revolut.me/igorsyeqd" target="_blank" style="display: inline-block; margin-top: 5px; color: #0075ff; font-weight: bold; text-decoration: underline; font-size: 0.95rem;">
-        revolut.me/igorsyeqd
-      </a>
-    </div>
-
-    <button class="maksa-poga" onclick="sutitUzWhatsApp()">Maksāt (Pasūtīt WhatsApp)</button>
   </div>
 
-  <button id="peldosais-grozs" onclick="ritinatUzGrozu()">
+  <div id="groza-ena" class="groza-ena" onclick="parslēgtGrozaSanjoslu()"></div>
+
+  <button id="peldosais-grozs" onclick="parslēgtGrozaSanjoslu()">
     🛒 <span id="peldosais-skaits">0</span>
   </button>
 
@@ -430,10 +417,10 @@
       }
     }
 
-    // Papildinātā funkcija, kas pieņem arī bildes adresi un nodod to uz script.js
-    function pievienotArEfektu(nosaukums, cena, bilde) {
-      // Izsaucam funkciju no script.js faila un iedodam līdzi bildi
-      pievienotNoKartes(nosaukums, cena, bilde);
+    // Papildinātā funkcija, kas paņem līdzi arī klikšķa 'event' priekš lidošanas efekta
+    function pievienotArEfektu(nosaukums, cena, bilde, event) {
+      // Izsaucam uzlaboto galveno funkciju no script.js un iedodam tai līdzi klikšķa notikumu
+      pievienotNoKartes(nosaukums, cena, bilde, event);
       
       const pazinojums = document.getElementById(`pazinojums-${nosaukums}`);
       if (pazinojums) {
