@@ -29,7 +29,7 @@
 </head>
 <body>
 
-<div class="galvene">
+  <div class="galvene">
     <a href="index.html" class="logo-saite" style="text-decoration: none !important; border: none !important; outline: none !important; color: inherit;">
       <img src="logo.png" onerror="this.src='logo.png.png'" alt="Mana saldumu pasaule logo" class="logo-bilde" style="border: none !important; outline: none !important;" border="0">
     </a>
@@ -156,6 +156,18 @@
       <li class="tukss">Grozs ir tukšs</li>
     </ul>
     <p class="kopa">Kopā: <span id="groza-kopa">0.00</span> €</p>
+    
+    <div style="margin-top: 20px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
+      <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Tavs Vārds, Uzvārds:</label>
+      <input type="text" id="klients-vards" placeholder="Jānis Bērziņš" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none;">
+
+      <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Telefona numurs:</label>
+      <input type="tel" id="klients-telefons" placeholder="+371 20000000" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none;">
+
+      <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Vēlamais Omniva pakomāts:</label>
+      <input type="text" id="klients-pakomats" placeholder="Rīgas mola pakomāts" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none;">
+    </div>
+
     <button class="maksa-poga" onclick="sutitUzWhatsApp()">Maksāt (Pasūtīt WhatsApp)</button>
   </div>
 
