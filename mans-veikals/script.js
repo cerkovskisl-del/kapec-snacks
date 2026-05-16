@@ -93,6 +93,7 @@ function iznemtNoGroza(nosaukums) {
 function atjaunotGrozu() {
   const sarakstsElement = document.getElementById("groza-saraksts");
   const kopaElement = document.getElementById("groza-kopa");
+  const piegadesPazinojums = document.getElementById("piegades-pazinojums");
   
   sarakstsElement.innerHTML = "";
   let kopa = 0;
@@ -117,6 +118,31 @@ function atjaunotGrozu() {
   }
   
   kopaElement.innerText = kopa.toFixed(2);
+
+  // --- 1.1. BEZMAKSAS PIEGĀDES LOĢIKA ---
+  const limitsBezmaksasPiegadei = 30.00; // Šeit tu vari nomainīt summu, no kuras ir bezmaksas piegāde
+
+  if (piegadesPazinojums) {
+    if (kopa === 0) {
+      // Ja grozs ir tukšs, paziņojumu vienkārši paslēpjam
+      piegadesPazinojums.style.display = "none";
+    } else if (kopa < limitsBezmaksasPiegadei) {
+      // Ja summa ir mazāka, aprēķinām starpību un iekrāsojam maigi rozā
+      let cikTruks = limitsBezmaksasPiegadei - kopa;
+      piegadesPazinojums.style.display = "block";
+      piegadesPazinojums.style.color = "#ff477e";
+      piegadesPazinojums.style.backgroundColor = "#ffeef2";
+      piegadesPazinojums.style.border = "1px solid #ffccd5";
+      piegadesPazinojums.innerText = `🛒 Pērc vēl par ${cikTruks.toFixed(2)} €, lai saņemtu BEZMAKSAS piegādi!`;
+    } else {
+      // Ja limits sasniegts, iekrāsojam maigi zaļu
+      piegadesPazinojums.style.display = "block";
+      piegadesPazinojums.style.color = "#2a9d8f";
+      piegadesPazinojums.style.backgroundColor = "#e8f5e9";
+      piegadesPazinojums.style.border = "1px solid #c8e6c9";
+      piegadesPazinojums.innerText = "🎉 Apsveicam! Tu esi ieguvis BEZMAKSAS piegādi!";
+    }
+  }
 }
 
 // --- 3. PASŪTĪŠANA UZ WHATSAPP ---
@@ -152,6 +178,14 @@ function sutitUzWhatsApp() {
     teksts += `- ${prece.nosaukums} x${prece.daudzums} (${rindasCena.toFixed(2)} €)\n`;
     kopa += rindasCena;
   });
+  
+  // Pieliekam piezīmi par piegādes maksu arī uz WhatsApp ziņu
+  const limitsBezmaksasPiegadei = 30.00;
+  if (kopa >= limitsBezmaksasPiegadei) {
+    teksts += `\n Piegāde: *BEZMAKSAS (Sasniegts limits virs ${limitsBezmaksasPiegadei.toFixed(2)} €)*`;
+  } else {
+    teksts += `\n Piegāde: *Pēc Omniva cenrāža (Līdz bezmaksas piegādei trūka ${(limitsBezmaksasPiegadei - kopa).toFixed(2)} €)*`;
+  }
   
   teksts += `\n*Kopā apmaksai: ${kopa.toFixed(2)} €*`;
   
