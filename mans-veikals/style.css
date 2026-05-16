@@ -196,81 +196,98 @@ h1 {
    MOBILĀ VERSIJA (Ekrāniem līdz 600px platumam)
    ========================================================================== */
 @media (max-width: 600px) {
-  /* Forsējam divu kolonnu izkārtojumu visiem iespējamajiem konteineriem */
-  .konteiners, .sadaļa-bloks, .sadaļa-bloks > div {
+  /* Galvenais konteiners un sadaļu bloki stiepjas pilnā platumā */
+  .konteiners, .sadaļa-bloks {
+    display: block !important;
+    width: 100% !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* TIKAI preču karšu iekšējais konteiners kļūst par glītu 2-kolonnu režģi */
+  .sadaļa-bloks > div {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important; /* Divas preces blakus */
-    gap: 10px !important; 
-    padding: 10px !important;
+    gap: 12px !important; 
+    padding: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
 
+  /* Preču kartītes pielāgošana režģim */
   .saldums-karte {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 10px !important; 
-    border-radius: 10px !important;
+    padding: 12px !important; 
+    border-radius: 12px !important;
     box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
   }
 
   .saldums-karte h3 {
     font-size: 0.95rem !important; 
-    min-height: 38px; 
+    min-height: 40px !important; 
+    margin-top: 0 !important;
     margin-bottom: 5px !important;
   }
 
   .salduma-bilde {
-    height: 100px !important; 
+    height: 110px !important; 
+    margin-bottom: 10px !important;
   }
 
   .apraksts {
-    font-size: 0.8rem !important; 
+    font-size: 0.78rem !important; 
     line-height: 1.3 !important;
+    margin-bottom: 8px !important;
   }
 
   .cena {
-    font-size: 1rem !important;
-    margin: 5px 0 !important;
+    font-size: 1.1rem !important;
+    margin: 5px 0 10px 0 !important;
   }
 
   .grozam-poga {
-    padding: 8px 10px !important; 
+    padding: 10px 5px !important; 
     font-size: 0.85rem !important;
     width: 100% !important;
+    border-radius: 20px !important;
   }
   
   .logo-bilde {
-    max-width: 160px !important;
+    max-width: 180px !important;
   }
 
-  /* --- JAUNIE MOBILĀ GROZA UZLABOJUMI --- */
+  /* Mobilā groza sadaļa - neitrāls izvietojums, kas neizmanto grid */
   .groza-sekcija {
-    margin: 20px 10px !important; 
-    padding: 15px !important; 
-    border-radius: 10px !important;
-    display: block !important; /* Grozs paliek kā viens vesels bloks, nevis režģis */
+    margin: 30px 10px !important; 
+    padding: 20px 15px !important; 
+    border-radius: 12px !important;
+    display: block !important; 
     width: auto !important;
+    box-sizing: border-box !important;
   }
 
   .groza-sekcija h2 {
-    font-size: 1.3rem !important;
+    font-size: 1.4rem !important;
   }
 
   #groza-saraksts li {
-    font-size: 0.9rem !important; 
-    padding: 6px 0 !important;
+    font-size: 0.95rem !important; 
+    padding: 8px 0 !important;
     display: flex !important;
   }
 
   .kopa {
-    font-size: 1.1rem !important;
+    font-size: 1.2rem !important;
     margin-top: 15px !important;
   }
 
   .maksa-poga {
-    padding: 10px 15px !important;
-    font-size: 1rem !important;
+    padding: 12px 20px !important;
+    font-size: 1.1rem !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
