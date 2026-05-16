@@ -1,25 +1,19 @@
 // --- SĀKOTNĒJIE MAINĪGIE ---
-// Mēģinām ielādēt grozu no atmiņas, ja tur nekas nav - sākam ar tukšu
 let grozs = JSON.parse(localStorage.getItem('iepirkumu_grozs')) || [];
-// Uzģenerējam fiksētu pasūtījuma ID šai pirkuma sesijai (no 1000 līdz 9999)
 const fiksētaisPasutījumaNumurs = Math.floor(1000 + Math.random() * 9000);
 
 // --- 1. AUTOMĀTISKA VISU LATVIJAS OMNIVA PAKOMĀTU IELĀDE UN MEKLĒŠANA ---
 document.addEventListener("DOMContentLoaded", function() {
   const pakomatuSelekts = document.getElementById('klients-pakomats');
   const mekletajs = document.getElementById('pakomatu-mekletajs');
-  let visiPakomati = []; // Šeit glabāsim pilno sarakstu filtrēšanai
+  let visiPakomati = [];
 
   if (pakomatuSelekts) {
-    // Oficiālais Omniva pakomātu datu avots
     fetch('https://www.omniva.lv/locations.json')
       .then(response => response.json())
       .then(data => {
-        // Atlasām tikai Latvijas pakomātus (A0_NAME: "LV") un sakārtojam alfabētā
         visiPakomati = data.filter(item => item.A0_NAME === 'LV');
         visiPakomati.sort((a, b) => a.NAME.localeCompare(b.NAME));
-        
-        // Sākotnēji parādām pilno sarakstu
         atjaunotPakomatuSarakstu(visiPakomati);
       })
       .catch(error => {
@@ -28,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   }
 
-  // Funkcija, kas fiziski saliek opcijas izvēlnē
   function atjaunotPakomatuSarakstu(saraksts) {
     pakomatuSelekts.innerHTML = `<option value="" disabled selected>-- Izvēlies savu pakomātu (${saraksts.length} atrasti) --</option>`;
     
@@ -37,40 +30,32 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
 
-   saraksts.forEach(pakomats => {
+    saraksts.forEach(pakomats => {
       const opcija = document.createElement('option');
       opcija.value = pakomats.NAME;
       opcija.textContent = pakomats.NAME;
       pakomatuSelekts.appendChild(opcija);
     });
 
-    // Pēc tam, kad saraksts ielādēts, mēģinām ielikt saglabāto pakomātu
     const saglabatsPakomats = localStorage.getItem('pakomats');
     if (saglabatsPakomats) {
       pakomatuSelekts.value = saglabatsPakomats;
     }
   }
 
-  // MEKLĒŠANAS LOĢIKA: Tiklīdz lietotājs raksta laukā, saraksts uzreiz mainās
   if (mekletajs) {
     mekletajs.addEventListener('input', function() {
       const meklesanasTeksts = mekletajs.value.toLowerCase().trim();
-      
-      // Nofletrējam pakomātus pēc ievadītā teksta
       const filtretie = visiPakomati.filter(pakomats => 
         pakomats.NAME.toLowerCase().includes(meklesanasTeksts)
       );
-      
-      // Atjaunojam nolaižamo sarakstu ar nofiltrētajiem rezultātiem
       atjaunotPakomatuSarakstu(filtretie);
     });
   }
 
-  // --- KLIENTA DATU IELĀDE (LOCAL STORAGE) ---
   if(localStorage.getItem('vards')) document.getElementById('klients-vards').value = localStorage.getItem('vards');
   if(localStorage.getItem('telefons')) document.getElementById('klients-telefons').value = localStorage.getItem('telefons');
 
-  // IELĀDĒJOT LAPU: uzreiz uzzīmējam saglabāto grozu, ja tāds ir
   atjaunotGrozu();
 });
 
@@ -80,9 +65,20 @@ document.getElementById('klients-telefons')?.addEventListener('input', (e) => lo
 document.getElementById('klients-pakomats')?.addEventListener('change', (e) => localStorage.setItem('pakomats', e.target.value));
 
 
-// --- 2. GROZA LOĢIKA UN FUNKCIJAS ---
+// --- 2. SĀNOS IZBĪDĀMĀ GROZA KONTROLE ---
+function parslēgtGrozaSanjoslu() {
+  const sanjosla = document.getElementById("groza-sanjosla");
+  const ena = document.getElementById("groza-ena");
+  
+  if (sanjosla && ena) {
+    sanjosla.classList.toggle("atvērts");
+    ena.classList.toggle("atvērts");
+  }
+}
 
-// Maina skaitli tieši uz preces kartītes (+ vai -)
+
+// --- 3. GROZA LOĢIKA UN LIDOŠANAS EFEKTS ---
+
 function mainitKartesDaudzumu(nosaukums, izmaina) {
   const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
   if (skaitaElements) {
@@ -93,8 +89,8 @@ function mainitKartesDaudzumu(nosaukums, izmaina) {
   }
 }
 
-// Paņem uzstādīto daudzumu no kartītes, paņem bildes adresi un pievieno grozam
-function pievienotNoKartes(nosaukums, cena, bilde) {
+// Papildināta galvenā funkcija, kas reaģē uz klikšķa pozīciju, lai palaistu lidojošo bildi
+function pievienotNoKartes(nosaukums, cena, bilde, event) {
   const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
   let daudzumsKoPievienot = 1;
   
@@ -102,7 +98,6 @@ function pievienotNoKartes(nosaukums, cena, bilde) {
     daudzumsKoPievienot = parseInt(skaitaElements.innerText);
   }
 
-  // Nosaukumu pārtulkošana un standartizēšana starp ID un tekstiem
   if (nosaukums === 'Reeses') {
     nosaukums = "Reese's Peanut Butter Cups";
   } else if (nosaukums === 'Hersheys Cookies N Creme') {
@@ -111,18 +106,49 @@ function pievienotNoKartes(nosaukums, cena, bilde) {
     nosaukums = "Herr's Carolina Reaper Curls (113g)";
   }
 
+  // --- LIDOŠANAS ANIMĀCIJAS IZPILDE ---
+  if (event && bilde) {
+    const peldosaisGrozs = document.getElementById('peldosais-grozs');
+    if (peldosaisGrozs) {
+      const grozaIzmeri = peldosaisGrozs.getBoundingClientRect();
+      
+      // Izveidojam pagaidu bildes elementu animācijai
+      const lidojosaBilde = document.createElement('img');
+      lidojosaBilde.src = bilde;
+      lidojosaBilde.className = 'lidojosa-preces-bilde';
+      
+      // Novietojam bildi tieši tur, kur lietotājs noklikšķināja pogu
+      lidojosaBilde.style.left = `${event.clientX - 25}px`;
+      lidojosaBilde.style.top = `${event.clientY - 25}px`;
+      
+      document.body.appendChild(lidojosaBilde);
+      
+      // Izmantojam nelielu pauzi, lai pārlūks paspēj reģistrēt sākuma CSS stāvokli pirms kustības
+      setTimeout(() => {
+        lidojosaBilde.style.left = `${grozaIzmeri.left + 15}px`;
+        lidojosaBilde.style.top = `${grozaIzmeri.top + 15}px`;
+        lidojosaBilde.style.transform = 'scale(0.1) rotate(360deg)';
+        lidojosaBilde.style.opacity = '0.3';
+      }, 50);
+      
+      // Kad animācija ir galā (pēc 0.8 sekundēm), izdzēšam elementu
+      setTimeout(() => {
+        lidojosaBilde.remove();
+      }, 800);
+    }
+  }
+
   const esosaPrece = grozs.find(item => item.nosaukums === nosaukums);
   
   if (esosaPrece) {
     esosaPrece.daudzums += daudzumsKoPievienot;
-    // Ja bilde vēl nav piesaistīta (piemēram, no veca localStorage), atjaunojam to
     if (bilde) esosaPrece.bilde = bilde;
   } else {
     grozs.push({ 
       nosaukums: nosaukums, 
       cena: cena, 
       daudzums: daudzumsKoPievienot,
-      bilde: bilde || 'logo.png' // Ja bildes nav, izmanto rezerves logo
+      bilde: bilde || 'logo.png'
     });
   }
   
@@ -133,12 +159,6 @@ function pievienotNoKartes(nosaukums, cena, bilde) {
   atjaunotGrozu();
 }
 
-// Rezerves funkcija gadījumam, ja kāda poga izmanto veco nosaukumu
-function pievienotGrozam(nosaukums, cena) {
-  pievienotNoKartes(nosaukums, cena);
-}
-
-// Daudzuma samazināšana grozā vai preces pilnīga izņemšana
 function iznemtNoGroza(nosaukums) {
   if (nosaukums === 'Reeses') {
     nosaukums = "Reese's Peanut Butter Cups";
@@ -160,19 +180,6 @@ function iznemtNoGroza(nosaukums) {
   atjaunotGrozu();
 }
 
-// Groza daudzuma kontrole tieši no groza iekšienes (+ un - pogām, ja tādas tiek izmantotas)
-function mainitGrozaDaudzumu(nosaukums, izmaina) {
-  const esosaPrece = grozs.find(item => item.nosaukums === nosaukums);
-  if (esosaPrece) {
-    esosaPrece.daudzums += izmaina;
-    if (esosaPrece.daudzums < 1) {
-      grozs = grozs.filter(item => item.nosaukums !== nosaukums);
-    }
-  }
-  atjaunotGrozu();
-}
-
-// Pilnīga groza iztīrīšanas funkcija
 function iztiritVisuGrozu() {
   if (grozs.length === 0) {
     alert("Grozs jau ir tukšs!");
@@ -180,17 +187,18 @@ function iztiritVisuGrozu() {
   }
   
   if (confirm("Vai tiešām vēlies pilnībā iztīrīt iepirkumu grozu?")) {
-    grozs = []; // Iztīrām masīvu
-    localStorage.removeItem('iepirkumu_grozs'); // Izdzēšam no pārlūka atmiņas
-    atjaunotGrozu(); // Atjaunojam lapas izskatu
+    grozs = [];
+    localStorage.removeItem('iepirkumu_grozs');
+    atjaunotGrozu();
   }
 }
 
-// Vizuālā groza pārzīmēšana, summu rēķināšana un efektu aktivizēšana
+// Atjaunināta vizuālā funkcija, kas uzzīmē sānjoslu un vada progresa joslu
 function atjaunotGrozu() {
   const sarakstsElement = document.getElementById("groza-saraksts");
   const kopaElement = document.getElementById("groza-kopa");
-  const piegadesPazinojums = document.getElementById("piegades-pazinojums");
+  const progressJosla = document.getElementById("piegades-progress-josla");
+  const progressTeksts = document.getElementById("piegades-progress-teksts");
   
   if (!sarakstsElement || !kopaElement) return;
 
@@ -201,11 +209,10 @@ function atjaunotGrozu() {
   grozs.forEach((prece) => {
     const rindasCena = prece.cena * prece.daudzums;
     const li = document.createElement("li");
-    li.className = "groza-prece-rindina"; // Klase smukajiem CSS stiliem
+    li.className = "groza-prece-rindina";
     
     const drošsNosaukums = prece.nosaukums.replace(/'/g, "\\'");
     
-    // Modernizēts HTML saturs ar bildi kreisajā pusē un vadības pogām
     li.innerHTML = `
       <div class="groza-preces-info">
         <img src="${prece.bilde || 'logo.png'}" class="groza-mini-bilde" alt="${prece.nosaukums}">
@@ -229,11 +236,9 @@ function atjaunotGrozu() {
   }
   
   kopaElement.innerText = kopa.toFixed(2);
-
-  // Saglabājam aktuālo groza saturu pārlūka atmiņā (LocalStorage)
   localStorage.setItem('iepirkumu_grozs', JSON.stringify(grozs));
 
-  // Peldošais grozs un tā pulsācijas animācijas izsaukšana
+  // Peldošās pogas statusa atjaunināšana
   const peldosaisGrozs = document.getElementById("peldosais-grozs");
   const peldosaisSkaits = document.getElementById("peldosais-skaits");
   
@@ -241,38 +246,38 @@ function atjaunotGrozu() {
     peldosaisSkaits.innerText = kopejaisPrecuSkaits;
     if (kopejaisPrecuSkaits > 0) {
       peldosaisGrozs.classList.add("aktivs");
-      
-      // Restartējam pulsēšanas animāciju
       peldosaisGrozs.classList.remove('pulset');
-      void peldosaisGrozs.offsetWidth; // Pārlūka piespiešana pārlādēt elementa stāvokli
+      void peldosaisGrozs.offsetWidth; 
       peldosaisGrozs.classList.add('pulset');
     } else {
       peldosaisGrozs.classList.remove("aktivs");
     }
   }
 
-  // Bezmaksas piegādes aprēķins
+  // --- DINAMISKĀS BEZMAKSAS PIEGĀDES PROGRESA JOSLAS LOĢIKA ---
   const limitsBezmaksasPiegadei = 30.00;
-  if (piegadesPazinojums) {
+  if (progressJosla && progressTeksts) {
     if (kopa === 0) {
-      piegadesPazinojums.style.display = "none";
+      progressJosla.style.width = "0%";
+      progressTeksts.innerHTML = "Ieliec preces grozā, lai redzētu piegādes statusu!";
+      progressTeksts.style.color = "#888";
     } else if (kopa < limitsBezmaksasPiegadei) {
       let cikTruks = limitsBezmaksasPiegadei - kopa;
-      piegadesPazinojums.style.display = "block";
-      piegadesPazinojums.style.color = "#ff477e";
-      piegadesPazinojums.style.backgroundColor = "#ffeef2";
-      piegadesPazinojums.style.border = "1px solid #ffccd5";
-      piegadesPazinojums.innerText = `🛒 Pērc vēl par ${cikTruks.toFixed(2)} €, lai saņemtu BEZMAKSAS piegādi!`;
+      let procenti = (kopa / limitsBezmaksasPiegadei) * 100;
+      
+      progressJosla.style.width = `${procenti}%`;
+      progressJosla.style.backgroundColor = "#ff477e"; // Rozā, kamēr krājas progress
+      progressTeksts.innerHTML = `🛒 Pērc vēl par <strong>${cikTruks.toFixed(2)} €</strong>, lai saņemtu BEZMAKSAS piegādi!`;
+      progressTeksts.style.color = "#ff477e";
     } else {
-      piegadesPazinojums.style.display = "block";
-      piegadesPazinojums.style.color = "#2a9d8f";
-      piegadesPazinojums.style.backgroundColor = "#e8f5e9";
-      piegadesPazinojums.style.border = "1px solid #c8e6c9";
-      piegadesPazinojums.innerText = "🎉 Apsveicam! Tu esi ieguvis BEZMAKSAS piegādi!";
+      progressJosla.style.width = "100%";
+      progressJosla.style.backgroundColor = "#2a9d8f"; // Zaļš, kad mērķis sasniegts
+      progressTeksts.innerHTML = "🎉 Apsveicam! Tu esi ieguvis <strong>BEZMAKSAS piegādi!</strong>";
+      progressTeksts.style.color = "#2a9d8f";
     }
   }
 
-  // PASŪTĪJUMA NUMURA PARĀDĪŠANA MĀJASLAPĀ
+  // Pasūtījuma numura loģika sānjoslā
   const lapasNrElements = document.getElementById("lapas-pasutijuma-nr");
   if (lapasNrElements) {
     if (grozs.length > 0) {
@@ -284,14 +289,7 @@ function atjaunotGrozu() {
   }
 }
 
-function ritinatUzGrozu() {
-  const mērķis = document.getElementById("groza-sekcija-mērķis");
-  if (mērķis) {
-    mērķis.scrollIntoView({ behavior: "smooth" });
-  }
-}
-
-// --- 3. PASŪTĪŠANA UZ WHATSAPP ---
+// --- 4. PASŪTĪŠANA UZ WHATSAPP ---
 function sutitUzWhatsApp() {
   if (grozs.length === 0) {
     alert("Tavs grozs ir tukšs! Vispirms pievieno kādu saldumu.");
