@@ -58,26 +58,66 @@ document.addEventListener("DOMContentLoaded", function() {
 // --- 2. GROZA LOĢIKA UN FUNKCIJAS ---
 let grozs = [];
 
-function pievienotGrozam(nosaukums, cena) {
-  // PĀRTULKOJAM NOSAUKUMUS: Ja funkcija saņem saīsināto nosaukumu, pārvēršam to glītā versijā priekš groza un WhatsApp
+// Jaunā funkcija: Maina skaitli tieši uz preces kartītes (+ vai -)
+function mainitKartesDaudzumu(nosaukums, izmaina) {
+  const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
+  if (skaitaElements) {
+    let pasreizejaisDaudzums = parseInt(skaitaElements.innerText);
+    pasreizejaisDaudzums += izmaina;
+    if (pasreizejaisDaudzums < 1) pasreizejaisDaudzums = 1; // Neļaujam nokrist zem 1
+    skaitaElements.innerText = pasreizejaisDaudzums;
+  }
+}
+
+// Jaunā funkcija: Paņem uzstādīto daudzumu no kartītes un pievieno grozam
+function pievienotNoKartes(nosaukums, cena) {
+  const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
+  let daudzumsKoPievienot = 1;
+  
+  if (skaitaElements) {
+    daudzumsKoPievienot = parseInt(skaitaElements.innerText);
+  }
+
+  // Nosaukumu pārtulkošana (lai sakristu ar HTML un skaistajām versijām)
   if (nosaukums === 'Reeses') {
     nosaukums = "Reese's Peanut Butter Cups";
   } else if (nosaukums === 'Hersheys Cookies N Creme') {
     nosaukums = "Hershey's Cookies 'N' Creme (43g)";
+  } else if (nosaukums === 'Herrs Carolina Reaper') {
+    nosaukums = "Herr's Carolina Reaper Curls (113g)";
   }
 
   const esosaPrece = grozs.find(item => item.nosaukums === nosaukums);
   
   if (esosaPrece) {
-    esosaPrece.daudzums += 1;
+    esosaPrece.daudzums += daudzumsKoPievienot;
   } else {
-    grozs.push({ nosaukums: nosaukums, cena: cena, daudzums: 1 });
+    grozs.push({ nosaukums: nosaukums, cena: cena, daudzums: daudzumsKoPievienot });
+  }
+  
+  // Atiestatām kartītes skaitītāju atpakaļ uz 1 pēc pievienošanas
+  if (skaitaElements) {
+    skaitaElements.innerText = 1;
   }
   
   atjaunotGrozu();
 }
 
+// Saglabājam oriģinālo funkciju gadījumam, ja kāda cita koda daļa to izsauc
+function pievienotGrozam(nosaukums, cena) {
+  pievienotNoKartes(nosaukums, cena);
+}
+
 function iznemtNoGroza(nosaukums) {
+  // Pārtulkojam nosaukumus arī dzēšanas brīdī, ja nepieciešams
+  if (nosaukums === 'Reeses') {
+    nosaukums = "Reese's Peanut Butter Cups";
+  } else if (nosaukums === 'Hersheys Cookies N Creme') {
+    nosaukums = "Hershey's Cookies 'N' Creme (43g)";
+  } else if (nosaukums === 'Herrs Carolina Reaper') {
+    nosaukums = "Herr's Carolina Reaper Curls (113g)";
+  }
+
   const esosaPrece = grozs.find(item => item.nosaukums === nosaukums);
   
   if (esosaPrece) {
@@ -97,12 +137,13 @@ function atjaunotGrozu() {
   
   sarakstsElement.innerHTML = "";
   let kopa = 0;
+  let kopejaisPrecuSkaits = 0; // Priekš peldošā groza riņķīša
   
   grozs.forEach((prece) => {
     const rindasCena = prece.cena * prece.daudzums;
     const li = document.createElement("li");
     
-    // Šeit mēs izmantojam īpašu JavaScript triku (escape), lai pogas iekšienē apostrofi atkal nesalauztu kodu
+    // Lai pogas iekšienē apostrofi nesalauztu kodu, izmantojam drošo aizvietošanu
     const drošsNosaukums = prece.nosaukums.replace(/'/g, "\\'");
     
     li.innerHTML = `
@@ -111,6 +152,7 @@ function atjaunotGrozu() {
     `;
     sarakstsElement.appendChild(li);
     kopa += rindasCena;
+    kopejaisPrecuSkaits += prece.daudzums;
   });
   
   if (grozs.length === 0) {
@@ -119,8 +161,21 @@ function atjaunotGrozu() {
   
   kopaElement.innerText = kopa.toFixed(2);
 
+  // --- PELDOŠĀ GROZA ATJAUNOŠANA ---
+  const peldosaisGrozs = document.getElementById("peldosais-grozs");
+  const peldosaisSkaits = document.getElementById("peldosais-skaits");
+  
+  if (peldosaisGrozs && peldosaisSkaits) {
+    peldosaisSkaits.innerText = kopejaisPrecuSkaits;
+    if (kopejaisPrecuSkaits > 0) {
+      peldosaisGrozs.classList.add("aktivs"); // Parāda peldošo pogu ar CSS animāciju
+    } else {
+      peldosaisGrozs.classList.remove("aktivs"); // Paslēpj, ja tukšs
+    }
+  }
+
   // --- 1.1. BEZMAKSAS PIEGĀDES LOĢIKA ---
-  const limitsBezmaksasPiegadei = 30.00; // Šeit tu vari nomainīt summu, no kuras ir bezmaksas piegāde
+  const limitsBezmaksasPiegadei = 30.00;
 
   if (piegadesPazinojums) {
     if (kopa === 0) {
@@ -142,6 +197,14 @@ function atjaunotGrozu() {
   }
 }
 
+// Jaunā funkcija: nospiežot uz peldošā groza, gludi aizriplina lapu līdz pasūtījuma formai
+function ritinatUzGrozu() {
+  const mērķis = document.getElementById("groza-sekcija-mērķis");
+  if (mērķis) {
+    mērķis.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 // --- 3. PASŪTĪŠANA UZ WHATSAPP ---
 function sutitUzWhatsApp() {
   if (grozs.length === 0) {
@@ -149,18 +212,15 @@ function sutitUzWhatsApp() {
     return;
   }
   
-  // Nolasām pircēja datus
   const vards = document.getElementById('klients-vards').value.trim();
   const telefons = document.getElementById('klients-telefons').value.trim();
   const pakomats = document.getElementById('klients-pakomats').value; 
 
-  // Pārbaudām, vai klients nav aizmirsis ievadīt datus
   if (!vards || !telefons || !pakomats) {
     alert("Lūdzu, aizpildi visus piegādes datus un izvēlies Omniva pakomātu no saraksta pirms pasūtīšanas!");
     return;
   }
   
-  // Izveidojam ziņas tekstu pilnīgi bez kļūdainām emocijzīmēm
   let teksts = "Sveiki! Es vēlos veikt pasūtījumu.\n\n";
   teksts += "*Pircēja dati:*\n";
   teksts += `- Vārds: ${vards}\n`;
@@ -176,7 +236,6 @@ function sutitUzWhatsApp() {
     kopa += rindasCena;
   });
   
-  // Piegādes loģika ziņojumā (iztīrīta no mistiskiem tukšumiem)
   const limitsBezmaksasPiegadei = 30.00;
   if (kopa >= limitsBezmaksasPiegadei) {
     teksts += `\nPiegāde: *BEZMAKSAS (Sasniegts limits virs ${limitsBezmaksasPiegadei.toFixed(2)} €)*\n`;
@@ -186,7 +245,6 @@ function sutitUzWhatsApp() {
   
   teksts += `*Kopā apmaksai: ${kopa.toFixed(2)} €*`;
   
-  // Nosūtām uz norādīto numuru
   let kodetsTeksts = encodeURIComponent(teksts);
   let mansNumurs = "37124332563"; 
   
