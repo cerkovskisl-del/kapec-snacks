@@ -1,5 +1,6 @@
 // --- SĀKOTNĒJIE MAINĪGIE ---
-let grozs = [];
+// Mēģinām ielādēt grozu no atmiņas, ja tur nekas nav - sākam ar tukšu
+let grozs = JSON.parse(localStorage.getItem('iepirkumu_grozs')) || [];
 // Uzģenerējam fiksētu pasūtījuma ID šai pirkuma sesijai (no 1000 līdz 9999)
 const fiksētaisPasutījumaNumurs = Math.floor(1000 + Math.random() * 9000);
 
@@ -68,6 +69,9 @@ document.addEventListener("DOMContentLoaded", function() {
   // --- KLIENTA DATU IELĀDE (LOCAL STORAGE) ---
   if(localStorage.getItem('vards')) document.getElementById('klients-vards').value = localStorage.getItem('vards');
   if(localStorage.getItem('telefons')) document.getElementById('klients-telefons').value = localStorage.getItem('telefons');
+
+  // IELĀDĒJOT LAPU: uzreiz uzzīmējam saglabāto grozu, ja tāds ir
+  atjaunotGrozu();
 });
 
 // --- DATU SAGLABĀŠANAS KLAUSĪTĀJI ---
@@ -147,11 +151,27 @@ function iznemtNoGroza(nosaukums) {
   atjaunotGrozu();
 }
 
+// Pilnīga groza iztīrīšanas funkcija
+function iztiritVisuGrozu() {
+  if (grozs.length === 0) {
+    alert("Grozs jau ir tukšs!");
+    return;
+  }
+  
+  if (confirm("Vai tiešām vēlies pilnībā iztīrīt iepirkumu grozu?")) {
+    grozs = []; // Iztīrām masīvu
+    localStorage.removeItem('iepirkumu_grozs'); // Izdzēšam no pārlūka atmiņas
+    atjaunotGrozu(); // Atjaunojam lapas izskatu
+  }
+}
+
 function atjaunotGrozu() {
   const sarakstsElement = document.getElementById("groza-saraksts");
   const kopaElement = document.getElementById("groza-kopa");
   const piegadesPazinojums = document.getElementById("piegades-pazinojums");
   
+  if (!sarakstsElement || !kopaElement) return;
+
   sarakstsElement.innerHTML = "";
   let kopa = 0;
   let kopejaisPrecuSkaits = 0;
@@ -175,6 +195,9 @@ function atjaunotGrozu() {
   }
   
   kopaElement.innerText = kopa.toFixed(2);
+
+  // Saglabājam aktuālo groza saturu pārlūka atmiņā (LocalStorage)
+  localStorage.setItem('iepirkumu_grozs', JSON.stringify(grozs));
 
   // Peldošais grozs
   const peldosaisGrozs = document.getElementById("peldosais-grozs");
