@@ -118,7 +118,44 @@ h1 {
   font-size: 1.3rem;
   font-weight: bold;
   color: #333;
-  margin: 15px 0;
+  margin: 15px 0 5px 0; /* Samazināta apakšējā mala, lai dotu vietu regulatoram */
+}
+
+/* --- JAUNUMS: DAUDZUMA REGULATORA STILI KARTĪTĒS --- */
+.daudzuma-kontrole {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.daudzuma-kontrole button {
+  background-color: #ffccd5;
+  color: #ff477e;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.daudzuma-kontrole button:hover {
+  background-color: #ffb3c1;
+  transform: scale(1.05);
+}
+
+.daudzuma-kontrole span {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  min-width: 20px;
 }
 
 /* --- GROZA STILI DATORAM --- */
@@ -191,6 +228,59 @@ h1 {
   background-color: #128C7E; 
 }
 
+/* --- JAUNUMS: PELDOŠĀS GROZA POGAS STILI --- */
+#peldosais-grozs {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #ff477e;
+  color: white;
+  border: none;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(255, 71, 126, 0.4);
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.2s;
+  opacity: 0;
+  pointer-events: none; /* Kamēr grozs tukšs, poga nereaģē uz klikšķiem */
+  transform: translateY(20px) scale(0.8);
+}
+
+#peldosais-grozs.aktivs {
+  opacity: 1;
+  pointer-events: auto; /* Aktivizējas klikšķi */
+  transform: translateY(0) scale(1);
+}
+
+#peldosais-grozs:hover {
+  background-color: #ff2a63;
+  transform: scale(1.1);
+}
+
+#peldosais-skaits {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: white;
+  color: #ff477e;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ff477e;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 
 /* ==========================================================================
    MOBILĀ VERSIJA (Ekrāniem līdz 600px platumam)
@@ -246,12 +336,28 @@ h1 {
 
   .cena {
     font-size: 1.1rem !important;
-    margin: 5px 0 10px 0 !important;
+    margin: 5px 0 8px 0 !important;
+  }
+
+  /* Mazāks regulators mobilajā skatā */
+  .daudzuma-kontrole {
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .daudzuma-kontrole button {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.95rem !important;
+  }
+
+  .daudzuma-kontrole span {
+    font-size: 1rem !important;
   }
 
   .grozam-poga {
-    padding: 10px 5px !important; 
-    font-size: 0.85rem !important;
+    padding: 8px 5px !important; 
+    font-size: 0.8rem !important;
     width: 100% !important;
     border-radius: 20px !important;
   }
@@ -290,5 +396,14 @@ h1 {
     font-size: 1.1rem !important;
     width: 100% !important;
     box-sizing: border-box !important;
+  }
+
+  /* Nedaudz pavelkam peldošo pogu uz augšu telefonā, lai tā neaizsedz pārlūka apakšējo joslu */
+  #peldosais-grozs {
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 58px !important;
+    height: 58px !important;
+    font-size: 1.4rem !important;
   }
 }
