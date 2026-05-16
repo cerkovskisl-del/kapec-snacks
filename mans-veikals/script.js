@@ -124,10 +124,8 @@ function atjaunotGrozu() {
 
   if (piegadesPazinojums) {
     if (kopa === 0) {
-      // Ja grozs ir tukšs, paziņojumu vienkārši paslēpjam
       piegadesPazinojums.style.display = "none";
     } else if (kopa < limitsBezmaksasPiegadei) {
-      // Ja summa ir mazāka, aprēķinām starpību un iekrāsojam maigi rozā
       let cikTruks = limitsBezmaksasPiegadei - kopa;
       piegadesPazinojums.style.display = "block";
       piegadesPazinojums.style.color = "#ff477e";
@@ -135,7 +133,6 @@ function atjaunotGrozu() {
       piegadesPazinojums.style.border = "1px solid #ffccd5";
       piegadesPazinojums.innerText = `🛒 Pērc vēl par ${cikTruks.toFixed(2)} €, lai saņemtu BEZMAKSAS piegādi!`;
     } else {
-      // Ja limits sasniegts, iekrāsojam maigi zaļu
       piegadesPazinojums.style.display = "block";
       piegadesPazinojums.style.color = "#2a9d8f";
       piegadesPazinojums.style.backgroundColor = "#e8f5e9";
@@ -155,22 +152,22 @@ function sutitUzWhatsApp() {
   // Nolasām pircēja datus
   const vards = document.getElementById('klients-vards').value.trim();
   const telefons = document.getElementById('klients-telefons').value.trim();
-  const pakomats = document.getElementById('klients-pakomats').value; // Nolasām izvēlēto opciju
+  const pakomats = document.getElementById('klients-pakomats').value; 
 
-  // Pārbaudām, vai klients nav aizmirsis izvēlēties pakomātu vai ierakstīt datus
+  // Pārbaudām, vai klients nav aizmirsis ievadīt datus
   if (!vards || !telefons || !pakomats) {
     alert("Lūdzu, aizpildi visus piegādes datus un izvēlies Omniva pakomātu no saraksta pirms pasūtīšanas!");
     return;
   }
   
-  // Izveidojam ziņas tekstu
+  // Izveidojam ziņas tekstu pilnīgi bez kļūdainām emocijzīmēm
   let teksts = "Sveiki! Es vēlos veikt pasūtījumu.\n\n";
-  teksts += "*👤 Pircēja dati:*\n";
-  teksts += `• Vārds: ${vards}\n`;
-  teksts += `• Telefons: ${telefons}\n`;
-  teksts += `• Omniva pakomāts: ${pakomats}\n\n`;
+  teksts += "*Pircēja dati:*\n";
+  teksts += `- Vārds: ${vards}\n`;
+  teksts += `- Telefons: ${telefons}\n`;
+  teksts += `- Omniva pakomāts: ${pakomats}\n\n`;
   
-  teksts += "*📦 Pasūtītās preces:*\n";
+  teksts += "*Pasūtītās preces:*\n";
   let kopa = 0;
   
   grozs.forEach((prece) => {
@@ -179,17 +176,17 @@ function sutitUzWhatsApp() {
     kopa += rindasCena;
   });
   
-  // Pieliekam piezīmi par piegādes maksu arī uz WhatsApp ziņu
+  // Piegādes loģika ziņojumā (iztīrīta no mistiskiem tukšumiem)
   const limitsBezmaksasPiegadei = 30.00;
   if (kopa >= limitsBezmaksasPiegadei) {
-    teksts += `\n Piegāde: *BEZMAKSAS (Sasniegts limits virs ${limitsBezmaksasPiegadei.toFixed(2)} €)*`;
+    teksts += `\nPiegāde: *BEZMAKSAS (Sasniegts limits virs ${limitsBezmaksasPiegadei.toFixed(2)} €)*\n`;
   } else {
-    teksts += `\n Piegāde: *Pēc Omniva cenrāža (Līdz bezmaksas piegādei trūka ${(limitsBezmaksasPiegadei - kopa).toFixed(2)} €)*`;
+    teksts += `\nPiegāde: *Pēc Omniva cenrāža (Līdz bezmaksas piegādei trūka ${(limitsBezmaksasPiegadei - kopa).toFixed(2)} €)*\n`;
   }
   
-  teksts += `\n*Kopā apmaksai: ${kopa.toFixed(2)} €*`;
+  teksts += `*Kopā apmaksai: ${kopa.toFixed(2)} €*`;
   
-  // Nosūtām uz tavu numuru
+  // Nosūtām uz norādīto numuru
   let kodetsTeksts = encodeURIComponent(teksts);
   let mansNumurs = "37124332563"; 
   
