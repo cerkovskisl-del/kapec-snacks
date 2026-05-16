@@ -1,0 +1,277 @@
+body {
+  background-color: #fff0f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* --- GALVENES FONTS UN IZVIETOJUMS --- */
+.galvene {
+  background-color: #ff69b4; 
+  color: white;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- LOGO SAITES UN BILDES STILI --- */
+.logo-saite, .logo-saite:hover, .logo-saite:visited, .logo-saite:active {
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+  color: transparent !important;
+}
+
+.logo-bilde {
+  max-width: 240px; 
+  width: 100%;
+  height: auto;
+  margin-bottom: 5px;
+  border: none !important;
+  outline: none !important;
+  display: block;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+/* --- IEDAĻU IZVĒLNES STILI (Datoram un telefonam) --- */
+.izvelne {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.izvelne button {
+  background-color: #ff477e;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.izvelne button:hover {
+  background-color: #ff2a63;
+  transform: scale(1.05);
+}
+
+/* --- PRODUKTU REŽĢA STILI DATORAM --- */
+.konteiners {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+.sadaļa-bloks > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.saldums-karte {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  width: 280px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.saldums-karte h3 {
+  color: #ff69b4;
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.salduma-bilde {
+  width: 100%;          
+  max-width: 100%;      
+  height: 180px;         
+  object-fit: contain; 
+  border-radius: 10px;  
+  margin-bottom: 15px;  
+  box-sizing: border-box; 
+}
+
+.apraksts {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.cena {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  margin: 15px 0;
+}
+
+/* --- GROZA STILI DATORAM --- */
+.groza-sekcija {
+  background-color: white;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.groza-sekcija h2 { 
+  color: #ff69b4; 
+  text-align: center; 
+}
+
+#groza-saraksts { 
+  list-style: none; 
+  padding: 0; 
+}
+
+#groza-saraksts li { 
+  padding: 10px 0; 
+  border-bottom: 1px solid #eee; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+.kopa { 
+  font-size: 1.2rem; 
+  font-weight: bold; 
+  text-align: right; 
+  margin-top: 20px; 
+}
+
+.grozam-poga { 
+  background-color: #ff69b4; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  border-radius: 25px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  width: 100%; 
+}
+
+.grozam-poga:hover { 
+  background-color: #e0529c; 
+}
+
+.maksa-poga { 
+  display: block; 
+  background-color: #25D366; 
+  color: white; 
+  border: none; 
+  padding: 12px 20px; 
+  border-radius: 25px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  width: 100%; 
+  text-align: center; 
+  font-size: 1.1rem; 
+  margin-top: 15px; 
+}
+
+.maksa-poga:hover { 
+  background-color: #128C7E; 
+}
+
+
+/* ==========================================================================
+   MOBILĀ VERSIJA (Ekrāniem līdz 600px platumam)
+   ========================================================================== */
+@media (max-width: 600px) {
+  /* Forsējam divu kolonnu izkārtojumu visiem iespējamajiem konteineriem */
+  .konteiners, .sadaļa-bloks, .sadaļa-bloks > div {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* Divas preces blakus */
+    gap: 10px !important; 
+    padding: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .saldums-karte {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px !important; 
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .saldums-karte h3 {
+    font-size: 0.95rem !important; 
+    min-height: 38px; 
+    margin-bottom: 5px !important;
+  }
+
+  .salduma-bilde {
+    height: 100px !important; 
+  }
+
+  .apraksts {
+    font-size: 0.8rem !important; 
+    line-height: 1.3 !important;
+  }
+
+  .cena {
+    font-size: 1rem !important;
+    margin: 5px 0 !important;
+  }
+
+  .grozam-poga {
+    padding: 8px 10px !important; 
+    font-size: 0.85rem !important;
+    width: 100% !important;
+  }
+  
+  .logo-bilde {
+    max-width: 160px !important;
+  }
+
+  /* --- JAUNIE MOBILĀ GROZA UZLABOJUMI --- */
+  .groza-sekcija {
+    margin: 20px 10px !important; 
+    padding: 15px !important; 
+    border-radius: 10px !important;
+    display: block !important; /* Grozs paliek kā viens vesels bloks, nevis režģis */
+    width: auto !important;
+  }
+
+  .groza-sekcija h2 {
+    font-size: 1.3rem !important;
+  }
+
+  #groza-saraksts li {
+    font-size: 0.9rem !important; 
+    padding: 6px 0 !important;
+    display: flex !important;
+  }
+
+  .kopa {
+    font-size: 1.1rem !important;
+    margin-top: 15px !important;
+  }
+
+  .maksa-poga {
+    padding: 10px 15px !important;
+    font-size: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}

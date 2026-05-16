@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mana saldumu pasaule</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Papildus stils, lai sākumā paslēptu sadaļas un kontrolētu izskatu */
+    .sadaļa-bloks {
+      display: none;
+      width: 100%;
+    }
+    .sadaļas-virsraksts {
+      width: 100%;
+      text-align: center;
+      color: #ff477e;
+      margin-top: 30px;
+      font-size: 24px;
+      border-bottom: 2px dashed #ff477e;
+      padding-bottom: 10px;
+    }
+    .izvelne button.aktiva {
+      background-color: #ff2a63;
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255, 71, 126, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+<div class="galvene">
+    <a href="index.html" class="logo-saite" style="text-decoration: none !important; border: none !important; outline: none !important; color: inherit;">
+      <img src="logo.png" onerror="this.src='logo.png.png'" alt="Mana saldumu pasaule logo" class="logo-bilde" style="border: none !important; outline: none !important;" border="0">
+    </a>
+    <p>Gardi kārumi katrai dienai!</p>
+  </div>
+
+  <div class="izvelne">
+    <button onclick="raditSadaļu('uzkodas', this)">🍿 Čipsi & Uzkodas</button>
+    <button onclick="raditSadaļu('saldumi', this)">🍬 Saldumi & Šokolāde</button>
+    <button onclick="raditSadaļu('liofilizetie', this)">🧊 Liofilizētie kārumi</button>
+    <button onclick="raditSadaļu('visi', this)">✨ Visi produkti</button>
+  </div>
+
+  <div class="konteiners">
+    
+    <div id="uzkodas" class="sadaļa-bloks">
+      <h2 class="sadaļas-virsraksts">🍿 Čipsi & Uzkodas</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
+        <div class="saldums-karte">
+          <h3>Takis Blue Heat (90g)</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/e7/04/463750be9855c152faeaf660e5c3.jpg" alt="Takis Blue Heat" class="salduma-bilde">
+          <p class="apraksts">Kraukšķīgi kukurūzas čipsi ar ekstrēmu čili un laima garšu.</p>
+          <p class="cena">4.00 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Takis Blue Heat', 4.00)">Pievienot grozam</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="saldumi" class="sadaļa-bloks">
+      <h2 class="sadaļas-virsraksts">🍬 Saldumi & Šokolāde</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
+        <div class="saldums-karte">
+          <h3>Reese's Peanut Butter Cups</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/73/08/393a5f964f0ae85f1c283c74536a.jpg" alt="Reese's" class="salduma-bilde">
+          <p class="apraksts">Šokolādes groziņi ar zemesriekstu sviestu.</p>
+          <p class="cena">2.00 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Reeses', 2.00)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte">
+          <h3>Sour Patch Kids</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/6e/de/f5e9c7d9919bc8b13e20e25300cd.jpg" alt="Sour Patch" class="salduma-bilde">
+          <p class="apraksts">Želejas konfektes ar izteikti skābu garšu.</p>
+          <p class="cena">1.50 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Sour Patch Kids', 1.50)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte">
+          <h3>Nerds Rope</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/8b/fb/2e5d40384b04b45b3d3967d3dd38.png" alt="Nerds Rope" class="salduma-bilde">
+          <p class="apraksts">Mīksta želeja, kas pārklāta ar kraukšķīgām Nerds konfektēm.</p>
+          <p class="cena">2.20 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Nerds Rope', 2.20)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte">
+          <h3>Nerds (Watermelon & Cherry) 46.7g</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/ef/b3/a4d225f0bb3b55c88b2c90cb9d02.png" alt="Nerds" class="salduma-bilde">
+          <p class="apraksts">Mazās, kraukšķīgās konfektes ar arbūzu un ķiršu garšu.</p>
+          <p class="cena">2.00 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Nerds (Watermelon & Cherry)', 2.00)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte">
+          <h3>Mike and Ike (Tropical Typhoon) 22g</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/41/a5/d820cc8954600400b551b7f84dc6.jpg" alt="Mike and Ike" class="salduma-bilde">
+          <p class="apraksts">Mīkstas košļājamās konfektes ar tropisko augļu garšu miksu.</p>
+          <p class="cena">1.00 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Mike and Ike (Tropical Typhoon)', 1.00)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte">
+          <h3>Hershey's Cookies 'N' Creme (43g)</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/d9/0b/113eaf88a725f13f1599b68bf976.jpg" alt="Hershey's" class="salduma-bilde">
+          <p class="apraksts">Maiga baltā krēma šokolāde, kas bagātināta ar kraukšķīgiem cepumu gabaliņiem.</p>
+          <p class="cena">1.80 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Hersheys Cookies N Creme', 1.80)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte">
+          <h3>Brain Blasterz Brain Bitz (45g)</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/c7/58/a8d8362fcb29af6f0687040d240a.png" alt="Brain Blasterz Bitz" class="salduma-bilde">
+          <p class="apraksts">Mazas, kraukšķīgas konfektītes ar augļu garšu un pamatīgi skābu triecienu.</p>
+          <p class="cena">1.40 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Brain Blasterz Brain Bitz', 1.40)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte">
+          <h3>Brain Blasterz Brain Breakerz (45g)</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/66/54/7f2f4d00356fa1f3bd93fc8d9829.png" alt="Brain Blasterz Breakerz" class="salduma-bilde">
+          <p class="apraksts">Cietās konfekšu bumbiņas ar šokējoši skābu pulvera pildījumu iekšpusē.</p>
+          <p class="cena">1.20 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Brain Blasterz Brain Breakerz', 1.20)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte">
+          <h3>Jelly Belly Bean Boozled (45g)</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/402x402/b7/7c/d75f67e519e9af20e6e96fa61c17.png" alt="Bean Boozled" class="salduma-bilde">
+          <p class="apraksts">Slavenā TikTok spēle! Katrai krāsai ir viena garda un viena pavisam traka garša.</p>
+          <p class="cena">4.20 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Jelly Belly Bean Boozled', 4.20)">Pievienot grozam</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="liofilizetie" class="sadaļa-bloks">
+      <h2 class="sadaļas-virsraksts">🧊 Liofilizētie kārumi</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
+        <div class="saldums-karte">
+          <h3>Freeze Dried Rainbow Skittles (70g)</h3>
+          <img src="https://thumbor.candypop.lt/fit-in/180x180/90/4e/bcee68af14543f9870581e6bc34f.png" alt="Freeze Dried Skittles" class="salduma-bilde">
+          <p class="apraksts">Liofilizētas Skittles konfektes – neparasti kraukšķīgas un intensīvas.</p>
+          <p class="cena">3.20 €</p>
+          <button class="grozam-poga" onclick="pievienotGrozam('Freeze Dried Skittles', 3.20)">Pievienot grozam</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="groza-sekcija">
+    <h2>Tavs iepirkumu grozs</h2>
+    <ul id="groza-saraksts">
+      <li class="tukss">Grozs ir tukšs</li>
+    </ul>
+    <p class="kopa">Kopā: <span id="groza-kopa">0.00</span> €</p>
+    <button class="maksa-poga" onclick="sutitUzWhatsApp()">Maksāt (Pasūtīt WhatsApp)</button>
+  </div>
+
+  <script>
+    function raditSadaļu(sadaļasId, poga) {
+      // Paslēpj visas sadaļas
+      const sadaļas = document.querySelectorAll('.sadaļa-bloks');
+      sadaļas.forEach(sadaļa => {
+        sadaļa.style.display = 'none';
+      });
+
+      // Noņem aktīvo klasi no visām pogām
+      const pogas = document.querySelectorAll('.izvelne button');
+      pogas.forEach(p => p.classList.remove('aktiva'));
+
+      // Pievieno aktīvo klasi nospiestajai pogai
+      poga.classList.add('aktiva');
+
+      // Parāda izvēlēto sadaļu vai visas
+      if (sadaļasId === 'visi') {
+        sadaļas.forEach(sadaļa => {
+          sadaļa.style.display = 'block';
+        });
+      } else {
+        document.getElementById(sadaļasId).style.display = 'block';
+      }
+
+      // Smuki aizripina skatu līdz satura sākumam
+      document.querySelector('.konteiners').scrollIntoView({behavior: 'smooth'});
+    }
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
