@@ -40,7 +40,7 @@
     <button onclick="raditSadaļu('uzkodas', this)">🍿 Čipsi & Uzkodas</button>
     <button onclick="raditSadaļu('saldumi', this)">🍬 Saldumi & Šokolāde</button>
     <button onclick="raditSadaļu('liofilizetie', this)">🧊 Liofilizētie kārumi</button>
-    <button onclick="raditSadaļu('visi', this)">✨ Visi produkti</button>
+    <button id="poga-visi" onclick="raditSadaļu('visi', this)">✨ Visi produkti</button>
   </div>
 
   <div class="konteiners">
@@ -220,15 +220,17 @@
       <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Telefona numurs:</label>
       <input type="tel" id="klients-telefons" placeholder="+371 20000000" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none;">
 
-      <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Vēlamais Omniva pakomāts:</label>
-      <input type="text" id="klients-pakomats" placeholder="Rīgas mola pakomāts" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none;">
+      <label style="font-weight: bold; color: #ff477e; font-size: 0.95rem;">Izvēlies Omniva pakomātu:</label>
+      <select id="klients-pakomats" style="padding: 10px; border: 2px solid #ffccd5; border-radius: 10px; font-size: 1rem; width: 100%; box-sizing: border-box; outline: none; background-color: white;">
+        <option value="" disabled selected>Lādē pakomātu sarakstu...</option>
+      </select>
     </div>
 
     <button class="maksa-poga" onclick="sutitUzWhatsApp()">Maksāt (Pasūtīt WhatsApp)</button>
   </div>
 
   <script>
-    function raditSadaļu(sadaļasId, poga) {
+    function raditSadaļu(sadaļasId, poga, autoScroll = true) {
       // Paslēpj visas sadaļas
       const sadaļas = document.querySelectorAll('.sadaļa-bloks');
       sadaļas.forEach(sadaļa => {
@@ -240,7 +242,7 @@
       pogas.forEach(p => p.classList.remove('aktiva'));
 
       // Pievieno aktīvo klasi nospiestajai pogai
-      poga.classList.add('aktiva');
+      if (poga) poga.classList.add('aktiva');
 
       // Parāda izvēlēto sadaļu vai visas
       if (sadaļasId === 'visi') {
@@ -251,9 +253,17 @@
         document.getElementById(sadaļasId).style.display = 'block';
       }
 
-      // Smuki aizripina skatu līdz satura sākumam
-      document.querySelector('.konteiners').scrollIntoView({behavior: 'smooth'});
+      // Smuki aizripina skatu līdz satura sākumam (tikai ja nav pirmā ielāde)
+      if (autoScroll) {
+        document.querySelector('.konteiners').scrollIntoView({behavior: 'smooth'});
+      }
     }
+
+    // Kad mājaslapa ir pilnībā ielādējusies, automātiski parādām visus produktus
+    document.addEventListener("DOMContentLoaded", function() {
+      const pogaVisi = document.getElementById('poga-visi');
+      raditSadaļu('visi', pogaVisi, false);
+    });
   </script>
 
   <script src="script.js"></script>
