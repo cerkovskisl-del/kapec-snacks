@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
 
-    saraksts.forEach(pakomats => {
+   saraksts.forEach(pakomats => {
       const opcija = document.createElement('option');
       opcija.value = pakomats.NAME;
       opcija.textContent = pakomats.NAME;
@@ -93,8 +93,8 @@ function mainitKartesDaudzumu(nosaukums, izmaina) {
   }
 }
 
-// Paņem uzstādīto daudzumu no kartītes un pievieno grozam
-function pievienotNoKartes(nosaukums, cena) {
+// Paņem uzstādīto daudzumu no kartītes, paņem bildes adresi un pievieno grozam
+function pievienotNoKartes(nosaukums, cena, bilde) {
   const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
   let daudzumsKoPievienot = 1;
   
@@ -102,7 +102,7 @@ function pievienotNoKartes(nosaukums, cena) {
     daudzumsKoPievienot = parseInt(skaitaElements.innerText);
   }
 
-  // Nosaukumu pārtulkošana
+  // Nosaukumu pārtulkošana un standartizēšana starp ID un tekstiem
   if (nosaukums === 'Reeses') {
     nosaukums = "Reese's Peanut Butter Cups";
   } else if (nosaukums === 'Hersheys Cookies N Creme') {
@@ -115,8 +115,15 @@ function pievienotNoKartes(nosaukums, cena) {
   
   if (esosaPrece) {
     esosaPrece.daudzums += daudzumsKoPievienot;
+    // Ja bilde vēl nav piesaistīta (piemēram, no veca localStorage), atjaunojam to
+    if (bilde) esosaPrece.bilde = bilde;
   } else {
-    grozs.push({ nosaukums: nosaukums, cena: cena, daudzums: daudzumsKoPievienot });
+    grozs.push({ 
+      nosaukums: nosaukums, 
+      cena: cena, 
+      daudzums: daudzumsKoPievienot,
+      bilde: bilde || 'logo.png' // Ja bildes nav, izmanto rezerves logo
+    });
   }
   
   if (skaitaElements) {
@@ -126,10 +133,12 @@ function pievienotNoKartes(nosaukums, cena) {
   atjaunotGrozu();
 }
 
+// Rezerves funkcija gadījumam, ja kāda poga izmanto veco nosaukumu
 function pievienotGrozam(nosaukums, cena) {
   pievienotNoKartes(nosaukums, cena);
 }
 
+// Daudzuma samazināšana grozā vai preces pilnīga izņemšana
 function iznemtNoGroza(nosaukums) {
   if (nosaukums === 'Reeses') {
     nosaukums = "Reese's Peanut Butter Cups";
@@ -151,6 +160,18 @@ function iznemtNoGroza(nosaukums) {
   atjaunotGrozu();
 }
 
+// Groza daudzuma kontrole tieši no groza iekšienes (+ un - pogām, ja tādas tiek izmantotas)
+function mainitGrozaDaudzumu(nosaukums, izmaina) {
+  const esosaPrece = grozs.find(item => item.nosaukums === nosaukums);
+  if (esosaPrece) {
+    esosaPrece.daudzums += izmaina;
+    if (esosaPrece.daudzums < 1) {
+      grozs = grozs.filter(item => item.nosaukums !== nosaukums);
+    }
+  }
+  atjaunotGrozu();
+}
+
 // Pilnīga groza iztīrīšanas funkcija
 function iztiritVisuGrozu() {
   if (grozs.length === 0) {
@@ -165,6 +186,7 @@ function iztiritVisuGrozu() {
   }
 }
 
+// Vizuālā groza pārzīmēšana, summu rēķināšana un efektu aktivizēšana
 function atjaunotGrozu() {
   const sarakstsElement = document.getElementById("groza-saraksts");
   const kopaElement = document.getElementById("groza-kopa");
@@ -179,11 +201,23 @@ function atjaunotGrozu() {
   grozs.forEach((prece) => {
     const rindasCena = prece.cena * prece.daudzums;
     const li = document.createElement("li");
+    li.className = "groza-prece-rindina"; // Klase smukajiem CSS stiliem
+    
     const drošsNosaukums = prece.nosaukums.replace(/'/g, "\\'");
     
+    // Modernizēts HTML saturs ar bildi kreisajā pusē un vadības pogām
     li.innerHTML = `
-      <span>${prece.nosaukums} <strong>(x${prece.daudzums})</strong> - ${rindasCena.toFixed(2)} €</span>
-      <button onclick="iznemtNoGroza('${drošsNosaukums}')" style="background: none; border: none; color: red; font-weight: bold; cursor: pointer; padding: 0 5px;">❌</button>
+      <div class="groza-preces-info">
+        <img src="${prece.bilde || 'logo.png'}" class="groza-mini-bilde" alt="${prece.nosaukums}">
+        <span class="groza-preces-teksts">
+          <strong>${prece.nosaukums}</strong> <br> 
+          ${prece.daudzums} x ${prece.cena.toFixed(2)} €
+        </span>
+      </div>
+      <div class="groza-kontrole" style="display: flex; gap: 5px; align-items: center;">
+        <button onclick="iznemtNoGroza('${drošsNosaukums}')" style="background-color: #ffccd5; border: none; color: #ff477e; font-weight: bold; cursor: pointer; padding: 4px 8px; border-radius: 5px;">-</button>
+        <button onclick="pievienotNoKartes('${drošsNosaukums}', ${prece.cena})" style="background-color: #e8f5e9; border: none; color: #2a9d8f; font-weight: bold; cursor: pointer; padding: 4px 8px; border-radius: 5px;">+</button>
+      </div>
     `;
     sarakstsElement.appendChild(li);
     kopa += rindasCena;
@@ -191,7 +225,7 @@ function atjaunotGrozu() {
   });
   
   if (grozs.length === 0) {
-    sarakstsElement.innerHTML = '<li class="tukss">Grozs ir tukšs</li>';
+    sarakstsElement.innerHTML = '<li class="tukss" style="text-align: center; padding: 15px; color: #888;">Grozs ir tukšs</li>';
   }
   
   kopaElement.innerText = kopa.toFixed(2);
@@ -199,7 +233,7 @@ function atjaunotGrozu() {
   // Saglabājam aktuālo groza saturu pārlūka atmiņā (LocalStorage)
   localStorage.setItem('iepirkumu_grozs', JSON.stringify(grozs));
 
-  // Peldošais grozs
+  // Peldošais grozs un tā pulsācijas animācijas izsaukšana
   const peldosaisGrozs = document.getElementById("peldosais-grozs");
   const peldosaisSkaits = document.getElementById("peldosais-skaits");
   
@@ -207,6 +241,11 @@ function atjaunotGrozu() {
     peldosaisSkaits.innerText = kopejaisPrecuSkaits;
     if (kopejaisPrecuSkaits > 0) {
       peldosaisGrozs.classList.add("aktivs");
+      
+      // Restartējam pulsēšanas animāciju
+      peldosaisGrozs.classList.remove('pulset');
+      void peldosaisGrozs.offsetWidth; // Pārlūka piespiešana pārlādēt elementa stāvokli
+      peldosaisGrozs.classList.add('pulset');
     } else {
       peldosaisGrozs.classList.remove("aktivs");
     }
