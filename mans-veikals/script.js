@@ -220,8 +220,11 @@ function sutitUzWhatsApp() {
     alert("Lūdzu, aizpildi visus piegādes datus un izvēlies Omniva pakomātu no saraksta pirms pasūtīšanas!");
     return;
   }
+
+  // ĢENERĒJAM RANDOM PASŪTĪJUMA NUMURU (no 1000 līdz 9999)
+  const pasutijumaNumurs = Math.floor(1000 + Math.random() * 9000);
   
-  let teksts = "Sveiki! Es vēlos veikt pasūtījumu.\n\n";
+  let teksts = `*Jauns pasūtījums #${pasutijumaNumurs}*\n\n`;
   teksts += "*Pircēja dati:*\n";
   teksts += `- Vārds: ${vards}\n`;
   teksts += `- Telefons: ${telefons}\n`;
@@ -243,10 +246,12 @@ function sutitUzWhatsApp() {
     teksts += `\nPiegāde: *Pēc Omniva cenrāža (Līdz bezmaksas piegādei trūka ${(limitsBezmaksasPiegadei - kopa).toFixed(2)} €)*\n`;
   }
   
-  teksts += `*Kopā apmaksai: ${kopa.toFixed(2)} €*`;
+  teksts += `*Kopā apmaksai: ${kopa.toFixed(2)} €*\n\n`;
   
-  // --- LABOTĀ REVOLUT SAITE (ORIĢINĀLĀ VERSIJA) ---
-  teksts += `\n\n💳 *Apmaksa ar Revolut (Ievadiet summu manuāli):*\nhttps://revolut.me/igorsyeqd`;
+  // SKAIDRA INSTRUKCIJA KLIENTAM PAR PIEZĪMĒM
+  teksts += `⚠️ *SVARĪGI VEICOT MAKSĀJUMU:*\n`;
+  teksts += `Revolut piezīmēs (Note) OBLIGĀTI ieraksti šo numuru: *#${pasutijumaNumurs}*\n\n`;
+  teksts += `💳 *Saite apmaksai:* \nhttps://revolut.me/igorsyeqd`;
   
   let kodetsTeksts = encodeURIComponent(teksts);
   let mansNumurs = "37124332563"; 
