@@ -228,6 +228,27 @@ h1 {
   background-color: #128C7E; 
 }
 
+/* --- JAUNUMS: POGA "IZTĪRĪT GROZU" --- */
+.iztirit-poga {
+  display: block;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+
+.iztirit-poga:hover {
+  background-color: #d32f2f;
+}
+
 /* --- JAUNUMS: PELDOŠĀS GROZA POGAS STILI --- */
 #peldosais-grozs {
   position: fixed;
@@ -394,6 +415,14 @@ h1 {
   .maksa-poga {
     padding: 12px 20px !important;
     font-size: 1.1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Iztīrīšanas pogas pielāgošana mobilajā skatā */
+  .iztirit-poga {
+    padding: 10px 20px !important;
+    font-size: 1rem !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
