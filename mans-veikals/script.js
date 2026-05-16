@@ -1,33 +1,57 @@
-// --- 1. AUTOMĀTISKA VISU LATVIJAS OMNIVA PAKOMĀTU IELĀDE ---
+// --- 1. AUTOMĀTISKA VISU LATVIJAS OMNIVA PAKOMĀTU IELĀDE UN MEKLĒŠANA ---
 document.addEventListener("DOMContentLoaded", function() {
   const pakomatuSelekts = document.getElementById('klients-pakomats');
-  
+  const mekletajs = document.getElementById('pakomatu-mekletajs');
+  let visiPakomati = []; // Šeit glabāsim pilno sarakstu filtrēšanai
+
   if (pakomatuSelekts) {
     // Oficiālais Omniva pakomātu datu avots
     fetch('https://www.omniva.lv/locations.json')
       .then(response => response.json())
       .then(data => {
-        // Atlasām tikai Latvijas pakomātus (A0_NAME: "LV")
-        const lvPakomati = data.filter(item => item.A0_NAME === 'LV');
+        // Atlasām tikai Latvijas pakomātus (A0_NAME: "LV") un sakārtojam alfabētā
+        visiPakomati = data.filter(item => item.A0_NAME === 'LV');
+        visiPakomati.sort((a, b) => a.NAME.localeCompare(b.NAME));
         
-        // Sakārtojam pakomātus pēc nosaukuma alfabēta secībā
-        lvPakomati.sort((a, b) => a.NAME.localeCompare(b.NAME));
-        
-        // Attīrām "Lādē pakomātus..." ziņojumu un ieliekam pirmo izvēli
-        pakomatuSelekts.innerHTML = '<option value="" disabled selected>-- Izvēlies savu pakomātu --</option>';
-        
-        // Pa vienam pievienojam visus 360+ pakomātus sarakstā
-        lvPakomati.forEach(pakomats => {
-          const opcija = document.createElement('option');
-          opcija.value = pakomats.NAME;
-          opcija.textContent = pakomats.NAME;
-          pakomatuSelekts.appendChild(opcija);
-        });
+        // Sākotnēji parādām pilno sarakstu
+        atjaunotPakomatuSarakstu(visiPakomati);
       })
       .catch(error => {
         console.error('Kļūda ielādējot pakomātus:', error);
         pakomatuSelekts.innerHTML = '<option value="" disabled selected>Kļūda! Ierakstiet pakomātu WhatsApp</option>';
       });
+  }
+
+  // Funkcija, kas fiziski saliek opcijas izvēlnē
+  function atjaunotPakomatuSarakstu(saraksts) {
+    pakomatuSelekts.innerHTML = `<option value="" disabled selected>-- Izvēlies savu pakomātu (${saraksts.length} atrasti) --</option>`;
+    
+    if (saraksts.length === 0) {
+      pakomatuSelekts.innerHTML = '<option value="" disabled selected>Nekas netika atrasts...</option>';
+      return;
+    }
+
+    saraksts.forEach(pakomats => {
+      const opcija = document.createElement('option');
+      opcija.value = pakomats.NAME;
+      opcija.textContent = pakomats.NAME;
+      pakomatuSelekts.appendChild(opcija);
+    });
+  }
+
+  // MEKLĒŠANAS LOĢIKA: Tiklīdz lietotājs raksta laukā, saraksts uzreiz mainās
+  if (mekletajs) {
+    mekletajs.addEventListener('input', function() {
+      const meklesanasTeksts = mekletajs.value.toLowerCase().trim();
+      
+      // Nofletrējam pakomātus pēc ievadītā teksta
+      const filtretie = visiPakomati.filter(pakomats => 
+        pakomats.NAME.toLowerCase().includes(meklesanasTeksts)
+      );
+      
+      // Atjaunojam nolaižamo sarakstu ar nofiltrētajiem rezultātiem
+      atjaunotPakomatuSarakstu(filtretie);
+    });
   }
 });
 
