@@ -1,3 +1,8 @@
+// --- SĀKOTNĒJIE MAINĪGIE ---
+let grozs = [];
+// Uzģenerējam fiksētu pasūtījuma ID šai pirkuma sesijai (no 1000 līdz 9999)
+const fiksētaisPasutījumaNumurs = Math.floor(1000 + Math.random() * 9000);
+
 // --- 1. AUTOMĀTISKA VISU LATVIJAS OMNIVA PAKOMĀTU IELĀDE UN MEKLĒŠANA ---
 document.addEventListener("DOMContentLoaded", function() {
   const pakomatuSelekts = document.getElementById('klients-pakomats');
@@ -37,6 +42,12 @@ document.addEventListener("DOMContentLoaded", function() {
       opcija.textContent = pakomats.NAME;
       pakomatuSelekts.appendChild(opcija);
     });
+
+    // Pēc tam, kad saraksts ielādēts, mēģinām ielikt saglabāto pakomātu
+    const saglabatsPakomats = localStorage.getItem('pakomats');
+    if (saglabatsPakomats) {
+      pakomatuSelekts.value = saglabatsPakomats;
+    }
   }
 
   // MEKLĒŠANAS LOĢIKA: Tiklīdz lietotājs raksta laukā, saraksts uzreiz mainās
@@ -53,23 +64,32 @@ document.addEventListener("DOMContentLoaded", function() {
       atjaunotPakomatuSarakstu(filtretie);
     });
   }
+
+  // --- KLIENTA DATU IELĀDE (LOCAL STORAGE) ---
+  if(localStorage.getItem('vards')) document.getElementById('klients-vards').value = localStorage.getItem('vards');
+  if(localStorage.getItem('telefons')) document.getElementById('klients-telefons').value = localStorage.getItem('telefons');
 });
 
-// --- 2. GROZA LOĢIKA UN FUNKCIJAS ---
-let grozs = [];
+// --- DATU SAGLABĀŠANAS KLAUSĪTĀJI ---
+document.getElementById('klients-vards')?.addEventListener('input', (e) => localStorage.setItem('vards', e.target.value));
+document.getElementById('klients-telefons')?.addEventListener('input', (e) => localStorage.setItem('telefons', e.target.value));
+document.getElementById('klients-pakomats')?.addEventListener('change', (e) => localStorage.setItem('pakomats', e.target.value));
 
-// Jaunā funkcija: Maina skaitli tieši uz preces kartītes (+ vai -)
+
+// --- 2. GROZA LOĢIKA UN FUNKCIJAS ---
+
+// Maina skaitli tieši uz preces kartītes (+ vai -)
 function mainitKartesDaudzumu(nosaukums, izmaina) {
   const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
   if (skaitaElements) {
     let pasreizejaisDaudzums = parseInt(skaitaElements.innerText);
     pasreizejaisDaudzums += izmaina;
-    if (pasreizejaisDaudzums < 1) pasreizejaisDaudzums = 1; // Neļaujam nokrist zem 1
+    if (pasreizejaisDaudzums < 1) pasreizejaisDaudzums = 1;
     skaitaElements.innerText = pasreizejaisDaudzums;
   }
 }
 
-// Jaunā funkcija: Paņem uzstādīto daudzumu no kartītes un pievieno grozam
+// Paņem uzstādīto daudzumu no kartītes un pievieno grozam
 function pievienotNoKartes(nosaukums, cena) {
   const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
   let daudzumsKoPievienot = 1;
@@ -78,7 +98,7 @@ function pievienotNoKartes(nosaukums, cena) {
     daudzumsKoPievienot = parseInt(skaitaElements.innerText);
   }
 
-  // Nosaukumu pārtulkošana (lai sakristu ar HTML un skaistajām versijām)
+  // Nosaukumu pārtulkošana
   if (nosaukums === 'Reeses') {
     nosaukums = "Reese's Peanut Butter Cups";
   } else if (nosaukums === 'Hersheys Cookies N Creme') {
@@ -95,7 +115,6 @@ function pievienotNoKartes(nosaukums, cena) {
     grozs.push({ nosaukums: nosaukums, cena: cena, daudzums: daudzumsKoPievienot });
   }
   
-  // Atiestatām kartītes skaitītāju atpakaļ uz 1 pēc pievienošanas
   if (skaitaElements) {
     skaitaElements.innerText = 1;
   }
@@ -103,13 +122,11 @@ function pievienotNoKartes(nosaukums, cena) {
   atjaunotGrozu();
 }
 
-// Saglabājam oriģinālo funkciju gadījumam, ja kāda cita koda daļa to izsauc
 function pievienotGrozam(nosaukums, cena) {
   pievienotNoKartes(nosaukums, cena);
 }
 
 function iznemtNoGroza(nosaukums) {
-  // Pārtulkojam nosaukumus arī dzēšanas brīdī, ja nepieciešams
   if (nosaukums === 'Reeses') {
     nosaukums = "Reese's Peanut Butter Cups";
   } else if (nosaukums === 'Hersheys Cookies N Creme') {
@@ -137,13 +154,11 @@ function atjaunotGrozu() {
   
   sarakstsElement.innerHTML = "";
   let kopa = 0;
-  let kopejaisPrecuSkaits = 0; // Priekš peldošā groza riņķīša
+  let kopejaisPrecuSkaits = 0;
   
   grozs.forEach((prece) => {
     const rindasCena = prece.cena * prece.daudzums;
     const li = document.createElement("li");
-    
-    // Lai pogas iekšienē apostrofi nesalauztu kodu, izmantojam drošo aizvietošanu
     const drošsNosaukums = prece.nosaukums.replace(/'/g, "\\'");
     
     li.innerHTML = `
@@ -161,22 +176,21 @@ function atjaunotGrozu() {
   
   kopaElement.innerText = kopa.toFixed(2);
 
-  // --- PELDOŠĀ GROZA ATJAUNOŠANA ---
+  // Peldošais grozs
   const peldosaisGrozs = document.getElementById("peldosais-grozs");
   const peldosaisSkaits = document.getElementById("peldosais-skaits");
   
   if (peldosaisGrozs && peldosaisSkaits) {
     peldosaisSkaits.innerText = kopejaisPrecuSkaits;
     if (kopejaisPrecuSkaits > 0) {
-      peldosaisGrozs.classList.add("aktivs"); // Parāda peldošo pogu ar CSS animāciju
+      peldosaisGrozs.classList.add("aktivs");
     } else {
-      peldosaisGrozs.classList.remove("aktivs"); // Paslēpj, ja tukšs
+      peldosaisGrozs.classList.remove("aktivs");
     }
   }
 
-  // --- 1.1. BEZMAKSAS PIEGĀDES LOĢIKA ---
+  // Bezmaksas piegādes aprēķins
   const limitsBezmaksasPiegadei = 30.00;
-
   if (piegadesPazinojums) {
     if (kopa === 0) {
       piegadesPazinojums.style.display = "none";
@@ -195,9 +209,19 @@ function atjaunotGrozu() {
       piegadesPazinojums.innerText = "🎉 Apsveicam! Tu esi ieguvis BEZMAKSAS piegādi!";
     }
   }
+
+  // PASŪTĪJUMA NUMURA PARĀDĪŠANA MĀJASLAPĀ
+  const lapasNrElements = document.getElementById("lapas-pasutijuma-nr");
+  if (lapasNrElements) {
+    if (grozs.length > 0) {
+      lapasNrElements.style.display = "block";
+      lapasNrElements.innerText = `📋 Tava pasūtījuma ID: #${fiksētaisPasutījumaNumurs}`;
+    } else {
+      lapasNrElements.style.display = "none";
+    }
+  }
 }
 
-// Jaunā funkcija: nospiežot uz peldošā groza, gludi aizriplina lapu līdz pasūtījuma formai
 function ritinatUzGrozu() {
   const mērķis = document.getElementById("groza-sekcija-mērķis");
   if (mērķis) {
@@ -220,11 +244,8 @@ function sutitUzWhatsApp() {
     alert("Lūdzu, aizpildi visus piegādes datus un izvēlies Omniva pakomātu no saraksta pirms pasūtīšanas!");
     return;
   }
-
-  // ĢENERĒJAM RANDOM PASŪTĪJUMA NUMURU (no 1000 līdz 9999)
-  const pasutijumaNumurs = Math.floor(1000 + Math.random() * 9000);
   
-  let teksts = `*Jauns pasūtījums #${pasutijumaNumurs}*\n\n`;
+  let teksts = `*Jauns pasūtījums #${fiksētaisPasutījumaNumurs}*\n\n`;
   teksts += "*Pircēja dati:*\n";
   teksts += `- Vārds: ${vards}\n`;
   teksts += `- Telefons: ${telefons}\n`;
@@ -248,9 +269,8 @@ function sutitUzWhatsApp() {
   
   teksts += `*Kopā apmaksai: ${kopa.toFixed(2)} €*\n\n`;
   
-  // SKAIDRA INSTRUKCIJA KLIENTAM PAR PIEZĪMĒM
   teksts += `⚠️ *SVARĪGI VEICOT MAKSĀJUMU:*\n`;
-  teksts += `Revolut piezīmēs (Note) OBLIGĀTI ieraksti šo numuru: *#${pasutijumaNumurs}*\n\n`;
+  teksts += `Revolut piezīmēs (Note) OBLIGĀTI ieraksti šo numuru: *#${fiksētaisPasutījumaNumurs}*\n\n`;
   teksts += `💳 *Saite apmaksai:* \nhttps://revolut.me/igorsyeqd`;
   
   let kodetsTeksts = encodeURIComponent(teksts);
