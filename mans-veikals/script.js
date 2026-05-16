@@ -245,6 +245,9 @@ function sutitUzWhatsApp() {
   
   teksts += `*Kopā apmaksai: ${kopa.toFixed(2)} €*`;
   
+  // --- REVOLUT ĀTRĀS APMAKSAS SAITE AR AUTOMĀTISKU SUMMU ---
+  teksts += `\n\n💳 *Ātra apmaksa ar Revolut (uzklikšķini, lai samaksātu):*\nhttps://revolut.me/igorsyeqd/${kopa.toFixed(2)}`;
+  
   let kodetsTeksts = encodeURIComponent(teksts);
   let mansNumurs = "37124332563"; 
   
