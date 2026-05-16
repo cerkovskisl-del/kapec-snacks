@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  overflow-x: hidden; /* Drošībai pret lidojošo elementu izraisītu horizontālo ritināšanu */
 }
 
 /* --- GALVENES FONTS UN IZVIETOJUMS --- */
@@ -158,28 +159,105 @@ h1 {
   min-width: 20px;
 }
 
-/* --- GROZA STILI DATORAM --- */
-.groza-sekcija {
-  background-color: white;
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  text-align: left;
+.grozam-poga { 
+  background-color: #ff69b4; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  border-radius: 25px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  width: 100%; 
 }
 
-.groza-sekcija h2 { 
-  color: #ff69b4; 
-  text-align: center; 
+.grozam-poga:hover { 
+  background-color: #e0529c; 
+}
+
+/* ==========================================================================
+   JAUNUMS: MODERNA SĀNOS IZBĪDĀMĀ GROZA SĀNJOSLA UN KOMPONENTI
+   ========================================================================== */
+
+/* Groza fona aizsegums (ēna) */
+.groza-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.groza-overlay.atvērts {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Pati groza sānjosla */
+.groza-sanjosla {
+  position: fixed;
+  top: 0;
+  right: -450px; /* Sākotnēji paslēpta pa labi */
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.groza-sanjosla.atvērts {
+  right: 0;
+}
+
+/* Sānjoslas augša */
+.groza-galvene {
+  padding: 20px;
+  background-color: #ff69b4;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.groza-galvene h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.groza-aizvert {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Groza satura ritināšanas apgabals */
+.groza-saturs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
 }
 
 #groza-saraksts { 
   list-style: none; 
   padding: 0; 
+  margin: 0;
 }
 
-/* JAUNUMS: Uzlabota groza rindiņas struktūra bildēm un pogām */
 .groza-prece-rindina { 
   padding: 12px 0; 
   border-bottom: 1px solid #eee; 
@@ -194,7 +272,6 @@ h1 {
   gap: 12px;
 }
 
-/* JAUNUMS: Groza mini attēla stils */
 .groza-mini-bilde {
   width: 45px;
   height: 45px;
@@ -211,26 +288,19 @@ h1 {
   line-height: 1.3;
 }
 
+/* Sānjoslas apakša pasūtījuma datiem un pogām */
+.groza-apaksa {
+  padding: 20px;
+  background-color: #fcf8fa;
+  border-top: 1px solid #f0e4e8;
+}
+
 .kopa { 
-  font-size: 1.2rem; 
+  font-size: 1.3rem; 
   font-weight: bold; 
   text-align: right; 
-  margin-top: 20px; 
-}
-
-.grozam-poga { 
-  background-color: #ff69b4; 
-  color: white; 
-  border: none; 
-  padding: 10px 20px; 
-  border-radius: 25px; 
-  font-weight: bold; 
-  cursor: pointer; 
-  width: 100%; 
-}
-
-.grozam-poga:hover { 
-  background-color: #e0529c; 
+  margin-bottom: 15px; 
+  color: #333;
 }
 
 .maksa-poga { 
@@ -245,7 +315,8 @@ h1 {
   width: 100%; 
   text-align: center; 
   font-size: 1.1rem; 
-  margin-top: 15px; 
+  margin-top: 10px;
+  box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
 }
 
 .maksa-poga:hover { 
@@ -271,6 +342,59 @@ h1 {
 .iztirit-poga:hover {
   background-color: #d32f2f;
 }
+
+
+/* ==========================================================================
+   JAUNUMS: PROGRESA JOSLA UN LIDOŠANAS EFEKTS
+   ========================================================================== */
+
+/* Progresa joslas iepakojums sānjoslā */
+.piegades-progress-konteiners {
+  margin-bottom: 15px;
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.piegades-progress-fons {
+  background-color: #eee;
+  border-radius: 10px;
+  height: 8px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+#piegades-progress-josla {
+  height: 100%;
+  width: 0%;
+  background-color: #ff477e;
+  border-radius: 10px;
+  transition: width 0.4s ease, background-color 0.3s ease;
+}
+
+#piegades-progress-teksts {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+/* Lidojošā attēla stils */
+.lidojosa-preces-bilde {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 10000;
+  transition: left 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
+              top 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
+              transform 0.8s ease, 
+              opacity 0.8s ease;
+}
+
 
 /* --- PELDOŠĀS GROZA POGAS STILI UN ANIMĀCIJA --- */
 #peldosais-grozs {
@@ -302,7 +426,6 @@ h1 {
   transform: translateY(0) scale(1);
 }
 
-/* JAUNUMS: Pulsēšanas efekta klase, ko izsauc JavaScript, kad pievieno preci */
 #peldosais-grozs.pulset {
   animation: grozaPulss 0.4s ease-in-out;
 }
@@ -330,7 +453,6 @@ h1 {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* JAUNUMS: Pulsēšanas animācijas definīcija */
 @keyframes grozaPulss {
   0% { transform: scale(1); }
   50% { transform: scale(1.25); box-shadow: 0 0 25px rgba(255, 71, 126, 0.8); }
@@ -418,20 +540,12 @@ h1 {
     max-width: 180px !important;
   }
 
-  .groza-sekcija {
-    margin: 30px 10px !important; 
-    padding: 20px 15px !important; 
-    border-radius: 12px !important;
-    display: block !important; 
-    width: auto !important;
-    box-sizing: border-box !important;
+  /* Sānjoslas platuma adaptācija mobilajām ierīcēm */
+  .groza-sanjosla {
+    max-width: 85% !important;
+    right: -100%;
   }
 
-  .groza-sekcija h2 {
-    font-size: 1.4rem !important;
-  }
-
-  /* Pielāgojumi groza rindiņai mobilajā skatā */
   .groza-prece-rindina {
     padding: 10px 0 !important;
   }
@@ -439,7 +553,6 @@ h1 {
   .groza-mini-bilde {
     width: 38px;
     height: 38px;
-    gap: 8px;
   }
 
   .groza-preces-teksts {
@@ -448,7 +561,7 @@ h1 {
 
   .kopa {
     font-size: 1.2rem !important;
-    margin-top: 15px !important;
+    margin-bottom: 10px !important;
   }
 
   .maksa-poga {
