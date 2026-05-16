@@ -118,10 +118,10 @@ h1 {
   font-size: 1.3rem;
   font-weight: bold;
   color: #333;
-  margin: 15px 0 5px 0; /* Samazināta apakšējā mala, lai dotu vietu regulatoram */
+  margin: 15px 0 5px 0;
 }
 
-/* --- JAUNUMS: DAUDZUMA REGULATORA STILI KARTĪTĒS --- */
+/* --- DAUDZUMA REGULATORA STILI KARTĪTĒS --- */
 .daudzuma-kontrole {
   display: flex;
   align-items: center;
@@ -179,12 +179,36 @@ h1 {
   padding: 0; 
 }
 
-#groza-saraksts li { 
-  padding: 10px 0; 
+/* JAUNUMS: Uzlabota groza rindiņas struktūra bildēm un pogām */
+.groza-prece-rindina { 
+  padding: 12px 0; 
   border-bottom: 1px solid #eee; 
-  display: flex; 
+  display: flex !important; 
   justify-content: space-between; 
   align-items: center; 
+}
+
+.groza-preces-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* JAUNUMS: Groza mini attēla stils */
+.groza-mini-bilde {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 3px;
+  border: 1px solid #f0f0f0;
+}
+
+.groza-preces-teksts {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.3;
 }
 
 .kopa { 
@@ -228,7 +252,6 @@ h1 {
   background-color: #128C7E; 
 }
 
-/* --- JAUNUMS: POGA "IZTĪRĪT GROZU" --- */
 .iztirit-poga {
   display: block;
   background-color: #f44336;
@@ -249,7 +272,7 @@ h1 {
   background-color: #d32f2f;
 }
 
-/* --- JAUNUMS: PELDOŠĀS GROZA POGAS STILI --- */
+/* --- PELDOŠĀS GROZA POGAS STILI UN ANIMĀCIJA --- */
 #peldosais-grozs {
   position: fixed;
   bottom: 25px;
@@ -269,14 +292,19 @@ h1 {
   justify-content: center;
   transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.2s;
   opacity: 0;
-  pointer-events: none; /* Kamēr grozs tukšs, poga nereaģē uz klikšķiem */
+  pointer-events: none; 
   transform: translateY(20px) scale(0.8);
 }
 
 #peldosais-grozs.aktivs {
   opacity: 1;
-  pointer-events: auto; /* Aktivizējas klikšķi */
+  pointer-events: auto; 
   transform: translateY(0) scale(1);
+}
+
+/* JAUNUMS: Pulsēšanas efekta klase, ko izsauc JavaScript, kad pievieno preci */
+#peldosais-grozs.pulset {
+  animation: grozaPulss 0.4s ease-in-out;
 }
 
 #peldosais-grozs:hover {
@@ -302,12 +330,18 @@ h1 {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+/* JAUNUMS: Pulsēšanas animācijas definīcija */
+@keyframes grozaPulss {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); box-shadow: 0 0 25px rgba(255, 71, 126, 0.8); }
+  100% { transform: scale(1); }
+}
+
 
 /* ==========================================================================
    MOBILĀ VERSIJA (Ekrāniem līdz 600px platumam)
    ========================================================================== */
 @media (max-width: 600px) {
-  /* Galvenais konteiners un sadaļu bloki stiepjas pilnā platumā */
   .konteiners, .sadaļa-bloks {
     display: block !important;
     width: 100% !important;
@@ -315,17 +349,15 @@ h1 {
     box-sizing: border-box !important;
   }
 
-  /* TIKAI preču karšu iekšējais konteiners kļūst par glītu 2-kolonnu režģi */
   .sadaļa-bloks > div {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Divas preces blakus */
+    grid-template-columns: repeat(2, 1fr) !important; 
     gap: 12px !important; 
     padding: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
 
-  /* Preču kartītes pielāgošana režģim */
   .saldums-karte {
     width: 100% !important;
     max-width: 100% !important;
@@ -360,7 +392,6 @@ h1 {
     margin: 5px 0 8px 0 !important;
   }
 
-  /* Mazāks regulators mobilajā skatā */
   .daudzuma-kontrole {
     gap: 10px !important;
     margin-bottom: 8px !important;
@@ -387,7 +418,6 @@ h1 {
     max-width: 180px !important;
   }
 
-  /* Mobilā groza sadaļa - neitrāls izvietojums, kas neizmanto grid */
   .groza-sekcija {
     margin: 30px 10px !important; 
     padding: 20px 15px !important; 
@@ -401,10 +431,19 @@ h1 {
     font-size: 1.4rem !important;
   }
 
-  #groza-saraksts li {
-    font-size: 0.95rem !important; 
-    padding: 8px 0 !important;
-    display: flex !important;
+  /* Pielāgojumi groza rindiņai mobilajā skatā */
+  .groza-prece-rindina {
+    padding: 10px 0 !important;
+  }
+
+  .groza-mini-bilde {
+    width: 38px;
+    height: 38px;
+    gap: 8px;
+  }
+
+  .groza-preces-teksts {
+    font-size: 0.82rem !important;
   }
 
   .kopa {
@@ -419,7 +458,6 @@ h1 {
     box-sizing: border-box !important;
   }
 
-  /* Iztīrīšanas pogas pielāgošana mobilajā skatā */
   .iztirit-poga {
     padding: 10px 20px !important;
     font-size: 1rem !important;
@@ -427,7 +465,6 @@ h1 {
     box-sizing: border-box !important;
   }
 
-  /* Nedaudz pavelkam peldošo pogu uz augšu telefonā, lai tā neaizsedz pārlūka apakšējo joslu */
   #peldosais-grozs {
     bottom: 20px !important;
     right: 20px !important;
