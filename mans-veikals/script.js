@@ -1,3 +1,37 @@
+// --- 1. AUTOMĀTISKA VISU LATVIJAS OMNIVA PAKOMĀTU IELĀDE ---
+document.addEventListener("DOMContentLoaded", function() {
+  const pakomatuSelekts = document.getElementById('klients-pakomats');
+  
+  if (pakomatuSelekts) {
+    // Oficiālais Omniva pakomātu datu avots
+    fetch('https://www.omniva.lv/locations.json')
+      .then(response => response.json())
+      .then(data => {
+        // Atlasām tikai Latvijas pakomātus (A0_NAME: "LV")
+        const lvPakomati = data.filter(item => item.A0_NAME === 'LV');
+        
+        // Sakārtojam pakomātus pēc nosaukuma alfabēta secībā
+        lvPakomati.sort((a, b) => a.NAME.localeCompare(b.NAME));
+        
+        // Attīrām "Lādē pakomātus..." ziņojumu un ieliekam pirmo izvēli
+        pakomatuSelekts.innerHTML = '<option value="" disabled selected>-- Izvēlies savu pakomātu --</option>';
+        
+        // Pa vienam pievienojam visus 360+ pakomātus sarakstā
+        lvPakomati.forEach(pakomats => {
+          const opcija = document.createElement('option');
+          opcija.value = pakomats.NAME;
+          opcija.textContent = pakomats.NAME;
+          pakomatuSelekts.appendChild(opcija);
+        });
+      })
+      .catch(error => {
+        console.error('Kļūda ielādējot pakomātus:', error);
+        pakomatuSelekts.innerHTML = '<option value="" disabled selected>Kļūda! Ierakstiet pakomātu WhatsApp</option>';
+      });
+  }
+});
+
+// --- 2. GROZA LOĢIKA UN FUNKCIJAS ---
 let grozs = [];
 
 function pievienotGrozam(nosaukums, cena) {
@@ -61,24 +95,25 @@ function atjaunotGrozu() {
   kopaElement.innerText = kopa.toFixed(2);
 }
 
+// --- 3. PASŪTĪŠANA UZ WHATSAPP ---
 function sutitUzWhatsApp() {
   if (grozs.length === 0) {
     alert("Tavs grozs ir tukšs! Vispirms pievieno kādu saldumu.");
     return;
   }
   
-  // 1. NOLASĀM JAUNOS PIRCĒJA DATUS NO IEPIEKŠ PIEVIENOTAJIEM LAUKIEM
+  // Nolasām pircēja datus
   const vards = document.getElementById('klients-vards').value.trim();
   const telefons = document.getElementById('klients-telefons').value.trim();
-  const pakomats = document.getElementById('klients-pakomats').value.trim();
+  const pakomats = document.getElementById('klients-pakomats').value; // Nolasām izvēlēto opciju
 
-  // Pārbaudām, vai klients nav aizmirsis aizpildīt datus
+  // Pārbaudām, vai klients nav aizmirsis izvēlēties pakomātu vai ierakstīt datus
   if (!vards || !telefons || !pakomats) {
-    alert("Lūdzu, aizpildi visus piegādes datus (Vārdu, Telefonu un Pakomātu) pirms pasūtīšanas!");
+    alert("Lūdzu, aizpildi visus piegādes datus un izvēlies Omniva pakomātu no saraksta pirms pasūtīšanas!");
     return;
   }
   
-  // 2. IZVEIDOJAM SKAISTU ZIŅAS TEKSTU AR KLIENTA DATIEM
+  // Izveidojam ziņas tekstu
   let teksts = "Sveiki! Es vēlos veikt pasūtījumu.\n\n";
   teksts += "*👤 Pircēja dati:*\n";
   teksts += `• Vārds: ${vards}\n`;
@@ -96,7 +131,7 @@ function sutitUzWhatsApp() {
   
   teksts += `\n*Kopā apmaksai: ${kopa.toFixed(2)} €*`;
   
-  // 3. NOSŪTĀM UZ TAVU NUMURU
+  // Nosūtām uz tavu numuru
   let kodetsTeksts = encodeURIComponent(teksts);
   let mansNumurs = "37124332563"; 
   
