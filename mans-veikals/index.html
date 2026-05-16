@@ -25,6 +25,25 @@
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(255, 71, 126, 0.5);
     }
+    
+    /* Pogas stils groza iztīrīšanai */
+    .iztirit-grozu-poga {
+      background-color: #ff477e; 
+      color: white; 
+      border: none; 
+      padding: 8px 15px; 
+      border-radius: 8px; 
+      font-weight: bold; 
+      cursor: pointer; 
+      margin-top: 10px;
+      margin-bottom: 15px; 
+      width: 100%;
+      max-width: 400px;
+      transition: background 0.2s;
+    }
+    .iztirit-grozu-poga:hover {
+      background-color: #ff2a63;
+    }
   </style>
 </head>
 <body>
@@ -298,6 +317,11 @@
 
   <div class="groza-sekcija" id="groza-sekcija-mērķis">
     <h2>Tavs iepirkumu grozs</h2>
+    
+    <center>
+      <button class="iztirit-grozu-poga" onclick="iztiritVisuGrozu()">🗑️ Iztīrīt visu grozu</button>
+    </center>
+
     <ul id="groza-saraksts">
       <li class="tukss">Grozs ir tukšs</li>
     </ul>
@@ -320,6 +344,8 @@
         <option value="" disabled selected>Lādē pakomātu sarakstu...</option>
       </select>
     </div>
+
+    <p id="lapas-pasutijuma-nr" style="text-align: center; font-weight: bold; color: #ff477e; margin-bottom: 12px; font-size: 1.1rem; display: none;"></p>
 
     <div style="background-color: #f0f4ff; border: 1px solid #d0e0ff; padding: 12px; border-radius: 10px; margin-bottom: 15px; text-align: center; max-width: 400px; margin-left: auto; margin-right: auto; box-sizing: border-box;">
       <p style="margin: 0; font-size: 0.9rem; color: #4e6488; font-weight: bold;">
