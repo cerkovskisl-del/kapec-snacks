@@ -5,6 +5,7 @@ body {
   padding: 0;
   text-align: center;
   overflow-x: hidden; /* Drošībai pret lidojošo elementu izraisītu horizontālo ritināšanu */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* --- GALVENES FONTS UN IZVIETOJUMS --- */
@@ -15,6 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 /* --- LOGO SAITES UN BILDES STILI --- */
@@ -58,13 +60,59 @@ h1 {
   font-weight: bold;
   border-radius: 20px;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: transform 0.2s, background-color 0.2s, border 0.2s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .izvelne button:hover {
   background-color: #ff2a63;
   transform: scale(1.05);
+}
+
+/* Vizuāls indikators aktīvajai kategorijai */
+.izvelne button.aktiva {
+  background-color: #fff;
+  color: #ff477e;
+  border: 2px solid #ff477e;
+}
+
+/* VEIKALA MEKLĒTĀJA INPUT LAUKS */
+#veikala-mekletajs {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 20px;
+  margin: 10px auto 20px auto;
+  display: block;
+  border: 2px solid #ffccd5;
+  border-radius: 25px;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#veikala-mekletajs:focus {
+  border-color: #ff477e;
+  box-shadow: 0 4px 12px rgba(255, 71, 126, 0.15);
+}
+
+/* TUMŠĀ REŽĪMA POGA AUGŠĒJĀ STŪRĪ */
+#dark-mode-poga {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  font-size: 1.4rem;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+#dark-mode-poga:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
 }
 
 /* --- PRODUKTU REŽĢA STILI DATORAM --- */
@@ -74,6 +122,12 @@ h1 {
   flex-wrap: wrap;
   gap: 20px;
   padding: 40px 20px;
+}
+
+/* JS drošs labojums: pamatā uzstādām flex, nevis block, lai mobilajā un datora skatā nesalūztu režģis */
+.sadaļa-bloks {
+  display: block;
+  width: 100%;
 }
 
 .sadaļa-bloks > div {
@@ -91,6 +145,14 @@ h1 {
   width: 280px;
   text-align: center;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.saldums-karte:hover {
+  transform: translateY(-5px);
 }
 
 .saldums-karte h3 {
@@ -212,7 +274,7 @@ h1 {
   display: flex;
   flex-direction: column;
   text-align: left;
-  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
   box-sizing: border-box;
 }
 
@@ -294,6 +356,7 @@ h1 {
   background-color: #fcf8fa;
   border-top: 1px solid #f0e4e8;
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
 }
 
 .kopa { 
@@ -315,7 +378,6 @@ h1 {
   border-radius: 8px;
   margin-bottom: 15px;
   text-align: center;
-  /* Nodrošina, ka garais unikālais kods smuki pārlūst un neiziet no rāmja */
   word-wrap: break-word;
   word-break: break-all;
   overflow-wrap: break-word;
@@ -353,7 +415,7 @@ h1 {
   background-color: #fff;
   color: #333;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s;
 }
 
 .ievades-grupa input:focus, .ievades-grupa select:focus {
@@ -371,6 +433,7 @@ h1 {
   text-align: center;
   box-sizing: border-box;
   word-wrap: break-word;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .revolut-bloks a {
@@ -430,7 +493,6 @@ h1 {
    PROGRESA JOSLA UN LIDOŠANAS EFEKTS
    ========================================================================== */
 
-/* Progresa joslas iepakojums sānjoslā */
 .piegades-progress-konteiners {
   margin-bottom: 15px;
   background-color: #fff;
@@ -438,6 +500,7 @@ h1 {
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
 }
 
 .piegades-progress-fons {
@@ -478,7 +541,7 @@ h1 {
               opacity 0.8s ease;
 }
 
-/* --- PELDOŠĀS GROZA POGAS STILI UN ANIMĀCIJA --- */
+/* --- PELDOŠĀS GROZA POGAS STILI --- */
 #peldosais-grozs {
   position: fixed;
   bottom: 25px;
@@ -542,6 +605,117 @@ h1 {
 }
 
 /* ==========================================================================
+   JAUNUMS: TUMŠĀ REŽĪMA (DARK MODE) STILI
+   ========================================================================== */
+body.dark-mode {
+  background-color: #121212;
+  color: #f5f5f5;
+}
+
+body.dark-mode #veikala-mekletajs {
+  background-color: #1e1e1e;
+  border-color: #333;
+  color: #fff;
+}
+
+body.dark-mode #veikala-mekletajs:focus {
+  border-color: #ff477e;
+}
+
+body.dark-mode .saldums-karte {
+  background-color: #1e1e1e;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .saldums-karte h3 {
+  color: #ff477e;
+}
+
+body.dark-mode .apraksts {
+  color: #bbb;
+}
+
+body.dark-mode .cena {
+  color: #fff;
+}
+
+body.dark-mode .daudzuma-kontrole span {
+  color: #fff;
+}
+
+body.dark-mode .daudzuma-kontrole button {
+  background-color: #332226;
+  color: #ff477e;
+}
+
+body.dark-mode .daudzuma-kontrole button:hover {
+  background-color: #442a30;
+}
+
+body.dark-mode .groza-sanjosla {
+  background-color: #1a1a1a;
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .groza-preces-teksts {
+  color: #ddd;
+}
+
+body.dark-mode .groza-prece-rindina {
+  border-bottom-color: #333;
+}
+
+body.dark-mode .groza-mini-bilde {
+  background-color: #252525;
+  border-color: #333;
+}
+
+body.dark-mode .groza-apaksa {
+  background-color: #151515;
+  border-top-color: #252525;
+}
+
+body.dark-mode .kopa {
+  color: #fff;
+}
+
+body.dark-mode .ievades-grupa input, body.dark-mode .ievades-grupa select {
+  background-color: #252525;
+  border-color: #444;
+  color: #fff;
+}
+
+body.dark-mode .ievades-grupa input:focus, body.dark-mode .ievades-grupa select:focus {
+  border-color: #ff477e;
+}
+
+body.dark-mode #lapas-pasutijuma-nr {
+  background-color: #221518;
+  border-color: #ff477e;
+}
+
+body.dark-mode .revolut-bloks {
+  background-color: #162238;
+  border-color: #243b61;
+}
+
+body.dark-mode .revolut-bloks p, body.dark-mode .revolut-bloks small {
+  color: #bbb;
+}
+
+body.dark-mode .revolut-bloks a {
+  color: #4da3ff;
+}
+
+body.dark-mode .piegades-progress-konteiners {
+  background-color: #222;
+}
+
+body.dark-mode .piegades-progress-fons {
+  background-color: #333;
+}
+
+/* ==========================================================================
    MOBILĀ VERSIJA (Ekrāniem līdz 600px platumam)
    ========================================================================== */
 @media (max-width: 600px) {
@@ -552,6 +726,7 @@ h1 {
     box-sizing: border-box !important;
   }
 
+  /* Mainīts no block uz grid, lai saglabātu smuko JS filtrēšanas display */
   .sadaļa-bloks > div {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important; 
