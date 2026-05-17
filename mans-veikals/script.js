@@ -1,6 +1,6 @@
 // --- GLOBĀLIE MAINĪGIE ---
 let grozs = [];
-const BEZMAKSAS_PIEGADE_LIMITS = 30.00;
+const BEZMAKSAS_PIEGADE_LIMITS = 50.00;
 
 const pakomatuSaraksts = [
   "Smiltenes Top pakomāts (Dārza 1)",
@@ -15,7 +15,7 @@ const pakomatuSaraksts = [
 document.addEventListener("DOMContentLoaded", () => {
   filtrētKategoriju('visi', document.getElementById('poga-visi'));
   ieladetPakomatus(pakomatuSaraksts);
-  atjaunotGrozuVizuāli);
+  atjaunotGrozuVizuāli(); // Šeit bija drukas kļūda, tagad viss kārtībā!
 
   const pakomatuMekletajs = document.getElementById("pakomatu-mekletajs");
   if (pakomatuMekletajs) {
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Papildus drošība telefoniem — meklētājs reaģē uz katru taustiņa nospiešanu
+  // Papildus drošība telefoniem — meklētājs reaģē uz jebkuru klaviatūru
   const veikalaMekletajs = document.getElementById('veikala-mekletajs');
   if (veikalaMekletajs) {
     veikalaMekletajs.addEventListener('keyup', mekletPreci);
