@@ -15,7 +15,7 @@ const pakomatuSaraksts = [
 document.addEventListener("DOMContentLoaded", () => {
   filtrētKategoriju('visi', document.getElementById('poga-visi'));
   ieladetPakomatus(pakomatuSaraksts);
-  atjaunotGrozuVizuāli(); // Šeit bija drukas kļūda, tagad viss kārtībā!
+  atjaunotGrozuVizuāli();
 
   const pakomatuMekletajs = document.getElementById("pakomatu-mekletajs");
   if (pakomatuMekletajs) {
@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Papildus drošība telefoniem — meklētājs reaģē uz jebkuru klaviatūru
   const veikalaMekletajs = document.getElementById('veikala-mekletajs');
   if (veikalaMekletajs) {
     veikalaMekletajs.addEventListener('keyup', mekletPreci);
@@ -240,6 +239,21 @@ function ieladetPakomatus(saraksts) {
 function iztiritVisuGrozu() {
   grozs = [];
   atjaunotGrozuVizuāli();
+  const nrBloks = document.getElementById('lapas-pasutijuma-nr');
+  if (nrBloks) {
+    nrBloks.style.display = 'none';
+    nrBloks.innerText = '';
+  }
+}
+
+// --- UNIKĀLA MAKSĀJUMA KODA ĢENERATORS ---
+function generetUnikaluKodu() {
+  const simboli = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Izslēgti neskaidrie simboli kā 0, O, 1, I
+  let rezultats = "SWEET-";
+  for (let i = 0; i < 5; i++) {
+    rezultats += simboli.charAt(Math.floor(Math.random() * simboli.length));
+  }
+  return rezultats;
 }
 
 // --- WHATSAPP PASŪTĪJUMA SŪTĪŠANA ---
@@ -253,7 +267,23 @@ function sutitUzWhatsApp() {
     return;
   }
 
+  if (grozs.length === 0) {
+    alert("Tavs grozs ir tukšs!");
+    return;
+  }
+
+  // Ģenerējam unikālo kodu maksājuma identificēšanai
+  const unikalsKods = generetUnikaluKodu();
+
+  // Parādām kodu lapā virs Revolut pogas, lai klients to redz
+  const nrBloks = document.getElementById('lapas-pasutijuma-nr');
+  if (nrBloks) {
+    nrBloks.innerHTML = `Tavs maksājuma kods: <span style="color:#25D366; background:#f0f0f0; padding:2px 6px; border-radius:4px; font-family:monospace;">${unikalsKods}</span><br><small style="color:#666; font-weight:normal;">Ieraksti šo kodu Revolut piezīmēs!</small>`;
+    nrBloks.style.display = 'block';
+  }
+
   let zinasTeksts = `Sveiki! Vēlos veikt pasūtījumu:\n\n`;
+  zinasTeksts += `🔑 Maksājuma kods piezīmēm: ${unikalsKods}\n`;
   zinasTeksts += `👤 Klients: ${vards}\n`;
   zinasTeksts += `📞 Telefons: ${telefons}\n`;
   zinasTeksts += `📦 Omniva pakomāts: ${pakomats}\n\n`;
@@ -272,8 +302,11 @@ function sutitUzWhatsApp() {
   } else {
     zinasTeksts += ` + piegādes izdevumi`;
   }
+  
+  zinasTeksts += `\n\nℹ️ Piezīme: Pēc tam veiciet apmaksu Revolut saitē, norādot kodu: ${unikalsKods}`;
 
-  const manaWhatappMērķis = "37120000000"; 
+  // Jaunais saņēmēja numurs: 24332563
+  const manaWhatappMērķis = "37124332563"; 
   const url = `https://wa.me/${manaWhatappMērķis}?text=${encodeURIComponent(zinasTeksts)}`;
   window.open(url, '_blank');
 }
