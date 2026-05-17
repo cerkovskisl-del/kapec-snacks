@@ -2,21 +2,35 @@
 let grozs = [];
 const BEZMAKSAS_PIEGADE_LIMITS = 50.00;
 
-const pakomatuSaraksts = [
-  "Smiltenes Top pakomāts (Dārza 1)",
-  "Smiltenes Centra pakomāts (Baznīcas laukums 2)",
-  "Rīgas Origo pakomāts",
-  "Rīgas Alfa pakomāts",
-  "Valmieras Rimi pakomāts",
-  "Cēsu Solo pakomāts"
-];
+// Sākumā masīvs ir tukšs, jo mēs datus ielādēsim no interneta
+let pakomatuSaraksts = []; 
 
 // --- INICIALIZĀCIJA ---
 document.addEventListener("DOMContentLoaded", () => {
   filtrētKategoriju('visi', document.getElementById('poga-visi'));
-  ieladetPakomatus(pakomatuSaraksts);
   atjaunotGrozuVizuāli();
 
+  // 1. Ielādējam Omnivas pakomātus no oficiālā saraksta
+  fetch('https://www.omniva.lv/locations.json')
+    .then(atbilde => atbilde.json())
+    .then(dati => {
+      // Atlasām tikai Latvijas (LT vai EE vietā) un tikai pakomātus (TYPE "0")
+      pakomatuSaraksts = dati
+        .filter(vieta => vieta.A0_NAME === 'LV' && vieta.TYPE === '0')
+        .map(vieta => `${vieta.NAME} (${vieta.A2_NAME}, ${vieta.A5_NAME})`)
+        .sort(); // Sakārtojam alfabēta secībā
+
+      // Kad dati gatavi, ielādējam tos izvēlnē
+      ieladetPakomatus(pakomatuSaraksts);
+    })
+    .catch(kluda => {
+      console.error("Neizdevās ielādēt Omnivas sarakstu:", kluda);
+      // Rezerves variants, ja Omnivas lapa nedarbojas
+      pakomatuSaraksts = ["Smiltenes Top pakomāts (Dārza 1)", "Rīgas Origo pakomāts"];
+      ieladetPakomatus(pakomatuSaraksts);
+    });
+
+  // 2. Meklētāja loģika (paliek tā pati)
   const pakomatuMekletajs = document.getElementById("pakomatu-mekletajs");
   if (pakomatuMekletajs) {
     pakomatuMekletajs.addEventListener("input", (e) => {
@@ -32,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
     veikalaMekletajs.addEventListener('input', mekletPreci);
   }
 });
-
 // --- KATEGORIJU FILTRS UN MEKLĒTĀJS ---
 function filtrētKategoriju(kategorija, poga) {
   const sadaļas = document.querySelectorAll('.sadaļa-bloks');
