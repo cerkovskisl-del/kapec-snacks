@@ -1,6 +1,24 @@
 // --- SĀKOTNĒJIE MAINĪGIE ---
 let grozs = JSON.parse(localStorage.getItem('iepirkumu_grozs')) || [];
-const fiksētaisPasutījumaNumurs = Math.floor(1000 + Math.random() * 9000);
+
+// Funkcija, kas uzģenerē garu, drošu un unikālu pasūtījuma ID (Piemēram: SWEET-20260517-X7R9W2)
+function generetUnikaluPasutijumaID() {
+  const datums = new Date();
+  
+  // Formatē datumu kā GGGGMNDD (piemēram, 20260517)
+  const gads = datums.getFullYear();
+  const menesis = String(datums.getMonth() + 1).padStart(2, '0');
+  const diena = String(datums.getDate()).padStart(2, '0');
+  const datumaDala = `${gads}${menesis}${diena}`;
+  
+  // Izveido nejaušu 6 zīmju burtu un skaitļu kombināciju drošībai pret dublēšanos
+  const nejausaDala = Math.random().toString(36).substring(2, 8).toUpperCase();
+  
+  return `SWEET-${datumaDala}-${nejausaDala}`;
+}
+
+// Saglabājam unikālo kodu sesijā, lai tas nepārlādētos pie katra groza klikšķa, bet paliktu unikāls šim pirkumam
+const fiksētaisPasutījumaNumurs = generetUnikaluPasutijumaID();
 
 // --- 1. AUTOMĀTISKA VISU LATVIJAS OMNIVA PAKOMĀTU IELĀDE UN MEKLĒŠANA ---
 document.addEventListener("DOMContentLoaded", function() {
@@ -89,7 +107,6 @@ function mainitKartesDaudzumu(nosaukums, izmaina) {
   }
 }
 
-// Papildināta galvenā funkcija, kas reaģē uz klikšķa pozīciju, lai palaistu lidojošo bildi
 function pievienotNoKartes(nosaukums, cena, bilde, event) {
   const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
   let daudzumsKoPievienot = 1;
@@ -112,18 +129,15 @@ function pievienotNoKartes(nosaukums, cena, bilde, event) {
     if (peldosaisGrozs) {
       const grozaIzmeri = peldosaisGrozs.getBoundingClientRect();
       
-      // Izveidojam pagaidu bildes elementu animācijai
       const lidojosaBilde = document.createElement('img');
       lidojosaBilde.src = bilde;
       lidojosaBilde.className = 'lidojosa-preces-bilde';
       
-      // Novietojam bildi tieši tur, kur lietotājs noklikšķināja pogu
       lidojosaBilde.style.left = `${event.clientX - 25}px`;
       lidojosaBilde.style.top = `${event.clientY - 25}px`;
       
       document.body.appendChild(lidojosaBilde);
       
-      // Izmantojam nelielu pauzi, lai pārlūks paspēj reģistrēt sākuma CSS stāvokli pirms kustības
       setTimeout(() => {
         lidojosaBilde.style.left = `${grozaIzmeri.left + 15}px`;
         lidojosaBilde.style.top = `${grozaIzmeri.top + 15}px`;
@@ -131,7 +145,6 @@ function pievienotNoKartes(nosaukums, cena, bilde, event) {
         lidojosaBilde.style.opacity = '0.3';
       }, 50);
       
-      // Kad animācija ir galā (pēc 0.8 sekundēm), izdzēšam elementu
       setTimeout(() => {
         lidojosaBilde.remove();
       }, 800);
@@ -193,7 +206,6 @@ function iztiritVisuGrozu() {
   }
 }
 
-// Atjaunināta vizuālā funkcija, kas uzzīmē sānjoslu un vada progresa joslu
 function atjaunotGrozu() {
   const sarakstsElement = document.getElementById("groza-saraksts");
   const kopaElement = document.getElementById("groza-kopa");
@@ -238,7 +250,6 @@ function atjaunotGrozu() {
   kopaElement.innerText = kopa.toFixed(2);
   localStorage.setItem('iepirkumu_grozs', JSON.stringify(grozs));
 
-  // Peldošās pogas statusa atjaunināšana
   const peldosaisGrozs = document.getElementById("peldosais-grozs");
   const peldosaisSkaits = document.getElementById("peldosais-skaits");
   
@@ -266,12 +277,12 @@ function atjaunotGrozu() {
       let procenti = (kopa / limitsBezmaksasPiegadei) * 100;
       
       progressJosla.style.width = `${procenti}%`;
-      progressJosla.style.backgroundColor = "#ff477e"; // Rozā, kamēr krājas progress
+      progressJosla.style.backgroundColor = "#ff477e";
       progressTeksts.innerHTML = `🛒 Pērc vēl par <strong>${cikTruks.toFixed(2)} €</strong>, lai saņemtu BEZMAKSAS piegādi!`;
       progressTeksts.style.color = "#ff477e";
     } else {
       progressJosla.style.width = "100%";
-      progressJosla.style.backgroundColor = "#2a9d8f"; // Zaļš, kad mērķis sasniegts
+      progressJosla.style.backgroundColor = "#2a9d8f";
       progressTeksts.innerHTML = "🎉 Apsveicam! Tu esi ieguvis <strong>BEZMAKSAS piegādi!</strong>";
       progressTeksts.style.color = "#2a9d8f";
     }
@@ -282,7 +293,7 @@ function atjaunotGrozu() {
   if (lapasNrElements) {
     if (grozs.length > 0) {
       lapasNrElements.style.display = "block";
-      lapasNrElements.innerText = `📋 Tava pasūtījuma ID: #${fiksētaisPasutījumaNumurs}`;
+      lapasNrElements.innerText = `📋 Pasūtījuma ID: ${fiksētaisPasutījumaNumurs}`;
     } else {
       lapasNrElements.style.display = "none";
     }
@@ -305,7 +316,8 @@ function sutitUzWhatsApp() {
     return;
   }
   
-  let teksts = `*Jauns pasūtījums #${fiksētaisPasutījumaNumurs}*\n\n`;
+  let teksts = `*Jauns pasūtījums no mājaslapas*\n`;
+  teksts += `ID: *${fiksētaisPasutījumaNumurs}*\n\n`;
   teksts += "*Pircēja dati:*\n";
   teksts += `- Vārds: ${vards}\n`;
   teksts += `- Telefons: ${telefons}\n`;
@@ -330,7 +342,7 @@ function sutitUzWhatsApp() {
   teksts += `*Kopā apmaksai: ${kopa.toFixed(2)} €*\n\n`;
   
   teksts += `⚠️ *SVARĪGI VEICOT MAKSĀJUMU:*\n`;
-  teksts += `Revolut piezīmēs (Note) OBLIGĀTI ieraksti šo numuru: *#${fiksētaisPasutījumaNumurs}*\n\n`;
+  teksts += `Revolut piezīmēs (Note) OBLIGĀTI ieraksti šo unikālo kodu:\n*${fiksētaisPasutījumaNumurs}*\n\n`;
   teksts += `💳 *Saite apmaksai:* \nhttps://revolut.me/igorsyeqd`;
   
   let kodetsTeksts = encodeURIComponent(teksts);
