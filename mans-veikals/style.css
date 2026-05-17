@@ -124,7 +124,6 @@ h1 {
   padding: 40px 20px;
 }
 
-/* JS drošs labojums: pamatā uzstādām flex, nevis block, lai mobilajā un datora skatā nesalūztu režģis */
 .sadaļa-bloks {
   display: block;
   width: 100%;
@@ -237,7 +236,7 @@ h1 {
 }
 
 /* ==========================================================================
-   MODERNA SĀNOS IZBĪDĀMĀ GROZA SĀNJOSLA UN KOMPONENTI
+   MODERNA SĀNOS IZBĪDĀMĀ GROZA SĀNJOSLA UN KOMPONENTI (SAKĀRTOTS FLEXBOX)
    ========================================================================== */
 
 /* Groza fona aizsegums (ēna) */
@@ -268,11 +267,12 @@ h1 {
   width: 100%;
   max-width: 420px;
   height: 100vh;
+  height: -webkit-fill-available;
   background-color: white;
   box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
   z-index: 1001;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Vertikālais sadalījums */
   text-align: left;
   transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
   box-sizing: border-box;
@@ -282,7 +282,7 @@ h1 {
   right: 0;
 }
 
-/* Sānjoslas augša */
+/* Sānjoslas augša - Stabili augšā */
 .groza-galvene {
   padding: 20px;
   background-color: #ff69b4;
@@ -290,6 +290,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .groza-galvene h2 {
@@ -307,11 +308,48 @@ h1 {
   line-height: 1;
 }
 
-/* Groza satura ritināšanas apgabals */
+/* PIEGĀDES PROGRESA JOSLA - Stabili zem galvenes */
+.piegades-progress-konteiners {
+  margin: 0;
+  background-color: #fff;
+  padding: 14px 20px;
+  border-bottom: 1px solid #ffe3e8;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  transition: background-color 0.3s ease;
+}
+
+.piegades-progress-fons {
+  background-color: #eee;
+  border-radius: 10px;
+  height: 10px;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+#piegades-progress-josla {
+  height: 100%;
+  width: 0%;
+  background-color: #ff477e;
+  border-radius: 10px;
+  transition: width 0.4s ease, background-color 0.3s ease;
+}
+
+#piegades-progress-teksts {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  color: #ff477e;
+}
+
+/* Groza satura ritināšanas apgabals - RITINĀS TIKAI ŠIS */
 .groza-saturs {
   flex: 1;
   overflow-y: auto;
   padding: 15px 20px;
+  -webkit-overflow-scrolling: touch;
 }
 
 #groza-saraksts { 
@@ -350,13 +388,16 @@ h1 {
   line-height: 1.3;
 }
 
-/* Sānjoslas apakša pasūtījuma datiem un pogām */
+/* Sānjoslas apakša pasūtījuma datiem un pogām - NOFIKSĒTA APAKŠĀ */
 .groza-apaksa {
-  padding: 15px 20px 20px 20px;
+  padding: 15px 20px;
   background-color: #fcf8fa;
   border-top: 1px solid #f0e4e8;
   box-sizing: border-box;
+  flex-shrink: 0;
   transition: background-color 0.3s ease;
+  max-height: 50vh; /* Drošība galēji maziem ekrāniem */
+  overflow-y: auto;
 }
 
 .kopa { 
@@ -367,7 +408,6 @@ h1 {
   color: #333;
 }
 
-/* --- PASŪTĪJUMA UNIKĀLĀ ID ELEMENTA STILI SĀNJOSLĀ --- */
 #lapas-pasutijuma-nr {
   font-size: 0.9rem;
   font-weight: bold;
@@ -379,22 +419,20 @@ h1 {
   margin-bottom: 15px;
   text-align: center;
   word-wrap: break-word;
-  word-break: break-all;
-  overflow-wrap: break-word;
 }
 
-/* --- LABOTS: KLIENTA DATU IEVADES LAUKI (Novērš elementu pārklāšanos) --- */
+/* KLIENTA DATU IEVADES LAUKI */
 .groza-forma {
   display: flex;
   flex-direction: column;
-  gap: 14px; /* Palielināta atstarpe, lai grupas nekāptu viena otrai virsū */
+  gap: 12px;
   margin-bottom: 15px;
 }
 
 .ievades-grupa {
   display: flex;
   flex-direction: column;
-  gap: 6px; /* Glīta distance starp label tekstu un pašu input */
+  gap: 5px;
   text-align: left;
 }
 
@@ -407,23 +445,22 @@ h1 {
 }
 
 .ievades-grupa input, .ievades-grupa select {
-  width: 100%;
-  padding: 11px; /* Nedaudz ietilpīgāks un modernāks polsterējums */
+  width: 100% !important;
+  padding: 11px; 
   border: 1px solid #ffccd5;
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.95rem;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
   background-color: #fff;
   color: #333;
   outline: none;
   display: block;
-  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Īpašs labojums Omniva pakomātu saraksta logam, lai tas neatrastos pārāk tuvu meklētājam */
 .ievades-grupa select {
-  margin-top: 5px;
+  margin-top: 2px;
   cursor: pointer;
 }
 
@@ -438,11 +475,9 @@ h1 {
   border: 1px solid #d0e0ff;
   padding: 10px;
   border-radius: 10px;
-  margin: 15px 0 5px 0;
+  margin: 10px 0;
   text-align: center;
   box-sizing: border-box;
-  word-wrap: break-word;
-  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .revolut-bloks a {
@@ -472,6 +507,7 @@ h1 {
   font-size: 1.1rem; 
   margin-top: 10px;
   box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
+  box-sizing: border-box;
 }
 
 .maksa-poga:hover { 
@@ -491,50 +527,12 @@ h1 {
   text-align: center;
   font-size: 1rem;
   margin-top: 10px;
+  box-sizing: border-box;
   transition: background-color 0.2s;
 }
 
 .iztirit-poga:hover {
   background-color: #d32f2f;
-}
-
-/* ==========================================================================
-   LABOTS: PIEGĀDES PROGRESA JOSLA (Padarīta skaidri redzama un pamanāma)
-   ========================================================================== */
-.piegades-progress-konteiners {
-  margin: 5px 0 15px 0;
-  background-color: #fff;
-  padding: 14px; /* Palielināta telpa satura lasāmībai */
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  border: 1px solid #ffe3e8;
-  box-sizing: border-box;
-  transition: background-color 0.3s ease;
-}
-
-.piegades-progress-fons {
-  background-color: #eee;
-  border-radius: 10px;
-  height: 10px; /* Nedaudz biezāka josla labākai uztverei */
-  width: 100%;
-  overflow: hidden;
-  margin-top: 8px; /* Atstarpe precīzi zem paziņojuma teksta */
-}
-
-#piegades-progress-josla {
-  height: 100%;
-  width: 0%;
-  background-color: #ff477e;
-  border-radius: 10px;
-  transition: width 0.4s ease, background-color 0.3s ease;
-}
-
-#piegades-progress-teksts {
-  font-size: 0.88rem;
-  font-weight: 700;
-  margin: 0;
-  text-align: center;
-  color: #ff477e;
 }
 
 /* Lidojošā attēla stils */
@@ -727,7 +725,7 @@ body.dark-mode .piegades-progress-fons {
 }
 
 /* ==========================================================================
-   MOBILĀ VERSIJA (Ekrāniem līdz 600px platumam)
+   MOBILĀ VERSIJA (SAKĀRTOTA UN OPTIMIZĒTA RESPONSIVITĀTE)
    ========================================================================== */
 @media (max-width: 600px) {
   .konteiners, .sadaļa-bloks {
@@ -807,10 +805,19 @@ body.dark-mode .piegades-progress-fons {
     max-width: 180px !important;
   }
 
-  /* Sānjoslas platuma adaptācija mobilajām ierīcēm */
+  /* --- SĀNJOSLAS OPTIMIZĀCIJA MOBILAJĀM IERĪCĒM --- */
   .groza-sanjosla {
-    max-width: 85% !important;
+    max-width: 100% !important; /* Grozs tagad ieņem 100% platuma, nevis 85% */
+    width: 100% !important;
     right: -100%;
+  }
+
+  .groza-saturs {
+    padding: 10px 15px !important;
+  }
+
+  .groza-apaksa {
+    padding: 15px 15px 25px 15px !important; /* Atstarpe telefona apakšējai joslai */
   }
 
   .groza-prece-rindina {
@@ -827,22 +834,41 @@ body.dark-mode .piegades-progress-fons {
   }
 
   .kopa {
-    font-size: 1.2rem !important;
-    margin-bottom: 10px !important;
+    font-size: 1.15rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  .groza-forma {
+    gap: 8px !important;
+  }
+
+  .ievades-grupa input, .ievades-grupa select {
+    padding: 9px !important;
+    font-size: 0.88rem !important;
   }
 
   .maksa-poga {
-    padding: 12px 20px !important;
-    font-size: 1.1rem !important;
+    padding: 11px 15px !important;
+    font-size: 1rem !important;
     width: 100% !important;
-    box-sizing: border-box !important;
+    margin-top: 6px !important;
   }
 
   .iztirit-poga {
-    padding: 10px 20px !important;
-    font-size: 1rem !important;
+    padding: 9px 15px !important;
+    font-size: 0.95rem !important;
     width: 100% !important;
-    box-sizing: border-box !important;
+    margin-top: 6px !important;
+  }
+
+  .revolut-bloks {
+    margin: 8px 0 4px 0 !important;
+    padding: 8px !important;
+  }
+
+  .revolut-bloks p {
+    font-size: 0.8rem !important;
+    margin: 0 !important;
   }
 
   #peldosais-grozs {
