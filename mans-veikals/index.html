@@ -44,6 +44,7 @@
   <div class="izvelne">
     <button onclick="filtrētKategoriju('uzkodas', this)">🍿 Čipsi & Uzkodas</button>
     <button onclick="filtrētKategoriju('saldumi', this)">🍬 Saldumi & Šokolāde</button>
+    <button onclick="filtrētKategoriju('dzerieni', this)">🥤 Dzērieni</button>
     <button onclick="filtrētKategoriju('liofilizetie', this)">🧊 Liofilizētie kārumi</button>
     <button id="poga-visi" onclick="filtrētKategoriju('visi', this)">✨ Visi produkti</button>
   </div>
@@ -315,32 +316,6 @@
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
-          <h3>Fanta Lemon (330ml)</h3>
-          <img src="https://via.placeholder.com/402" alt="Fanta Lemon" class="salduma-bilde">
-          <p class="apraksts">Gāzēts atspirdzinošais dzēriens ar atsvaidzinošu citrona garšu.</p>
-          <p class="cena">1.80 €</p>
-          <div class="daudzuma-kontrole">
-            <button onclick="mainitKartesDaudzumu('Fanta Lemon', -1)">-</button>
-            <span id="skaits-Fanta Lemon">1</span>
-            <button onclick="mainitKartesDaudzumu('Fanta Lemon', 1)">+</button>
-          </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Fanta Lemon', 1.80, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
-        </div>
-
-        <div class="saldums-karte" data-kategorija="saldumi">
-          <h3>Fanta Exotic (330ml)</h3>
-          <img src="https://via.placeholder.com/402" alt="Fanta Exotic" class="salduma-bilde">
-          <p class="apraksts">Gāzēts dzēriens ar eksotisko augļu tropisko garšu miksu.</p>
-          <p class="cena">1.80 €</p>
-          <div class="daudzuma-kontrole">
-            <button onclick="mainitKartesDaudzumu('Fanta Exotic', -1)">-</button>
-            <span id="skaits-Fanta Exotic">1</span>
-            <button onclick="mainitKartesDaudzumu('Fanta Exotic', 1)">+</button>
-          </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Fanta Exotic', 1.80, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
-        </div>
-
-        <div class="saldums-karte" data-kategorija="saldumi">
           <h3>Sour Patch Kids Strawberry (80g)</h3>
           <img src="https://via.placeholder.com/402" alt="Sour Patch Strawberry" class="salduma-bilde">
           <p class="apraksts">Skābas, pēc tam saldas želejas konfektes ar zemeņu garšu.</p>
@@ -377,6 +352,39 @@
             <button onclick="mainitKartesDaudzumu('Nik-L-Nip Original', 1)">+</button>
           </div>
           <button class="grozam-poga" onclick="pievienotNoKartes('Nik-L-Nip Original', 3.60, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="dzerieni" class="sadaļa-bloks">
+      <h2 class="sadaļas-virsraksts">🥤 Dzērieni</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
+        
+        <div class="saldums-karte" data-kategorija="dzerieni">
+          <h3>Fanta Lemon (330ml)</h3>
+          <img src="https://via.placeholder.com/402" alt="Fanta Lemon" class="salduma-bilde">
+          <p class="apraksts">Gāzēts atspirdzinošais dzēriens ar atsvaidzinošu citrona garšu.</p>
+          <p class="cena">1.80 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Fanta Lemon', -1)">-</button>
+            <span id="skaits-Fanta Lemon">1</span>
+            <button onclick="mainitKartesDaudzumu('Fanta Lemon', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Fanta Lemon', 1.80, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte" data-kategorija="dzerieni">
+          <h3>Fanta Exotic (330ml)</h3>
+          <img src="https://via.placeholder.com/402" alt="Fanta Exotic" class="salduma-bilde">
+          <p class="apraksts">Gāzēts dzēriens ar eksotisko augļu tropisko garšu miksu.</p>
+          <p class="cena">1.80 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Fanta Exotic', -1)">-</button>
+            <span id="skaits-Fanta Exotic">1</span>
+            <button onclick="mainitKartesDaudzumu('Fanta Exotic', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Fanta Exotic', 1.80, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
         </div>
 
       </div>
