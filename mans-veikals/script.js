@@ -1,24 +1,76 @@
 // --- SĀKOTNĒJIE MAINĪGIE ---
 let grozs = JSON.parse(localStorage.getItem('iepirkumu_grozs')) || [];
 
-// Funkcija, kas uzģenerē garu, drošu un unikālu pasūtījuma ID (Piemēram: SWEET-20260517-X7R9W2)
+// Funkcija, kas uzģenerē garu, drošu un unikālu pasūtījuma ID
 function generetUnikaluPasutijumaID() {
   const datums = new Date();
-  
-  // Formatē datumu kā GGGGMNDD (piemēram, 20260517)
   const gads = datums.getFullYear();
   const menesis = String(datums.getMonth() + 1).padStart(2, '0');
   const diena = String(datums.getDate()).padStart(2, '0');
   const datumaDala = `${gads}${menesis}${diena}`;
-  
-  // Izveido nejaušu 6 zīmju burtu un skaitļu kombināciju drošībai pret dublēšanos
   const nejausaDala = Math.random().toString(36).substring(2, 8).toUpperCase();
   
   return `SWEET-${datumaDala}-${nejausaDala}`;
 }
 
-// Saglabājam unikālo kodu sesijā, lai tas nepārlādētos pie katra groza klikšķa, bet paliktu unikāls šim pirkumam
 const fiksētaisPasutījumaNumurs = generetUnikaluPasutijumaID();
+
+// --- FUNKCIJA KODA KOPĒŠANAI ---
+function kopetPasutijumaID() {
+  navigator.clipboard.writeText(fiksētaisPasutījumaNumurs).then(() => {
+    raditPazinojumu("Pasūtījuma ID veiksmīgi nokopēts! 📋");
+  }).catch(err => {
+    console.error("Neizdevās nokopēt:", err);
+  });
+}
+
+// --- VIZUĀLAIS UZNIRSTOŠAIS PAZIŅOJUMS (TOAST) ---
+function raditPazinojumu(teksts) {
+  // Pārbauda, vai konteiners jau eksistē, ja nē - izveido
+  let konteiners = document.getElementById('pazinojumu-konteiners');
+  if (!konteiners) {
+    konteiners = document.createElement('div');
+    konteiners.id = 'pazinojumu-konteiners';
+    // Pievienojam pamata stilus tieši caur JS, lai nav jāmaina CSS faili
+    konteiners.style.position = 'fixed';
+    konteiners.style.top = '20px';
+    konteiners.style.left = '50%';
+    konteiners.style.transform = 'translateX(-50%)';
+    konteiners.style.zIndex = '99999';
+    konteiners.style.display = 'flex';
+    konteiners.style.flexDirection = 'column';
+    konteiners.style.gap = '10px';
+    document.body.appendChild(konteiners);
+  }
+
+  const pazinojums = document.createElement('div');
+  pazinojums.innerHTML = teksts;
+  pazinojums.style.backgroundColor = '#2a9d8f';
+  pazinojums.style.color = 'white';
+  pazinojums.style.padding = '12px 24px';
+  pazinojums.style.borderRadius = '25px';
+  pazinojums.style.fontWeight = 'bold';
+  pazinojums.style.fontSize = '0.95rem';
+  pazinojums.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+  pazinojums.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+  pazinojums.style.opacity = '0';
+  pazinojums.style.transform = 'translateY(-20px)';
+
+  konteiners.appendChild(pazinojums);
+
+  // Parādīšanās animācija
+  setTimeout(() => {
+    pazinojums.style.opacity = '1';
+    pazinojums.style.transform = 'translateY(0)';
+  }, 50);
+
+  // Ekrāna attīrīšana pēc 2.5 sekundēm
+  setTimeout(() => {
+    pazinojums.style.opacity = '0';
+    pazinojums.style.transform = 'translateY(-20px)';
+    setTimeout(() => { pazinojums.remove(); }, 300);
+  }, 2500);
+}
 
 // --- 1. AUTOMĀTISKA VISU LATVIJAS OMNIVA PAKOMĀTU IELĀDE UN MEKLĒŠANA ---
 document.addEventListener("DOMContentLoaded", function() {
@@ -82,7 +134,6 @@ document.getElementById('klients-vards')?.addEventListener('input', (e) => local
 document.getElementById('klients-telefons')?.addEventListener('input', (e) => localStorage.setItem('telefons', e.target.value));
 document.getElementById('klients-pakomats')?.addEventListener('change', (e) => localStorage.setItem('pakomats', e.target.value));
 
-
 // --- 2. SĀNOS IZBĪDĀMĀ GROZA KONTROLE ---
 function parslēgtGrozaSanjoslu() {
   const sanjosla = document.getElementById("groza-sanjosla");
@@ -94,9 +145,7 @@ function parslēgtGrozaSanjoslu() {
   }
 }
 
-
 // --- 3. GROZA LOĢIKA UN LIDOŠANAS EFEKTS ---
-
 function mainitKartesDaudzumu(nosaukums, izmaina) {
   const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
   if (skaitaElements) {
@@ -132,7 +181,6 @@ function pievienotNoKartes(nosaukums, cena, bilde, event) {
       const lidojosaBilde = document.createElement('img');
       lidojosaBilde.src = bilde;
       lidojosaBilde.className = 'lidojosa-preces-bilde';
-      
       lidojosaBilde.style.left = `${event.clientX - 25}px`;
       lidojosaBilde.style.top = `${event.clientY - 25}px`;
       
@@ -145,9 +193,7 @@ function pievienotNoKartes(nosaukums, cena, bilde, event) {
         lidojosaBilde.style.opacity = '0.3';
       }, 50);
       
-      setTimeout(() => {
-        lidojosaBilde.remove();
-      }, 800);
+      setTimeout(() => { lidojosaBilde.remove(); }, 800);
     }
   }
 
@@ -169,6 +215,8 @@ function pievienotNoKartes(nosaukums, cena, bilde, event) {
     skaitaElements.innerText = 1;
   }
   
+  // Parāda paziņojumu ekrāna augšā
+  raditPazinojumu(`Pievienots grozam: <strong>${nosaukums}</strong> 🍬`);
   atjaunotGrozu();
 }
 
@@ -265,7 +313,7 @@ function atjaunotGrozu() {
     }
   }
 
-  // --- DINAMISKĀS BEZMAKSAS PIEGĀDES PROGRESA JOSLAS LOĢIKA ---
+  // --- BEZMAKSAS PIEGĀDE ---
   const limitsBezmaksasPiegadei = 30.00;
   if (progressJosla && progressTeksts) {
     if (kopa === 0) {
@@ -288,19 +336,22 @@ function atjaunotGrozu() {
     }
   }
 
-  // Pasūtījuma numura loģika sānjoslā
+  // Pasūtījuma numura un kopēšanas pogas loģika sānjoslā
   const lapasNrElements = document.getElementById("lapas-pasutijuma-nr");
   if (lapasNrElements) {
     if (grozs.length > 0) {
       lapasNrElements.style.display = "block";
-      lapasNrElements.innerText = `📋 Pasūtījuma ID: ${fiksētaisPasutījumaNumurs}`;
+      lapasNrElements.innerHTML = `
+        📋 Pasūtījuma ID: <span style="user-select: all;">${fiksētaisPasutījumaNumurs}</span>
+        <button onclick="kopetPasutijumaID()" style="display:block; margin: 6px auto 0 auto; background-color: #ff477e; color: white; border: none; padding: 4px 10px; font-size: 0.75rem; border-radius: 10px; font-weight: bold; cursor: pointer;">Kopēt ID 📋</button>
+      `;
     } else {
       lapasNrElements.style.display = "none";
     }
   }
 }
 
-// --- 4. PASŪTĪŠANA UZ WHATSAPP ---
+/* --- 4. PASŪTĪŠANA UZ WHATSAPP UN TELEFONA VALIDĀCIJA --- */
 function sutitUzWhatsApp() {
   if (grozs.length === 0) {
     alert("Tavs grozs ir tukšs! Vispirms pievieno kādu saldumu.");
@@ -313,6 +364,12 @@ function sutitUzWhatsApp() {
 
   if (!vards || !telefons || !pakomats) {
     alert("Lūdzu, aizpildi visus piegādes datus un izvēlies Omniva pakomātu no saraksta pirms pasūtīšanas!");
+    return;
+  }
+
+  // VALIDĀCIJA: Pārbauda vai telefons nav par īsu
+  if (telefons.replace(/\s+/g, '').length < 8) {
+    alert("Lūdzu, ievadi derīgu telefona numuru (vismaz 8 ciparus)!");
     return;
   }
   
@@ -349,4 +406,12 @@ function sutitUzWhatsApp() {
   let mansNumurs = "37124332563"; 
   
   window.open(`https://wa.me/${mansNumurs}?text=${kodetsTeksts}`, '_blank');
+
+  // AUTOMĀTISKA GROZA IZTĪRĪŠANA pēc pārejas uz WhatsApp
+  setTimeout(() => {
+    grozs = [];
+    localStorage.removeItem('iepirkumu_grozs');
+    atjaunotGrozu();
+    parslēgtGrozaSanjoslu(); // Aizver groza paneli ciet
+  }, 2000);
 }
