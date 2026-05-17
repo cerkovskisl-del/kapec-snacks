@@ -2,7 +2,6 @@
 let grozs = [];
 const BEZMAKSAS_PIEGADE_LIMITS = 30.00;
 
-// Testam: Pakomātu saraksts (Reālajā dzīvē te var ielādēt pilno Omniva sarakstu)
 const pakomatuSaraksts = [
   "Smiltenes Top pakomāts (Dārza 1)",
   "Smiltenes Centra pakomāts (Baznīcas laukums 2)",
@@ -18,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ieladetPakomatus(pakomatuSaraksts);
   atjaunotGrozuVizuāli();
 
-  // Omniva pakomātu meklētāja loģika
   const pakomatuMekletajs = document.getElementById("pakomatu-mekletajs");
   if (pakomatuMekletajs) {
     pakomatuMekletajs.addEventListener("input", (e) => {
@@ -52,7 +50,6 @@ function mekletPreci() {
   const kartes = document.querySelectorAll('.saldums-karte');
   const sadaļas = document.querySelectorAll('.sadaļa-bloks');
 
-  // Ja sāk meklēt, automātiski parādām visas iedaļas, lai redzētu rezultātus
   sadaļas.forEach(s => s.style.display = 'block');
 
   kartes.forEach(karte => {
@@ -82,7 +79,6 @@ function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   const skaitsElements = document.getElementById(`skaits-${nosaukums}`);
   const daudzums = skaitsElements ? parseInt(skaitsElements.innerText) : 1;
   
-  // Pārbaudām vai prece jau ir grozā
   const esosāPrece = grozs.find(item => item.nosaukums === nosaukums);
   
   if (esosāPrece) {
@@ -91,10 +87,8 @@ function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
     grozs.push({ nosaukums, cena, bildeUrl, daudzums });
   }
 
-  // Atiestatām kartītes skaitītāju atpakaļ uz 1
   if (skaitsElements) skaitsElements.innerText = "1";
 
-  // Lidošanas efekts (Ja nepieciešams, var izsaukt šeit)
   atjaunotGrozuVizuāli();
   pulsētGrozaPogu();
 }
@@ -115,7 +109,7 @@ function iztiritVisuGrozu() {
   atjaunotGrozuVizuāli();
 }
 
-// --- VIZUĀLĀS ATJAUNOŠANAS LOGIKA (Ar Progresa joslu) ---
+// --- VIZUĀLĀS ATJAUNOŠANAS LOGIKA ---
 function atjaunotGrozuVizuāli() {
   const saraksts = document.getElementById('groza-saraksts');
   const kopaElements = document.getElementById('groza-kopa');
@@ -180,15 +174,14 @@ function atjaunotProgresaJoslu(kopa) {
 
   if (kopa >= BEZMAKSAS_PIEGADE_LIMITS) {
     teksts.innerHTML = "🎉 Apsveicam! Tev pienākas <strong>BEZMAKSAS piegāde!</strong>";
-    josla.style.backgroundColor = "#25D366"; // Zaļa krāsa, kad sasniegts
+    josla.style.backgroundColor = "#25D366";
   } else {
     const atlikums = (BEZMAKSAS_PIEGADE_LIMITS - kopa).toFixed(2);
     teksts.innerHTML = `Pērc vēl par <strong>${atlikums} €</strong>, lai saņemtu BEZMAKSAS piegādi!`;
-    josla.style.backgroundColor = "#ff477e"; // Rozā, kamēr pildās
+    josla.style.backgroundColor = "#ff477e";
   }
 }
 
-// --- SĀNJOSLAS ATVĒRŠANA / AIZVĒRŠANA ---
 function parslēgtGrozaSanjoslu() {
   const sanjosla = document.getElementById('groza-sanjosla');
   const ena = document.getElementById('groza-ena');
@@ -202,7 +195,6 @@ function pulsētGrozaPogu() {
   setTimeout(() => poga.classList.remove('pulset'), 400);
 }
 
-// --- OMNIVA SARAKSTA POPULĒŠANA ---
 function ieladetPakomatus(saraksts) {
   const select = document.getElementById("klients-pakomats");
   if (!select) return;
@@ -247,13 +239,11 @@ function sutitUzWhatsApp() {
     zinasTeksts += ` + piegādes izdevumi`;
   }
 
-  // Tavs telefona numurs starptautiskā formātā (bez plus zīmes), kur saņemsi ziņu:
   const manaWhatappMērķis = "37120000000"; 
   const url = `https://wa.me/${manaWhatappMērķis}?text=${encodeURIComponent(zinasTeksts)}`;
   window.open(url, '_blank');
 }
 
-// --- DARK MODE PARSLĒGŠANA ---
 function parslēgtDarkMode() {
   const body = document.body;
   const poga = document.getElementById('dark-mode-poga');
