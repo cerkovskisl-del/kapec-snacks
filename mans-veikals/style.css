@@ -304,7 +304,24 @@ h1 {
   color: #333;
 }
 
-/* --- JAUNUMS: KLIENTA DATU IEVADES LAUKI --- */
+/* --- PASŪTĪJUMA UNIKĀLĀ ID ELEMENTA STILI SĀNJOSLĀ --- */
+#lapas-pasutijuma-nr {
+  font-size: 0.9rem;
+  font-weight: bold;
+  background-color: #fff;
+  border: 1px dashed #ff477e;
+  color: #ff477e;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  /* Nodrošina, ka garais unikālais kods smuki pārlūst un neiziet no rāmja */
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* --- KLIENTA DATU IEVADES LAUKI --- */
 .groza-forma {
   display: flex;
   flex-direction: column;
@@ -344,7 +361,7 @@ h1 {
   box-shadow: 0 0 5px rgba(255, 71, 126, 0.2);
 }
 
-/* --- JAUNUMS: MODERNIZĒTS REVOLUT BLOKS --- */
+/* --- REVOLUT APMAKSAS BLOKS --- */
 .revolut-bloks {
   background-color: #f0f4ff;
   border: 1px solid #d0e0ff;
@@ -353,6 +370,7 @@ h1 {
   margin: 15px 0 5px 0;
   text-align: center;
   box-sizing: border-box;
+  word-wrap: break-word;
 }
 
 .revolut-bloks a {
