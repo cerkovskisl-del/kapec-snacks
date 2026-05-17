@@ -383,39 +383,48 @@ h1 {
   overflow-wrap: break-word;
 }
 
-/* --- KLIENTA DATU IEVADES LAUKI --- */
+/* --- LABOTS: KLIENTA DATU IEVADES LAUKI (Novērš elementu pārklāšanos) --- */
 .groza-forma {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px; /* Palielināta atstarpe, lai grupas nekāptu viena otrai virsū */
   margin-bottom: 15px;
 }
 
 .ievades-grupa {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px; /* Glīta distance starp label tekstu un pašu input */
   text-align: left;
 }
 
 .ievades-grupa label {
   font-weight: bold;
   color: #ff477e;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
+  margin: 0;
+  display: block;
 }
 
 .ievades-grupa input, .ievades-grupa select {
   width: 100%;
-  padding: 10px;
+  padding: 11px; /* Nedaudz ietilpīgāks un modernāks polsterējums */
   border: 1px solid #ffccd5;
   border-radius: 8px;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   box-sizing: border-box;
   background-color: #fff;
   color: #333;
   outline: none;
+  display: block;
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s;
+}
+
+/* Īpašs labojums Omniva pakomātu saraksta logam, lai tas neatrastos pārāk tuvu meklētājam */
+.ievades-grupa select {
+  margin-top: 5px;
+  cursor: pointer;
 }
 
 .ievades-grupa input:focus, .ievades-grupa select:focus {
@@ -490,15 +499,15 @@ h1 {
 }
 
 /* ==========================================================================
-   PROGRESA JOSLA UN LIDOŠANAS EFEKTS
+   LABOTS: PIEGĀDES PROGRESA JOSLA (Padarīta skaidri redzama un pamanāma)
    ========================================================================== */
-
 .piegades-progress-konteiners {
-  margin-bottom: 15px;
+  margin: 5px 0 15px 0;
   background-color: #fff;
-  padding: 12px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  padding: 14px; /* Palielināta telpa satura lasāmībai */
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid #ffe3e8;
   box-sizing: border-box;
   transition: background-color 0.3s ease;
 }
@@ -506,10 +515,10 @@ h1 {
 .piegades-progress-fons {
   background-color: #eee;
   border-radius: 10px;
-  height: 8px;
+  height: 10px; /* Nedaudz biezāka josla labākai uztverei */
   width: 100%;
   overflow: hidden;
-  margin-bottom: 6px;
+  margin-top: 8px; /* Atstarpe precīzi zem paziņojuma teksta */
 }
 
 #piegades-progress-josla {
@@ -521,10 +530,11 @@ h1 {
 }
 
 #piegades-progress-teksts {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.88rem;
+  font-weight: 700;
   margin: 0;
   text-align: center;
+  color: #ff477e;
 }
 
 /* Lidojošā attēla stils */
@@ -605,7 +615,7 @@ h1 {
 }
 
 /* ==========================================================================
-   JAUNUMS: TUMŠĀ REŽĪMA (DARK MODE) STILI
+   TUMŠĀ REŽĪMA (DARK MODE) STILI
    ========================================================================== */
 body.dark-mode {
   background-color: #121212;
@@ -709,6 +719,7 @@ body.dark-mode .revolut-bloks a {
 
 body.dark-mode .piegades-progress-konteiners {
   background-color: #222;
+  border-color: #333;
 }
 
 body.dark-mode .piegades-progress-fons {
@@ -726,7 +737,7 @@ body.dark-mode .piegades-progress-fons {
     box-sizing: border-box !important;
   }
 
-  /* Mainīts no block uz grid, lai saglabātu smuko JS filtrēšanas display */
+  /* Saglabā divu kolonnu režģi mobilajā skatā */
   .sadaļa-bloks > div {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important; 
