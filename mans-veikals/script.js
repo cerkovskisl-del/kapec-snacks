@@ -47,19 +47,36 @@ function filtrētKategoriju(kategorija, poga) {
 function mekletPreci() {
   const mekletajs = document.getElementById('veikala-mekletajs');
   const teksts = mekletajs.value.toLowerCase();
-  const kartes = document.querySelectorAll('.saldums-karte');
   const sadaļas = document.querySelectorAll('.sadaļa-bloks');
+  const pogas = document.querySelectorAll('.izvelne button');
 
-  sadaļas.forEach(s => s.style.display = 'block');
+  // Noņemam aktīvo klasi no kategoriju pogām meklēšanas laikā
+  pogas.forEach(p => p.classList.remove('aktiva'));
+  if (teksts === "") {
+    document.getElementById('poga-visi').classList.add('aktiva');
+  }
 
-  kartes.forEach(karte => {
-    const nosaukums = karte.querySelector('h3').innerText.toLowerCase();
-    const apraksts = karte.querySelector('.apraksts').innerText.toLowerCase();
-    
-    if (nosaukums.includes(teksts) || apraksts.includes(teksts)) {
-      karte.style.display = 'flex';
+  sadaļas.forEach(sadaļa => {
+    const kartes = sadaļa.querySelectorAll('.saldums-karte');
+    let vaiSadaļāIrAtbilstība = false;
+
+    kartes.forEach(karte => {
+      const nosaukums = karte.querySelector('h3').innerText.toLowerCase();
+      const apraksts = karte.querySelector('.apraksts').innerText.toLowerCase();
+      
+      if (nosaukums.includes(teksts) || apraksts.includes(teksts)) {
+        karte.style.display = 'flex';
+        vaiSadaļāIrAtbilstība = true;
+      } else {
+        karte.style.display = 'none';
+      }
+    });
+
+    // Ja sadaļā ir atrasta prece vai meklētājs ir tukšs, rādām sadaļu
+    if (vaiSadaļāIrAtbilstība || teksts === "") {
+      sadaļa.style.display = 'block';
     } else {
-      karte.style.display = 'none';
+      sadaļa.style.display = 'none';
     }
   });
 }
