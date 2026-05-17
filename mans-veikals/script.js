@@ -15,7 +15,7 @@ const pakomatuSaraksts = [
 document.addEventListener("DOMContentLoaded", () => {
   filtrētKategoriju('visi', document.getElementById('poga-visi'));
   ieladetPakomatus(pakomatuSaraksts);
-  atjaunotGrozuVizuāli();
+  atjaunotGrozuVizuāli);
 
   const pakomatuMekletajs = document.getElementById("pakomatu-mekletajs");
   if (pakomatuMekletajs) {
@@ -24,6 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const atlasitie = pakomatuSaraksts.filter(p => p.toLowerCase().includes(meklesanasTeksts));
       ieladetPakomatus(atlasitie);
     });
+  }
+
+  // Papildus drošība telefoniem — meklētājs reaģē uz katru taustiņa nospiešanu
+  const veikalaMekletajs = document.getElementById('veikala-mekletajs');
+  if (veikalaMekletajs) {
+    veikalaMekletajs.addEventListener('keyup', mekletPreci);
+    veikalaMekletajs.addEventListener('input', mekletPreci);
   }
 });
 
@@ -46,14 +53,16 @@ function filtrētKategoriju(kategorija, poga) {
 
 function mekletPreci() {
   const mekletajs = document.getElementById('veikala-mekletajs');
-  const teksts = mekletajs.value.toLowerCase();
+  if (!mekletajs) return;
+  
+  const teksts = mekletajs.value.toLowerCase().trim();
   const sadaļas = document.querySelectorAll('.sadaļa-bloks');
   const pogas = document.querySelectorAll('.izvelne button');
 
-  // Noņemam aktīvo klasi no kategoriju pogām meklēšanas laikā
   pogas.forEach(p => p.classList.remove('aktiva'));
   if (teksts === "") {
-    document.getElementById('poga-visi').classList.add('aktiva');
+    const pogaVisi = document.getElementById('poga-visi');
+    if (pogaVisi) pogaVisi.classList.add('aktiva');
   }
 
   sadaļas.forEach(sadaļa => {
@@ -61,22 +70,24 @@ function mekletPreci() {
     let vaiSadaļāIrAtbilstība = false;
 
     kartes.forEach(karte => {
-      const nosaukums = karte.querySelector('h3').innerText.toLowerCase();
-      const apraksts = karte.querySelector('.apraksts').innerText.toLowerCase();
+      const virsraksts = karte.querySelector('h3');
+      const aprakstsElements = karte.querySelector('.apraksts');
+      
+      const nosaukums = virsraksts ? virsraksts.innerText.toLowerCase() : "";
+      const apraksts = aprakstsElements ? aprakstsElements.innerText.toLowerCase() : "";
       
       if (nosaukums.includes(teksts) || apraksts.includes(teksts)) {
-        karte.style.display = 'flex';
+        karte.style.setProperty('display', 'flex', 'important');
         vaiSadaļāIrAtbilstība = true;
       } else {
-        karte.style.display = 'none';
+        karte.style.setProperty('display', 'none', 'important');
       }
     });
 
-    // Ja sadaļā ir atrasta prece vai meklētājs ir tukšs, rādām sadaļu
     if (vaiSadaļāIrAtbilstība || teksts === "") {
-      sadaļa.style.display = 'block';
+      sadaļa.style.setProperty('display', 'block', 'important');
     } else {
-      sadaļa.style.display = 'none';
+      sadaļa.style.setProperty('display', 'none', 'important');
     }
   });
 }
@@ -128,6 +139,8 @@ function atjaunotGrozuVizuāli() {
   const peldosaisSkaits = document.getElementById('peldosais-skaits');
   const peldosaisGrozs = document.getElementById('peldosais-grozs');
 
+  if (!saraksts || !kopaElements || !peldosaisSkaits || !peldosaisGrozs) return;
+
   if (grozs.length === 0) {
     saraksts.innerHTML = '<li class="tukss" style="text-align: center; padding: 15px; color: #888;">Grozs ir tukšs</li>';
     kopaElements.innerText = "0.00";
@@ -173,6 +186,7 @@ function atjaunotGrozuVizuāli() {
 function atjaunotProgresaJoslu(kopa) {
   const josla = document.getElementById('piegades-progress-josla');
   const teksts = document.getElementById('piegades-progress-teksts');
+  if (!josla || !teksts) return;
   
   if (kopa === 0) {
     josla.style.width = "0%";
@@ -197,12 +211,15 @@ function atjaunotProgresaJoslu(kopa) {
 function parslēgtGrozaSanjoslu() {
   const sanjosla = document.getElementById('groza-sanjosla');
   const ena = document.getElementById('groza-ena');
-  sanjosla.classList.toggle('atvērts');
-  ena.classList.toggle('atvērts');
+  if (sanjosla && ena) {
+    sanjosla.classList.toggle('atvērts');
+    ena.classList.toggle('atvērts');
+  }
 }
 
 function pulsētGrozaPogu() {
   const poga = document.getElementById('peldosais-grozs');
+  if (!poga) return;
   poga.classList.add('pulset');
   setTimeout(() => poga.classList.remove('pulset'), 400);
 }
@@ -264,6 +281,7 @@ function sutitUzWhatsApp() {
 function parslēgtDarkMode() {
   const body = document.body;
   const poga = document.getElementById('dark-mode-poga');
+  if (!body || !poga) return;
   body.classList.toggle('dark-mode');
   
   if (body.classList.contains('dark-mode')) {
