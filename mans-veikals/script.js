@@ -26,12 +26,10 @@ function kopetPasutijumaID() {
 
 // --- VIZUĀLAIS UZNIRSTOŠAIS PAZIŅOJUMS (TOAST) ---
 function raditPazinojumu(teksts) {
-  // Pārbauda, vai konteiners jau eksistē, ja nē - izveido
   let konteiners = document.getElementById('pazinojumu-konteiners');
   if (!konteiners) {
     konteiners = document.createElement('div');
     konteiners.id = 'pazinojumu-konteiners';
-    // Pievienojam pamata stilus tieši caur JS, lai nav jāmaina CSS faili
     konteiners.style.position = 'fixed';
     konteiners.style.top = '20px';
     konteiners.style.left = '50%';
@@ -58,13 +56,11 @@ function raditPazinojumu(teksts) {
 
   konteiners.appendChild(pazinojums);
 
-  // Parādīšanās animācija
   setTimeout(() => {
     pazinojums.style.opacity = '1';
     pazinojums.style.transform = 'translateY(0)';
   }, 50);
 
-  // Ekrāna attīrīšana pēc 2.5 sekundēm
   setTimeout(() => {
     pazinojums.style.opacity = '0';
     pazinojums.style.transform = 'translateY(-20px)';
@@ -72,8 +68,93 @@ function raditPazinojumu(teksts) {
   }, 2500);
 }
 
-// --- 1. AUTOMĀTISKA VISU LATVIJAS OMNIVA PAKOMĀTU IELĀDE UN MEKLĒŠANA ---
+// --- JAUNUMS: MEKLĒŠANAS UN FILTRĒŠANAS LOĢIKA ---
+let aktivaKategorija = 'visi';
+
+function filtrētKategoriju(sadaļasId, poga) {
+  aktivaKategorija = sadaļasId;
+  
+  // Atjaunojam aktīvās pogas vizuālo stilu
+  const pogas = document.querySelectorAll('.izvelne button');
+  pogas.forEach(p => p.classList.remove('aktiva'));
+  if (poga) poga.classList.add('aktiva');
+
+  // Parādām/paslēpjam pašus sekciju blokus
+  const sadaļas = document.querySelectorAll('.sadaļa-bloks');
+  sadaļas.forEach(sadaļa => {
+    if (sadaļasId === 'visi' || sadaļa.id === sadaļasId) {
+      sadaļa.style.display = 'block';
+    } else {
+      sadaļa.style.display = 'none';
+    }
+  });
+
+  // Pēc kategorijas maiņas pārfiltrējam preces, ja meklētājā jau kaut kas ir ierakstīts
+  mekletPreci();
+}
+
+function mekletPreci() {
+  const meklesanasTeksts = document.getElementById('veikala-mekletajs').value.toLowerCase().trim();
+  const kartes = document.querySelectorAll('.saldums-karte');
+
+  kartes.forEach(karte => {
+    const virsraksts = karte.querySelector('h3').innerText.toLowerCase();
+    const apraksts = karte.querySelector('.apraksts').innerText.toLowerCase();
+    const produktaKategorija = karte.getAttribute('data-kategorija');
+
+    // Pārbaudām, vai produkts atbilst gan meklētajam tekstam, gan izvēlētajai kategorijai
+    const atbilstMekletajam = virsraksts.includes(meklesanasTeksts) || apraksts.includes(meklesanasTeksts);
+    const atbilstKategorijai = aktivaKategorija === 'visi' || produktaKategorija === aktivaKategorija;
+
+    if (atbilstMekletajam && atbilstKategorijai) {
+      karte.style.display = 'flex';
+    } else {
+      karte.style.display = 'none';
+    }
+  });
+
+  // Paslēpjam tukšos virsrakstus, ja tajā kategorijā nekas netiek atrasts
+  const sadaļas = document.querySelectorAll('.sadaļa-bloks');
+  sadaļas.forEach(sadaļa => {
+    if (aktivaKategorija === 'visi' || sadaļa.id === aktivaKategorija) {
+      const redzamasKartes = sadaļa.querySelectorAll('.saldums-karte[style*="display: flex"]');
+      const slēptasKartes = sadaļa.querySelectorAll('.saldums-karte[style*="display: none"]');
+      const visasKategorijasKartes = sadaļa.querySelectorAll('.saldums-karte');
+
+      // Īpaša pārbaude gadījumam, ja style atribūts vēl nav uzlikts (pirmā ielāde)
+      if (visasKategorijasKartes.length > 0 && redzamasKartes.length === 0 && slēptasKartes.length > 0) {
+        sadaļa.style.display = 'none';
+      } else {
+        sadaļa.style.display = 'block';
+      }
+    }
+  });
+}
+
+// --- JAUNUMS: TUMŠĀ REŽĪMA (DARK MODE) KONTROLE ---
+function parslēgtDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const poga = document.getElementById('dark-mode-poga');
+  
+  if (document.body.classList.contains('dark-mode')) {
+    localStorage.setItem('darkMode', 'enabled');
+    if (poga) poga.innerText = '☀️';
+  } else {
+    localStorage.setItem('darkMode', 'disabled');
+    if (poga) poga.innerText = '🌙';
+  }
+}
+
+// --- AUTOMĀTISKA LATVIJAS OMNIVA PAKOMĀTU IELĀDE UN LAPAS STARTĒŠANA ---
 document.addEventListener("DOMContentLoaded", function() {
+  // Tumšā režīma atmiņas pārbaude
+  if (localStorage.getItem('darkMode') === 'enabled') {
+    document.body.classList.add('dark-mode');
+    const poga = document.getElementById('dark-mode-poga');
+    if (poga) poga.innerText = '☀️';
+  }
+
+  // Omniva ielāde
   const pakomatuSelekts = document.getElementById('klients-pakomats');
   const mekletajs = document.getElementById('pakomatu-mekletajs');
   let visiPakomati = [];
@@ -126,6 +207,10 @@ document.addEventListener("DOMContentLoaded", function() {
   if(localStorage.getItem('vards')) document.getElementById('klients-vards').value = localStorage.getItem('vards');
   if(localStorage.getItem('telefons')) document.getElementById('klients-telefons').value = localStorage.getItem('telefons');
 
+  // Sākumā aktivizējam skatu "Visi produkti"
+  const pogaVisi = document.getElementById('poga-visi');
+  filtrētKategoriju('visi', pogaVisi);
+  
   atjaunotGrozu();
 });
 
@@ -134,7 +219,7 @@ document.getElementById('klients-vards')?.addEventListener('input', (e) => local
 document.getElementById('klients-telefons')?.addEventListener('input', (e) => localStorage.setItem('telefons', e.target.value));
 document.getElementById('klients-pakomats')?.addEventListener('change', (e) => localStorage.setItem('pakomats', e.target.value));
 
-// --- 2. SĀNOS IZBĪDĀMĀ GROZA KONTROLE ---
+// --- SĀNOS IZBĪDĀMĀ GROZA KONTROLE ---
 function parslēgtGrozaSanjoslu() {
   const sanjosla = document.getElementById("groza-sanjosla");
   const ena = document.getElementById("groza-ena");
@@ -145,7 +230,7 @@ function parslēgtGrozaSanjoslu() {
   }
 }
 
-// --- 3. GROZA LOĢIKA UN LIDOŠANAS EFEKTS ---
+// --- GROZA LOĢIKA UN LIDOŠANAS EFEKTS ---
 function mainitKartesDaudzumu(nosaukums, izmaina) {
   const skaitaElements = document.getElementById(`skaits-${nosaukums}`);
   if (skaitaElements) {
@@ -172,7 +257,7 @@ function pievienotNoKartes(nosaukums, cena, bilde, event) {
     nosaukums = "Herr's Carolina Reaper Curls (113g)";
   }
 
-  // --- LIDOŠANAS ANIMĀCIJAS IZPILDE ---
+  // Lidošanas animācija
   if (event && bilde) {
     const peldosaisGrozs = document.getElementById('peldosais-grozs');
     if (peldosaisGrozs) {
@@ -215,7 +300,6 @@ function pievienotNoKartes(nosaukums, cena, bilde, event) {
     skaitaElements.innerText = 1;
   }
   
-  // Parāda paziņojumu ekrāna augšā
   raditPazinojumu(`Pievienots grozam: <strong>${nosaukums}</strong> 🍬`);
   atjaunotGrozu();
 }
@@ -313,7 +397,7 @@ function atjaunotGrozu() {
     }
   }
 
-  // --- BEZMAKSAS PIEGĀDE ---
+  // Bezmaksas piegādes limits
   const limitsBezmaksasPiegadei = 30.00;
   if (progressJosla && progressTeksts) {
     if (kopa === 0) {
@@ -336,7 +420,7 @@ function atjaunotGrozu() {
     }
   }
 
-  // Pasūtījuma numura un kopēšanas pogas loģika sānjoslā
+  // Pasūtījuma ID panelis
   const lapasNrElements = document.getElementById("lapas-pasutijuma-nr");
   if (lapasNrElements) {
     if (grozs.length > 0) {
@@ -351,7 +435,7 @@ function atjaunotGrozu() {
   }
 }
 
-/* --- 4. PASŪTĪŠANA UZ WHATSAPP UN TELEFONA VALIDĀCIJA --- */
+// --- PASŪTĪŠANA UZ WHATSAPP UN VALIDĀCIJA ---
 function sutitUzWhatsApp() {
   if (grozs.length === 0) {
     alert("Tavs grozs ir tukšs! Vispirms pievieno kādu saldumu.");
@@ -367,7 +451,6 @@ function sutitUzWhatsApp() {
     return;
   }
 
-  // VALIDĀCIJA: Pārbauda vai telefons nav par īsu
   if (telefons.replace(/\s+/g, '').length < 8) {
     alert("Lūdzu, ievadi derīgu telefona numuru (vismaz 8 ciparus)!");
     return;
@@ -407,11 +490,10 @@ function sutitUzWhatsApp() {
   
   window.open(`https://wa.me/${mansNumurs}?text=${kodetsTeksts}`, '_blank');
 
-  // AUTOMĀTISKA GROZA IZTĪRĪŠANA pēc pārejas uz WhatsApp
   setTimeout(() => {
     grozs = [];
     localStorage.removeItem('iepirkumu_grozs');
     atjaunotGrozu();
-    parslēgtGrozaSanjoslu(); // Aizver groza paneli ciet
+    parslēgtGrozaSanjoslu();
   }, 2000);
 }
