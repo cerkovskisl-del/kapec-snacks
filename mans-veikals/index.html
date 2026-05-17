@@ -46,6 +46,7 @@
   <div class="izvelne">
     <button onclick="filtrētKategoriju('uzkodas', this)">🍿 Čipsi & Uzkodas</button>
     <button onclick="filtrētKategoriju('saldumi', this)">🍬 Saldumi & Šokolāde</button>
+    <button onclick="filtrētKategoriju('dzerieni', this)">🥤 Dzērieni</button>
     <button onclick="filtrētKategoriju('liofilizetie', this)">🧊 Liofilizētie kārumi</button>
     <button id="poga-visi" onclick="filtrētKategoriju('visi', this)">✨ Visi produkti</button>
   </div>
@@ -87,6 +88,59 @@
           </div>
           <button class="grozam-poga" onclick="pievienotNoKartes('Herrs Carolina Reaper', 3.30, 'https://thumbor.candypop.lt/fit-in/402x402/02/7c/b8f93349a3169d1a77a7d87b035c.jpg', event)">Pievienot grozam</button>
         </div>
+
+        <div class="saldums-karte" data-kategorija="uzkodas">
+          <h3>Kliņģerīši HULIGAN (Honey Mustard), 65g</h3>
+          <img src="huligan-honey-mustard.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/e7/04/463750be9855c152faeaf660e5c3.jpg'" alt="Huligan Honey Mustard" class="salduma-bilde">
+          <p class="apraksts">Kraukšķīgi kliņģerīšu gabaliņi ar gardu medus un sinepju mērces garšu.</p>
+          <p class="cena">1.50 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Huligan Honey Mustard', -1)">-</button>
+            <span id="skaits-Huligan Honey Mustard">1</span>
+            <button onclick="mainitKartesDaudzumu('Huligan Honey Mustard', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Kliņģerīši HULIGAN (Honey Mustard), 65g', 1.50, 'huligan-honey-mustard.png', event)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte" data-kategorija="uzkodas">
+          <h3>Kukurūzas čips HOT CHIP CHALLENGE, 2.5g</h3>
+          <img src="hot-chip.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/e7/04/463750be9855c152faeaf660e5c3.jpg'" alt="Hot Chip Challenge" class="salduma-bilde">
+          <p class="apraksts">Ekstrēmi ass kukurūzas čips īstiem asuma mīļotājiem un izaicinājumiem.</p>
+          <p class="cena">10.00 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Hot Chip Challenge', -1)">-</button>
+            <span id="skaits-Hot Chip Challenge">1</span>
+            <button onclick="mainitKartesDaudzumu('Hot Chip Challenge', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Kukurūzas čips HOT CHIP CHALLENGE, 2.5g', 10.00, 'hot-chip.png', event)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte" data-kategorija="uzkodas">
+          <h3>Uzkoda LATIAO (Hot & Spicy), 68g</h3>
+          <img src="latiao-hot-spicy.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/e7/04/463750be9855c152faeaf660e5c3.jpg'" alt="Latiao Hot Spicy" class="salduma-bilde">
+          <p class="apraksts">Tradicionāla, pikanta un asām garšām bagātināta tālāko austrumu uzkoda.</p>
+          <p class="cena">2.00 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Latiao Hot Spicy', -1)">-</button>
+            <span id="skaits-Latiao Hot Spicy">1</span>
+            <button onclick="mainitKartesDaudzumu('Latiao Hot Spicy', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Uzkoda LATIAO (Hot & Spicy), 68g', 2.00, 'latiao-hot-spicy.png', event)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte" data-kategorija="uzkodas">
+          <h3>Uzkoda LATIAO (Sweet & Spicy), 68g</h3>
+          <img src="latiao-sweet-spicy.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/e7/04/463750be9855c152faeaf660e5c3.jpg'" alt="Latiao Sweet Spicy" class="salduma-bilde">
+          <p class="apraksts">Pikanti salda un aromātiska uzkoda unikālu garšu cienītājiem.</p>
+          <p class="cena">2.00 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Latiao Sweet Spicy', -1)">-</button>
+            <span id="skaits-Latiao Sweet Spicy">1</span>
+            <button onclick="mainitKartesDaudzumu('Latiao Sweet Spicy', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Uzkoda LATIAO (Sweet & Spicy), 68g', 2.00, 'latiao-sweet-spicy.png', event)">Pievienot grozam</button>
+        </div>
+
       </div>
     </div>
 
@@ -104,7 +158,7 @@
             <span id="skaits-Reeses">1</span>
             <button onclick="mainitKartesDaudzumu('Reeses', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Reeses', 2.00, 'https://thumbor.candypop.lt/fit-in/402x402/73/08/393a5f964f0ae85f1c283c74536a.jpg', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Reese\'s Peanut Butter Cups', 2.00, 'https://thumbor.candypop.lt/fit-in/402x402/73/08/393a5f964f0ae85f1c283c74536a.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -117,7 +171,20 @@
             <span id="skaits-Sour Patch Kids">1</span>
             <button onclick="mainitKartesDaudzumu('Sour Patch Kids', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Sour Patch Kids', 1.50, 'https://thumbor.candypop.lt/fit-in/402x402/6e/de/f5e9c7d9919bc8b13e20e25300cd.jpg', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Sour Patch Kids (99g)', 1.50, 'https://thumbor.candypop.lt/fit-in/402x402/6e/de/f5e9c7d9919bc8b13e20e25300cd.jpg', event)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte" data-kategorija="saldumi">
+          <h3>Sour Patch Kids (Strawberry) 80g</h3>
+          <img src="sour-patch-strawberry.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/6e/de/f5e9c7d9919bc8b13e20e25300cd.jpg'" alt="Sour Patch Strawberry" class="salduma-bilde">
+          <p class="apraksts">Sākumā skābas, pēc tam saldas želejas konfektes ar sulīgu zemeņu garšu.</p>
+          <p class="cena">1.50 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Sour Patch Strawberry', -1)">-</button>
+            <span id="skaits-Sour Patch Strawberry">1</span>
+            <button onclick="mainitKartesDaudzumu('Sour Patch Strawberry', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Želejas konfektes SOUR PATCH KIDS (STRAWBERRY), 80g', 1.50, 'sour-patch-strawberry.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -143,7 +210,33 @@
             <span id="skaits-Nerds (Watermelon & Cherry)">1</span>
             <button onclick="mainitKartesDaudzumu('Nerds (Watermelon & Cherry)', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Nerds (Watermelon & Cherry)', 2.00, 'https://thumbor.candypop.lt/fit-in/402x402/ef/b3/a4d225f0bb3b55c88b2c90cb9d02.png', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Nerds (Watermelon & Cherry) 46.7g', 2.00, 'https://thumbor.candypop.lt/fit-in/402x402/ef/b3/a4d225f0bb3b55c88b2c90cb9d02.png', event)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte" data-kategorija="saldumi">
+          <h3>Airheads (Blue Raspberry) 15.6g</h3>
+          <img src="airheads-blue-raspberry.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/8b/fb/2e5d40384b04b45b3d3967d3dd38.png'" alt="Airheads Blue Raspberry" class="salduma-bilde">
+          <p class="apraksts">Mīksta, staipīga un intensīva košļājamā konfekte ar zilās avenes garšu.</p>
+          <p class="cena">1.00 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Airheads Blue Raspberry', -1)">-</button>
+            <span id="skaits-Airheads Blue Raspberry">1</span>
+            <button onclick="mainitKartesDaudzumu('Airheads Blue Raspberry', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Košļājamā konfekte AIRHEADS (BLUE RASPBERRY), 15.6g', 1.00, 'airheads-blue-raspberry.png', event)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte" data-kategorija="saldumi">
+          <h3>Nik-L-Nip (Original) 39g</h3>
+          <img src="nik-l-nip.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/8b/fb/2e5d40384b04b45b3d3967d3dd38.png'" alt="Nik-L-Nip" class="salduma-bilde">
+          <p class="apraksts">Leģendārās vaska pudelītes, kas pildītas ar saldu, augļainu šķidrumu.</p>
+          <p class="cena">3.60 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Nik-L-Nip', -1)">-</button>
+            <span id="skaits-Nik-L-Nip">1</span>
+            <button onclick="mainitKartesDaudzumu('Nik-L-Nip', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Šķidrās konfektes NIK-L-NIP (ORIGINAL), 39g', 3.60, 'nik-l-nip.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -156,7 +249,7 @@
             <span id="skaits-Mike and Ike (Tropical Typhoon)">1</span>
             <button onclick="mainitKartesDaudzumu('Mike and Ike (Tropical Typhoon)', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Mike and Ike (Tropical Typhoon)', 1.00, 'https://thumbor.candypop.lt/fit-in/402x402/41/a5/d820cc8954600400b551b7f84dc6.jpg', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Mike and Ike (Tropical Typhoon) 22g', 1.00, 'https://thumbor.candypop.lt/fit-in/402x402/41/a5/d820cc8954600400b551b7f84dc6.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -169,7 +262,7 @@
             <span id="skaits-Hersheys Cookies N Creme">1</span>
             <button onclick="mainitKartesDaudzumu('Hersheys Cookies N Creme', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Hersheys Cookies N Creme', 1.80, 'https://thumbor.candypop.lt/fit-in/402x402/d9/0b/113eaf88a725f13f1599b68bf976.jpg', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Hershey\'s Cookies \'N\' Creme (43g)', 1.80, 'https://thumbor.candypop.lt/fit-in/402x402/d9/0b/113eaf88a725f13f1599b68bf976.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -182,7 +275,7 @@
             <span id="skaits-Brain Blasterz Brain Bitz">1</span>
             <button onclick="mainitKartesDaudzumu('Brain Blasterz Brain Bitz', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Brain Blasterz Brain Bitz', 1.40, 'https://thumbor.candypop.lt/fit-in/402x402/c7/58/a8d8362fcb29af6f0687040d240a.png', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Brain Blasterz Brain Bitz (45g)', 1.40, 'https://thumbor.candypop.lt/fit-in/402x402/c7/58/a8d8362fcb29af6f0687040d240a.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -195,7 +288,7 @@
             <span id="skaits-Brain Blasterz Brain Breakerz">1</span>
             <button onclick="mainitKartesDaudzumu('Brain Blasterz Brain Breakerz', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Brain Blasterz Brain Breakerz', 1.20, 'https://thumbor.candypop.lt/fit-in/402x402/66/54/7f2f4d00356fa1f3bd93fc8d9829.png', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Brain Blasterz Brain Breakerz (45g)', 1.20, 'https://thumbor.candypop.lt/fit-in/402x402/66/54/7f2f4d00356fa1f3bd93fc8d9829.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -208,7 +301,7 @@
             <span id="skaits-Jelly Belly Bean Boozled">1</span>
             <button onclick="mainitKartesDaudzumu('Jelly Belly Bean Boozled', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Jelly Belly Bean Boozled', 4.20, 'https://thumbor.candypop.lt/fit-in/402x402/b7/7c/d75f67e519e9af20e6e96fa61c17.png', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Jelly Belly Bean Boozled (45g)', 4.20, 'https://thumbor.candypop.lt/fit-in/402x402/b7/7c/d75f67e519e9af20e6e96fa61c17.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -221,7 +314,7 @@
             <span id="skaits-Jolly Rancher želenes">1</span>
             <button onclick="mainitKartesDaudzumu('Jolly Rancher želenes', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Jolly Rancher želenes', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/cc/b1/fb6d5e00258a474a09ba53e9a4d6.png', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Jolly Rancher želenes (99g)', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/cc/b1/fb6d5e00258a474a09ba53e9a4d6.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -234,7 +327,7 @@
             <span id="skaits-MrBeast Feastables Egg">1</span>
             <button onclick="mainitKartesDaudzumu('MrBeast Feastables Egg', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('MrBeast Feastables Egg', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/61/a0/45ffc060ebf03dedafa1f35d3320.jpg', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('MrBeast Feastables Egg (35g)', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/61/a0/45ffc060ebf03dedafa1f35d3320.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -247,7 +340,7 @@
             <span id="skaits-Feastables Peanut Butter">1</span>
             <button onclick="mainitKartesDaudzumu('Feastables Peanut Butter', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Feastables Peanut Butter', 3.20, 'https://thumbor.candypop.lt/fit-in/402x402/41/d8/3e6479e823450b135b3d3e2e0159.jpg', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Feastables Peanut Butter (60g)', 3.20, 'https://thumbor.candypop.lt/fit-in/41/d8/3e6479e823450b135b3d3e2e0159.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -260,7 +353,7 @@
             <span id="skaits-Twizzlers Strawberry">1</span>
             <button onclick="mainitKartesDaudzumu('Twizzlers Strawberry', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Twizzlers Strawberry', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/c8/e4/0ba05a20a779861e18f5d70d6e15.png', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Twizzlers Strawberry (70g)', 3.00, 'https://thumbor.candypop.lt/fit-in/402x402/c8/e4/0ba05a20a779861e18f5d70d6e15.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -273,8 +366,42 @@
             <span id="skaits-Bubs Skulls">1</span>
             <button onclick="mainitKartesDaudzumu('Bubs Skulls', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Bubs Skulls', 2.60, 'https://thumbor.candypop.lt/fit-in/402x402/b7/85/301acbfe9e90e38da85004b4b95d.jpg', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Bubs Skulls (90g)', 2.60, 'https://thumbor.candypop.lt/fit-in/402x402/b7/85/301acbfe9e90e38da85004b4b95d.jpg', event)">Pievienot grozam</button>
         </div>
+
+      </div>
+    </div>
+
+    <div id="dzerieni" class="sadaļa-bloks">
+      <h2 class="sadaļas-virsraksts">🥤 Atsvaidzinošie dzērieni</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
+        
+        <div class="saldums-karte" data-kategorija="dzerieni">
+          <h3>Fanta (Lemon) 330ml</h3>
+          <img src="fanta-lemon.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/41/a5/d820cc8954600400b551b7f84dc6.jpg'" alt="Fanta Lemon" class="salduma-bilde">
+          <p class="apraksts">Atsvaidzinošs gāzētais dzēriens ar izteiksmīgu un spirgtu citrona garšu.</p>
+          <p class="cena">1.80 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Fanta Lemon', -1)">-</button>
+            <span id="skaits-Fanta Lemon">1</span>
+            <button onclick="mainitKartesDaudzumu('Fanta Lemon', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Gāzēts atspirdzinošais dzēriens FANTA (LEMON), 330ml', 1.80, 'fanta-lemon.png', event)">Pievienot grozam</button>
+        </div>
+
+        <div class="saldums-karte" data-kategorija="dzerieni">
+          <h3>Fanta (Exotic) 330ml</h3>
+          <img src="fanta-exotic.png" onerror="this.src='https://thumbor.candypop.lt/fit-in/402x402/41/a5/d820cc8954600400b551b7f84dc6.jpg'" alt="Fanta Exotic" class="salduma-bilde">
+          <p class="apraksts">Eksotisku augļu garšu mikslis tropiskam un sulīgam spirdzinājumam.</p>
+          <p class="cena">1.80 €</p>
+          <div class="daudzuma-kontrole">
+            <button onclick="mainitKartesDaudzumu('Fanta Exotic', -1)">-</button>
+            <span id="skaits-Fanta Exotic">1</span>
+            <button onclick="mainitKartesDaudzumu('Fanta Exotic', 1)">+</button>
+          </div>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Gāzēts atspirdzinošais dzēriens FANTA (EXOTIC), 330ml', 1.80, 'fanta-exotic.png', event)">Pievienot grozam</button>
+        </div>
+
       </div>
     </div>
 
@@ -292,7 +419,7 @@
             <span id="skaits-Freeze Dried Skittles">1</span>
             <button onclick="mainitKartesDaudzumu('Freeze Dried Skittles', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Freeze Dried Skittles', 3.20, 'https://thumbor.candypop.lt/fit-in/180x180/90/4e/bcee68af14543f9870581e6bc34f.png', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Freeze Dried Rainbow Skittles (70g)', 3.20, 'https://thumbor.candypop.lt/fit-in/180x180/90/4e/bcee68af14543f9870581e6bc34f.png', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="liofilizetie">
@@ -305,7 +432,7 @@
             <span id="skaits-Freeze Dried Jolly Rancher">1</span>
             <button onclick="mainitKartesDaudzumu('Freeze Dried Jolly Rancher', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Freeze Dried Jolly Rancher', 4.00, 'https://thumbor.candypop.lt/fit-in/402x402/0f/60/ca9c40b32c71ffece0e5b4a9390b.png', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Freeze Dried Jolly Rancher (30g)', 4.00, 'https://thumbor.candypop.lt/fit-in/402x402/0f/60/ca9c40b32c71ffece0e5b4a9390b.png', event)">Pievienot grozam</button>
         </div>
       </div>
     </div>
@@ -323,6 +450,20 @@
         <div id="piegades-progress-josla"></div>
       </div>
       <p id="piegades-progress-teksts">Ieliec preces grozā, lai redzētu piegādes statusu!</p>
+    </div>
+
+    <div id="auth-konteiners" style="padding: 10px; margin: 10px; background: #fff1f5; border-radius: 8px; font-size: 0.9rem;">
+      <div id="auth-forma">
+        <span style="font-weight:bold; color:#ff477e;">Pieslēgties: </span>
+        <input type="email" id="auth-email" placeholder="E-pasts" style="width:70px; font-size:0.8rem;">
+        <input type="password" id="auth-password" placeholder="Parole" style="width:60px; font-size:0.8rem;">
+        <button id="poga-login" style="background:#ff477e; color:white; border:none; padding:2px 5px; border-radius:3px; cursor:pointer;">Ieiet</button>
+        <button id="poga-register" style="background:#888; color:white; border:none; padding:2px 5px; border-radius:3px; cursor:pointer;">Reģistrēties</button>
+      </div>
+      <div id="auth-profils" style="display:none;">
+        <span>Sveiks, <b id="lietotaja-epasts"></b>!</span>
+        <button id="poga-logout" style="background:#888; color:white; border:none; padding:2px 5px; border-radius:3px; float:right;">Iziet</button>
+      </div>
     </div>
 
     <div class="groza-saturs">
@@ -373,5 +514,6 @@
   </button>
 
   <script src="script.js"></script>
+  <script type="module" src="auth.js"></script>
 </body>
 </html>
