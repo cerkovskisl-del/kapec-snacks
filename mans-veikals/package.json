@@ -1,0 +1,16 @@
+{
+  "name": "mans-veikals",
+  "version": "1.0.0",
+  "description": "Mana saldumu pasaule - Online snack store",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server -p 3000",
+    "test": "echo \"No tests specified\""
+  },
+  "keywords": ["snacks", "e-commerce", "candy"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
