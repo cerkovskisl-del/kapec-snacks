@@ -159,18 +159,19 @@ function atjaunotGrozuVizuāli() {
     kopa += precesKopa;
     kopejaisPrecuSkaits += prece.daudzums;
 
+    // Šeit ir salabots un piespiedu kārtā noformēts bildes kods ar stiliem
     saraksts.innerHTML += `
-      <li class="groza-prece-rindina">
-        <div class="groza-preces-info">
-          <img src="${prece.bildeUrl}" class="groza-mini-bilde" alt="${prece.nosaukums}">
+      <li class="groza-prece-rindina" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+        <div class="groza-preces-info" style="display: flex; align-items: center;">
+          <img src="${prece.bildeUrl}" class="groza-mini-bilde" alt="${prece.nosaukums}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; margin-right: 12px; display: block;">
           <div class="groza-preces-teksts">
             <strong>${prece.nosaukums}</strong><br>
-            ${prece.cena.toFixed(2)} € x ${prece.daudzums}
+            <span style="color: #666;">${prece.cena.toFixed(2)} € x ${prece.daudzums}</span>
           </div>
         </div>
-        <div class="daudzuma-kontrole" style="margin: 0;">
+        <div class="daudzuma-kontrole" style="margin: 0; display: flex; align-items: center; gap: 8px;">
           <button onclick="mainitGrozaDaudzumu('${prece.nosaukums}', -1)">-</button>
-          <span>${prece.daudzums}</span>
+          <span style="min-width: 20px; text-align: center;">${prece.daudzums}</span>
           <button onclick="mainitGrozaDaudzumu('${prece.nosaukums}', 1)">+</button>
         </div>
       </li>
@@ -248,7 +249,7 @@ function iztiritVisuGrozu() {
 
 // --- UNIKĀLA MAKSĀJUMA KODA ĢENERATORS ---
 function generetUnikaluKodu() {
-  const simboli = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Izslēgti neskaidrie simboli kā 0, O, 1, I
+  const simboli = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
   let rezultats = "SWEET-";
   for (let i = 0; i < 5; i++) {
     rezultats += simboli.charAt(Math.floor(Math.random() * simboli.length));
@@ -272,10 +273,8 @@ function sutitUzWhatsApp() {
     return;
   }
 
-  // Ģenerējam unikālo kodu maksājuma identificēšanai
   const unikalsKods = generetUnikaluKodu();
 
-  // Parādām kodu lapā virs Revolut pogas, lai klients to redz
   const nrBloks = document.getElementById('lapas-pasutijuma-nr');
   if (nrBloks) {
     nrBloks.innerHTML = `Tavs maksājuma kods: <span style="color:#25D366; background:#f0f0f0; padding:2px 6px; border-radius:4px; font-family:monospace;">${unikalsKods}</span><br><small style="color:#666; font-weight:normal;">Ieraksti šo kodu Revolut piezīmēs!</small>`;
@@ -305,7 +304,6 @@ function sutitUzWhatsApp() {
   
   zinasTeksts += `\n\nℹ️ Piezīme: Pēc tam veiciet apmaksu Revolut saitē, norādot kodu: ${unikalsKods}`;
 
-  // Jaunais saņēmēja numurs: 24332563
   const manaWhatappMērķis = "37124332563"; 
   const url = `https://wa.me/${manaWhatappMērķis}?text=${encodeURIComponent(zinasTeksts)}`;
   window.open(url, '_blank');
