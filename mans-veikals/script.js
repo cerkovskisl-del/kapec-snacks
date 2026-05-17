@@ -104,11 +104,6 @@ function mainitGrozaDaudzumu(nosaukums, izmaina) {
   atjaunotGrozuVizuāli();
 }
 
-function iztiritVisuGrozu() {
-  grozs = [];
-  atjaunotGrozuVizuāli();
-}
-
 // --- VIZUĀLĀS ATJAUNOŠANAS LOGIKA ---
 function atjaunotGrozuVizuāli() {
   const saraksts = document.getElementById('groza-saraksts');
@@ -206,6 +201,11 @@ function ieladetPakomatus(saraksts) {
     opt.textContent = pakomats;
     select.appendChild(opt);
   });
+}
+
+function iztiritVisuGrozu() {
+  grozs = [];
+  atjaunotGrozuVizuāli();
 }
 
 // --- WHATSAPP PASŪTĪJUMA SŪTĪŠANA ---
