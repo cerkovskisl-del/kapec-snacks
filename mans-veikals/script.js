@@ -1,7 +1,7 @@
 // --- GLOBĀLIE MAINĪGIE ---
 let grozs = [];
 const BEZMAKSAS_PIEGADE_LIMITS = 50.00;
-const PIEGADES_MAKSA = 3.00; // Piegādes cena, ja pasūtījums nesasniedz limits
+const PIEGADES_MAKSA = 3.00; // Piegādes cena, ja pasūtījums nesasniedz limitu
 let pakomatuSaraksts = [];
 
 // --- INICIALIZĀCIJA ---
@@ -131,16 +131,31 @@ function mainitKartesDaudzumu(id, izmaina) {
   el.innerText = skaits;
 }
 
-// --- GROZA FUNKCIONALITĀTE ---
+// --- GROZA FUNKCIONALITĀTE (SALABOTĀ VIETA 🛠️) ---
 function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   const el = document.getElementById(`skaits-${nosaukums}`);
   const daudzums = el ? parseInt(el.innerText) : 1;
+  
+  // Šeit JavaScript pats uzmeklē strādājošo bildi no HTML kartītes!
+  let īstāBilde = bildeUrl;
+  if (!īstāBilde || typeof īstāBilde === 'object') {
+    if (el) {
+      const karte = el.closest('.saldums-karte');
+      if (karte) {
+        const img = karte.querySelector('img');
+        if (img) {
+          īstāBilde = img.getAttribute('src') || img.src;
+        }
+      }
+    }
+  }
+  
   const prece = grozs.find(item => item.nosaukums === nosaukums);
   
   if (prece) {
     prece.daudzums += daudzums;
   } else {
-    grozs.push({ nosaukums, cena, bildeUrl, daudzums });
+    grozs.push({ nosaukums, cena, bildeUrl: īstāBilde, daudzums });
   }
   if (el) el.innerText = "1";
 
@@ -160,7 +175,7 @@ function mainitGrozaDaudzumu(nosaukums, izmaina) {
   atjaunotGrozuVizuāli();
 }
 
-// --- VIZUĀLĀ ATJAUNOŠANA AR PIEGĀDES MAKSAS LOĢIKU ---
+// --- VIZUĀLĀ ATJAUNOŠANA ---
 function atjaunotGrozuVizuāli() {
   const saraksts = document.getElementById('groza-saraksts');
   const kopaElements = document.getElementById('groza-kopa');
@@ -291,7 +306,7 @@ function generetUnikaluKodu() {
   return rez;
 }
 
-// --- WHATSAPP PASŪTĪJUMS AR GALA APREĶINU ---
+// --- WHATSAPP PASŪTĪJUMS ---
 function sutitUzWhatsApp() {
   const vards = document.getElementById('klients-vards').value.trim();
   const telefons = document.getElementById('klients-telefons').value.trim();
