@@ -144,6 +144,7 @@ function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
     if (karte) {
       const img = karte.querySelector('img');
       if (img) {
+        // Paņemam reālo src atribūtu, ko pašlaik attēlo pārlūks
         īstāBilde = img.getAttribute('src') || img.src;
       }
     }
@@ -158,7 +159,9 @@ function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   
   if (prece) {
     prece.daudzums += daudzums;
+    prece.bildeUrl = īstāBilde; // Katram gadījumam atjauninām bildi arī jau esošai precei
   } else {
+    // FIX: Šeit tagad tiek padota mainīgais "īstāBilde", nevis vecais un kļūdainais "bildeUrl"
     grozs.push({ nosaukums, cena, bildeUrl: īstāBilde, daudzums });
   }
   if (el) el.innerText = "1";
@@ -207,17 +210,17 @@ function atjaunotGrozuVizuāli() {
     kopejaisPrecuSkaits += prece.daudzums;
 
     saraksts.innerHTML += `
-      <li class="groza-prece-rindina" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
-        <div class="groza-preces-info" style="display: flex; align-items: center;">
-          <img src="${prece.bildeUrl}" class="groza-mini-bilde" alt="${prece.nosaukums}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; margin-right: 12px; display: block;">
-          <div class="groza-preces-teksts">
-            <strong>${prece.nosaukums}</strong><br>
-            <span style="color: #666;">${prece.cena.toFixed(2)} € x ${prece.daudzums}</span>
+      <li class="groza-prece-rindina" style="display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 10px 0 !important; border-bottom: 1px solid #eee !important; min-height: 60px !important;">
+        <div class="groza-preces-info" style="display: flex !important; align-items: center !important; flex: 1 !important;">
+          <img src="${prece.bildeUrl}" class="groza-mini-bilde" alt="${prece.nosaukums}" style="width: 50px !important; height: 50px !important; min-width: 50px !important; min-height: 50px !important; max-width: 50px !important; max-height: 50px !important; object-fit: cover !important; border-radius: 6px !important; margin-right: 12px !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+          <div class="groza-preces-teksts" style="text-align: left !important;">
+            <strong style="font-size: 0.95rem !important; display: block !important;">${prece.nosaukums}</strong>
+            <span style="color: #666 !important; font-size: 0.85rem !important;">${prece.cena.toFixed(2)} € x ${prece.daudzums}</span>
           </div>
         </div>
-        <div class="daudzuma-kontrole" style="display: flex; align-items: center; gap: 8px;">
+        <div class="daudzuma-kontrole" style="display: flex !important; align-items: center !important; gap: 8px !important;">
           <button onclick="mainitGrozaDaudzumu('${prece.nosaukums}', -1)">-</button>
-          <span style="min-width: 20px; text-align: center;">${prece.daudzums}</span>
+          <span style="min-width: 20px !important; text-align: center !important; font-weight: bold !important;">${prece.daudzums}</span>
           <button onclick="mainitGrozaDaudzumu('${prece.nosaukums}', 1)">+</button>
         </div>
       </li>
