@@ -131,23 +131,27 @@ function mainitKartesDaudzumu(id, izmaina) {
   el.innerText = skaits;
 }
 
-// --- GROZA FUNKCIONALITĀTE (SALABOTĀ VIETA 🛠️) ---
+// --- GROZA FUNKCIONALITĀTE (AUTOMĀTISKAIS BILŽU FILTRS 🛠️) ---
 function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   const el = document.getElementById(`skaits-${nosaukums}`);
   const daudzums = el ? parseInt(el.innerText) : 1;
   
-  // Šeit JavaScript pats uzmeklē strādājošo bildi no HTML kartītes!
+  // GUDRAIS LABOJUMS: Atrodam īsto preces attēlu pa tiešo no mājaslapas kartītes DOM koka,
+  // pilnībā ignorējot kļūdainos un salauztos placeholder linkus no HTML faila.
   let īstāBilde = bildeUrl;
-  if (!īstāBilde || typeof īstāBilde === 'object') {
-    if (el) {
-      const karte = el.closest('.saldums-karte');
-      if (karte) {
-        const img = karte.querySelector('img');
-        if (img) {
-          īstāBilde = img.getAttribute('src') || img.src;
-        }
+  if (el) {
+    const karte = el.closest('.saldums-karte');
+    if (karte) {
+      const img = karte.querySelector('img');
+      if (img) {
+        īstāBilde = img.getAttribute('src') || img.src;
       }
     }
+  }
+
+  // Papildus drošība: ja bilde joprojām ir kļūdaina vai satur "placeholder", uzliekam logo par rezervi
+  if (!īstāBilde || īstāBilde.includes('placeholder') || typeof īstāBilde === 'object') {
+    īstāBilde = 'logo.png';
   }
   
   const prece = grozs.find(item => item.nosaukums === nosaukums);
@@ -175,7 +179,7 @@ function mainitGrozaDaudzumu(nosaukums, izmaina) {
   atjaunotGrozuVizuāli();
 }
 
-// --- VIZUĀLĀ ATJAUNOŠANA ---
+// --- VIZUĀLĀ ATJAUNOŠANA AR PREČU ATTĒLIEM ---
 function atjaunotGrozuVizuāli() {
   const saraksts = document.getElementById('groza-saraksts');
   const kopaElements = document.getElementById('groza-kopa');
@@ -275,6 +279,7 @@ function pulsētGrozaPogu() {
   setTimeout(() => poga.classList.remove('pulset'), 400);
 }
 
+// Ielādē pakomātus select sarakstā
 function ieladetPakomatus(saraksts) {
   const select = document.getElementById("klients-pakomats");
   if (!select) return;
