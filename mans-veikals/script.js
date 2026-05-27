@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   atjaunotGrozuVizuāli();
   atjaunotTaimeri();
 
-  // 5. UZLABOJUMS: Uzlabota Omnivas pakomātu ielāde no oficiālā API
+  // 5. UZLABOJUMS: Automātiska un stabila Omnivas pakomātu ielāde no oficiālā API
   fetch('https://www.omniva.lv/locations.json')
     .then(atbilde => atbilde.json())
     .then(dati => {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(kluda => {
       console.error("Kļūda ielādējot Omnivu:", kluda);
-      // Rezerves saraksts, ja API nav pieejams
+      // Rezerves saraksts, ja API pēkšņi nav pieejams
       pakomatuSaraksts = [
         "Smiltenes Centra top! pakomāts (Dārza 1)", 
         "Rīgas Origo pakomāts (Stacijas laukums 4)", 
@@ -134,6 +134,7 @@ function saglabatGrozuAtmina() {
   localStorage.setItem('grozs', JSON.stringify(grozs));
 }
 
+// Ielādējam datus
 function ieladetNoAtminas() {
   const saglabatsGrozs = localStorage.getItem('grozs');
   if (saglabatsGrozs) grozs = JSON.parse(saglabatsGrozs);
@@ -154,6 +155,7 @@ function raditPaziņojumu(teksts) {
     document.body.appendChild(konteiners);
   }
   const toast = document.createElement('div');
+  // Stilistiski pieskaņots zīmola rozā krāsai un fadeIn animācijai
   toast.style.cssText = "background: #ff477e; color: white; padding: 12px 20px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: fadeIn 0.3s ease; border-left: 5px solid #fff;";
   toast.innerText = teksts;
   konteiners.appendChild(toast);
@@ -237,8 +239,8 @@ function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   atjaunotGrozuVizuāli();
   pulsētGrozaPogu();
   
-  // 5. UZLABOJUMS: Atver grozu vai parāda skaidru "Skatīt grozu" / Cross-selling paziņojumu
-  raditPaziņojumu(`🛒 Pievienots: ${nosaukums} (${daudzums}gb). Paņem arī gardu dzērienu! 🥤`);
+  // 5. UZLABOJUMS: Informatīvs pievienošanas paziņojums pircējam
+  raditPaziņojumu(`🛒 Pievienots: ${nosaukums} (${daudzums}gb). Paņem arī kādu dzērienu! 🥤`);
 }
 
 function mainitGrozaDaudzumu(nosaukums, izmaina) {
