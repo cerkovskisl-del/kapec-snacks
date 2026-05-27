@@ -1,16 +1,24 @@
 // --- GLOBĀLIE MAINĪGIE ---
 let grozs = [];
+const MINIMALAIS_PASUTIJUMS = 15.00; // Uzstādīts uz 15 Eiro
 const BEZMAKSAS_PIEGADE_LIMITS = 50.00;
-const PIEGADES_MAKSA = 3.00; // Piegādes cena, ja pasūtījums nesasniedz limitu
+const PIEGADES_MAKSA = 3.00; 
 let pakomatuSaraksts = [];
+
+// Atlaižu kodu konfigurācija
+const ATLAIZU_KODI = {
+  "SWEET10": { tips: "procenti", vertiba: 10 } // 10% atlaide preču summai
+};
+let aktīvaisKods = "";
 
 // --- INICIALIZĀCIJA ---
 document.addEventListener("DOMContentLoaded", () => {
   filtrētKategoriju('visi', document.getElementById('poga-visi'));
   ieladetNoAtminas();
   atjaunotGrozuVizuāli();
+  atjaunotTaimeri();
 
-  // Ielādējam Omnivas pakomātus no oficiālā saraksta
+  // Ielādējam Omnivas pakomātus
   fetch('https://www.omniva.lv/locations.json')
     .then(atbilde => atbilde.json())
     .then(dati => {
@@ -33,13 +41,33 @@ document.addEventListener("DOMContentLoaded", () => {
       ieladetPakomatus(pakomatuSaraksts);
     });
 
-  // Saglabājam formas datus, lai pie lapas pārlādes tie nepazūd
+  // Klausītāji formas datu saglabāšanai (ja ieķeksēts "saglabāt")
   ['klients-vards', 'klients-telefons', 'klients-pakomats'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      el.addEventListener('input', () => localStorage.setItem(id, el.value));
+      el.addEventListener('input', () => {
+        const vaiSaglabat = document.getElementById('saglabat-datus');
+        if (!vaiSaglabat || vaiSaglabat.checked) {
+          localStorage.setItem(id, el.value);
+        }
+      });
     }
   });
+
+  const checkboxSaglabat = document.getElementById('saglabat-datus');
+  if (checkboxSaglabat) {
+    checkboxSaglabat.addEventListener('change', (e) => {
+      if (!e.target.checked) {
+        localStorage.removeItem('klients-vards');
+        localStorage.removeItem('klients-telefons');
+        localStorage.removeItem('klients-pakomats');
+      } else {
+        localStorage.setItem('klients-vards', document.getElementById('klients-vards').value);
+        localStorage.setItem('klients-telefons', document.getElementById('klients-telefons').value);
+        localStorage.setItem('klients-pakomats', document.getElementById('klients-pakomats').value);
+      }
+    });
+  }
 
   // Meklētāji
   const pakomatuMekletajs = document.getElementById("pakomatu-mekletajs");
@@ -57,6 +85,45 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// FOMO Taimera loģika (Skaita atpakaļ līdz plkst. 16:00 katru dienu preču izsūtīšanai)
+function atjaunotTaimeri() {
+  const taimeraElements = document.getElementById('fomo-taimeris');
+  if (!taimeraElements) return;
+
+  setInterval(() => {
+    const tagad = new Date();
+    const morkis = new Date();
+    morkis.setHours(16, 0, 0, 0); // Izsūtīšanas laiks 16:00
+
+    if (tagad > morkis) {
+      morkis.setDate(morkis.getDate() + 1);
+    }
+
+    const starpiba = morkis - tagad;
+    const stundas = Math.floor(starpiba / (1000 * 60 * 60));
+    const minutes = Math.floor((starpiba % (1000 * 60 * 60)) / (1000 * 60));
+    const sekundes = Math.floor((starpiba % (1000 * 60)) / 1000);
+
+    taimeraElements.innerText = `${stundas}st ${minutes}m ${sekundes}s`;
+  }, 1000);
+}
+
+// Atlaižu koda pārbaudes funkcija
+function pielietotKuponu() {
+  const lauks = document.getElementById('groza-kupons');
+  if (!lauks) return;
+  const kods = lauks.value.trim().toUpperCase();
+
+  if (ATLAIZU_KODI[kods]) {
+    aktīvaisKods = kods;
+    raditPaziņojumu(`🎟️ Kods ${kods} veiksmīgi pievienots!`);
+  } else {
+    aktīvaisKods = "";
+    alert("Kupona kods nav atrasts vai ir nederīgs!");
+  }
+  atjaunotGrozuVizuāli();
+}
+
 // --- ATMIŅAS FUNKCIJAS ---
 function saglabatGrozuAtmina() {
   localStorage.setItem('grozs', JSON.stringify(grozs));
@@ -72,7 +139,7 @@ function ieladetNoAtminas() {
   if (telefons && document.getElementById('klients-telefons')) document.getElementById('klients-telefons').value = telefons;
 }
 
-// --- UZNIRSTOŠIE PAZIŅOJUMI (TOAST) ---
+// --- UZNIRSTOŠIE PAZIŅOJUMI (TOAST UN CROSS-SELLING 🍭) ---
 function raditPaziņojumu(teksts) {
   let konteiners = document.getElementById('toast-konteiners');
   if (!konteiners) {
@@ -85,7 +152,7 @@ function raditPaziņojumu(teksts) {
   toast.style.cssText = "background: #25D366; color: white; padding: 12px 20px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: fade 0.3s ease;";
   toast.innerText = teksts;
   konteiners.appendChild(toast);
-  setTimeout(() => toast.remove(), 2500);
+  setTimeout(() => toast.remove(), 3500);
 }
 
 // --- FILTRS UN MEKLĒTĀJS ---
@@ -131,26 +198,22 @@ function mainitKartesDaudzumu(id, izmaina) {
   el.innerText = skaits;
 }
 
-// --- GROZA FUNKCIONALITĀTE (AUTOMĀTISKAIS BILŽU FILTRS 🛠️) ---
+// --- GROZA FUNKCIONALITĀTE ---
 function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   const el = document.getElementById(`skaits-${nosaukums}`);
   const daudzums = el ? parseInt(el.innerText) : 1;
   
-  // GUDRAIS LABOJUMS: Atrodam īsto preces attēlu pa tiešo no mājaslapas kartītes DOM koka,
-  // pilnībā ignorējot kļūdainos un salauztos placeholder linkus no HTML faila.
   let īstāBilde = bildeUrl;
   if (el) {
     const karte = el.closest('.saldums-karte');
     if (karte) {
       const img = karte.querySelector('img');
       if (img) {
-        // Paņemam reālo src atribūtu, ko pašlaik attēlo pārlūks
         īstāBilde = img.getAttribute('src') || img.src;
       }
     }
   }
 
-  // Papildus drošība: ja bilde joprojām ir kļūdaina vai satur "placeholder", uzliekam logo par rezervi
   if (!īstāBilde || īstāBilde.includes('placeholder') || typeof īstāBilde === 'object') {
     īstāBilde = 'logo.png';
   }
@@ -159,9 +222,8 @@ function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   
   if (prece) {
     prece.daudzums += daudzums;
-    prece.bildeUrl = īstāBilde; // Katram gadījumam atjauninām bildi arī jau esošai precei
+    prece.bildeUrl = īstāBilde;
   } else {
-    // FIX: Šeit tagad tiek padota mainīgais "īstāBilde", nevis vecais un kļūdainais "bildeUrl"
     grozs.push({ nosaukums, cena, bildeUrl: īstāBilde, daudzums });
   }
   if (el) el.innerText = "1";
@@ -169,7 +231,9 @@ function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   saglabatGrozuAtmina();
   atjaunotGrozuVizuāli();
   pulsētGrozaPogu();
-  raditPaziņojumu(`🛒 ${nosaukums} pievienots grozam!`);
+  
+  // Cross-selling ieteikums uznirstošajā paziņojumā
+  raditPaziņojumu(`🛒 ${nosaukums} pievienots! Paņem arī kādu dzērienu ko uzdzert! 🥤`);
 }
 
 function mainitGrozaDaudzumu(nosaukums, izmaina) {
@@ -197,6 +261,7 @@ function atjaunotGrozuVizuāli() {
     peldosaisSkaits.innerText = "0";
     peldosaisGrozs.classList.remove('aktivs');
     atjaunotProgresaJoslu(0);
+    pārbaudītMinimaloSummu(0);
     return;
   }
 
@@ -212,7 +277,7 @@ function atjaunotGrozuVizuāli() {
     saraksts.innerHTML += `
       <li class="groza-prece-rindina" style="display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 10px 0 !important; border-bottom: 1px solid #eee !important; min-height: 60px !important;">
         <div class="groza-preces-info" style="display: flex !important; align-items: center !important; flex: 1 !important;">
-          <img src="${prece.bildeUrl}" class="groza-mini-bilde" alt="${prece.nosaukums}" style="width: 50px !important; height: 50px !important; min-width: 50px !important; min-height: 50px !important; max-width: 50px !important; max-height: 50px !important; object-fit: cover !important; border-radius: 6px !important; margin-right: 12px !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+          <img src="${prece.bildeUrl}" class="groza-mini-bilde" alt="${prece.nosaukums}" style="width: 50px !important; height: 50px !important; object-fit: cover !important; border-radius: 6px !important; margin-right: 12px !important; display: block !important;">
           <div class="groza-preces-teksts" style="text-align: left !important;">
             <strong style="font-size: 0.95rem !important; display: block !important;">${prece.nosaukums}</strong>
             <span style="color: #666 !important; font-size: 0.85rem !important;">${prece.cena.toFixed(2)} € x ${prece.daudzums}</span>
@@ -220,15 +285,34 @@ function atjaunotGrozuVizuāli() {
         </div>
         <div class="daudzuma-kontrole" style="display: flex !important; align-items: center !important; gap: 8px !important;">
           <button onclick="mainitGrozaDaudzumu('${prece.nosaukums}', -1)">-</button>
-          <span style="min-width: 20px !important; text-align: center !important; font-weight: bold !important;">${prece.daudzums}</span>
+          <span style="min-width: 20px !important; text-align: center !important;">${prece.daudzums}</span>
           <button onclick="mainitGrozaDaudzumu('${prece.nosaukums}', 1)">+</button>
         </div>
       </li>
     `;
   });
 
-  // Aprēķinām gala summu, ieskaitot piegādes maksu
   let galaSumma = prečuKopsumma;
+
+  // Kupona (Atlaides) aprēķins
+  if (aktīvaisKods && ATLAIZU_KODI[aktīvaisKods]) {
+    const kupons = ATLAIZU_KODI[aktīvaisKods];
+    let atlaide = 0;
+    if (kupons.tips === "procenti") {
+      atlaide = prečuKopsumma * (kupons.vertiba / 100);
+    }
+    galaSumma -= atlaide;
+    saraksts.innerHTML += `<li style="text-align: right; padding: 6px 0; color: #ff477e; font-weight: bold;">Atlaide (${aktīvaisKods}): -${atlaide.toFixed(2)} €</li>`;
+  }
+
+  // Dāvanu iesaiņojuma aprēķins
+  const iesainojumsCheckbox = document.getElementById('klients-iesainojums');
+  if (iesainojumsCheckbox && iesainojumsCheckbox.checked) {
+    galaSumma += 1.50;
+    saraksts.innerHTML += `<li style="text-align: right; padding: 6px 0; color: #666;">🎁 Dāvanu iesaiņojums: +1.50 €</li>`;
+  }
+
+  // Piegādes aprēķins
   if (prečuKopsumma < BEZMAKSAS_PIEGADE_LIMITS) {
     galaSumma += PIEGADES_MAKSA;
     saraksts.innerHTML += `<li style="text-align: right; padding: 8px 0; color: #666; font-size: 0.9em;">Piegāde: ${PIEGADES_MAKSA.toFixed(2)} €</li>`;
@@ -239,6 +323,33 @@ function atjaunotGrozuVizuāli() {
   kopaElements.innerText = galaSumma.toFixed(2);
   peldosaisSkaits.innerText = kopejaisPrecuSkaits;
   atjaunotProgresaJoslu(prečuKopsumma);
+  pārbaudītMinimaloSummu(prečuKopsumma);
+}
+
+// Striktā 15.00 € pārbaude pogas kontrolei
+function pārbaudītMinimaloSummu(prečuSumma) {
+  const poga = document.getElementById('whatsapp-sutisana-poga');
+  const paziņojums = document.getElementById('minimalais-pasutijums-bridinajums');
+  if (!poga) return;
+
+  if (prečuSumma < MINIMALAIS_PASUTIJUMS) {
+    poga.disabled = true;
+    poga.style.backgroundColor = "#cccccc";
+    poga.style.cursor = "not-allowed";
+    poga.style.boxShadow = "none";
+    
+    const atlikums = (MINIMALAIS_PASUTIJUMS - prečuSumma).toFixed(2);
+    if (paziņojums) {
+      paziņojums.style.display = "block";
+      paziņojums.innerHTML = `⚠️ Lai veiktu pasūtījumu, jāpievieno preces vēl par <strong>${atlikums} €</strong> (Min. pasūtījums ir 15.00 €)`;
+    }
+  } else {
+    poga.disabled = false;
+    poga.style.backgroundColor = "#25D366";
+    poga.style.cursor = "pointer";
+    poga.style.boxShadow = "0 3px 8px rgba(37, 211, 102, 0.3)";
+    if (paziņojums) paziņojums.style.display = "none";
+  }
 }
 
 function atjaunotProgresaJoslu(kopa) {
@@ -282,7 +393,6 @@ function pulsētGrozaPogu() {
   setTimeout(() => poga.classList.remove('pulset'), 400);
 }
 
-// Ielādē pakomātus select sarakstā
 function ieladetPakomatus(saraksts) {
   const select = document.getElementById("klients-pakomats");
   if (!select) return;
@@ -297,7 +407,19 @@ function ieladetPakomatus(saraksts) {
 
 function iztiritVisuGrozu() {
   grozs = [];
+  aktīvaisKods = "";
   localStorage.removeItem('grozs');
+  
+  const checkboxSaglabat = document.getElementById('saglabat-datus');
+  if (!checkboxSaglabat || !checkboxSaglabat.checked) {
+    localStorage.removeItem('klients-vards');
+    localStorage.removeItem('klients-telefons');
+    localStorage.removeItem('klients-pakomats');
+    if(document.getElementById('klients-vards')) document.getElementById('klients-vards').value = "";
+    if(document.getElementById('klients-telefons')) document.getElementById('klients-telefons').value = "";
+    if(document.getElementById('klients-pakomats')) document.getElementById('klients-pakomats').value = "";
+  }
+  
   atjaunotGrozuVizuāli();
   const nrBloks = document.getElementById('lapas-pasutijuma-nr');
   if (nrBloks) {
@@ -319,13 +441,18 @@ function sutitUzWhatsApp() {
   const vards = document.getElementById('klients-vards').value.trim();
   const telefons = document.getElementById('klients-telefons').value.trim();
   const pakomats = document.getElementById('klients-pakomats').value;
+  const iesainojumsCheckbox = document.getElementById('klients-iesainojums');
 
   if (!vards || !telefons || !pakomats) {
-    alert("Lūdzu, aizpildi visus laukus!");
+    alert("Lūdzu, aizpildi visus rekvizītu laukus!");
     return;
   }
-  if (grozs.length === 0) {
-    alert("Tavs grozs ir tukšs!");
+
+  let prečuKopsumma = 0;
+  grozs.forEach(p => prečuKopsumma += p.cena * p.daudzums);
+
+  if (prečuKopsumma < MINIMALAIS_PASUTIJUMS) {
+    alert(`Pasūtījumu nevar nosūtīt. Minimālā summa ir ${MINIMALAIS_PASUTIJUMS.toFixed(2)} €.`);
     return;
   }
 
@@ -340,18 +467,30 @@ function sutitUzWhatsApp() {
   zinasTeksts += `🔑 Kods Revolut piezīmēm: ${unikalsKods}\n`;
   zinasTeksts += `👤 Klients: ${vards}\n`;
   zinasTeksts += `📞 Telefons: ${telefons}\n`;
-  zinasTeksts += `📦 Pakomāts: ${pakomats}\n\n`;
+  zinasTeksts += `📦 Pakomāts: ${pakomats}\n`;
+  zinasTeksts += `🎁 Dāvanu iesaiņojums: ${iesainojumsCheckbox && iesainojumsCheckbox.checked ? 'JĀ (+1.50 €)' : 'NĒ'}\n\n`;
   zinasTeksts += `🛒 Preces:\n`;
 
-  let prečuKopsumma = 0;
   grozs.forEach(prece => {
     const rindasSumma = prece.cena * prece.daudzums;
-    prečuKopsumma += rindasSumma;
     zinasTeksts += `- ${prece.nosaukums} (${prece.daudzums}gb) - ${rindasSumma.toFixed(2)} €\n`;
   });
 
+  let galaKopa = prečuKopsumma;
+
+  if (aktīvaisKods && ATLAIZU_KODI[aktīvaisKods]) {
+    const kupons = ATLAIZU_KODI[aktīvaisKods];
+    let atlaide = prečuKopsumma * (kupons.vertiba / 100);
+    galaKopa -= atlaide;
+    zinasTeksts += `\n🎟️ Izmantotais kupons: ${aktīvaisKods} (-${atlaide.toFixed(2)} €)`;
+  }
+
+  if (iesainojumsCheckbox && iesainojumsCheckbox.checked) {
+    galaKopa += 1.50;
+  }
+
   let jastandaPiegade = prečuKopsumma < BEZMAKSAS_PIEGADE_LIMITS;
-  let galaKopa = jastandaPiegade ? (prečuKopsumma + PIEGADES_MAKSA) : prečuKopsumma;
+  galaKopa = jastandaPiegade ? (galaKopa + PIEGADES_MAKSA) : galaKopa;
 
   zinasTeksts += `\n📦 Piegāde: ${jastandaPiegade ? `${PIEGADES_MAKSA.toFixed(2)} €` : 'BEZMAKSAS'}\n`;
   zinasTeksts += `💰 KOPĀ APMAKSAI: ${galaKopa.toFixed(2)} €\n\n`;
