@@ -18,13 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
   atjaunotGrozuVizuāli();
   atjaunotTaimeri();
 
-  // Ielādējam Omnivas pakomātus
+  // 5. UZLABOJUMS: Uzlabota Omnivas pakomātu ielāde no oficiālā API
   fetch('https://www.omniva.lv/locations.json')
     .then(atbilde => atbilde.json())
     .then(dati => {
       pakomatuSaraksts = dati
         .filter(vieta => vieta.A0_NAME === 'LV' && vieta.TYPE === '0')
-        .map(vieta => `${vieta.NAME} (${vieta.A2_NAME})`)
+        .map(vieta => `${vieta.NAME} (${vieta.A2_NAME || ''})`)
         .sort();
 
       ieladetPakomatus(pakomatuSaraksts);
@@ -37,7 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(kluda => {
       console.error("Kļūda ielādējot Omnivu:", kluda);
-      pakomatuSaraksts = ["Smiltenes Top pakomāts (Dārza 1)", "Rīgas Origo pakomāts"];
+      // Rezerves saraksts, ja API nav pieejams
+      pakomatuSaraksts = [
+        "Smiltenes Centra top! pakomāts (Dārza 1)", 
+        "Rīgas Origo pakomāts (Stacijas laukums 4)", 
+        "Valmieras Rimi pakomāts (Rīgas 4)"
+      ];
       ieladetPakomatus(pakomatuSaraksts);
     });
 
@@ -149,7 +154,7 @@ function raditPaziņojumu(teksts) {
     document.body.appendChild(konteiners);
   }
   const toast = document.createElement('div');
-  toast.style.cssText = "background: #25D366; color: white; padding: 12px 20px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: fade 0.3s ease;";
+  toast.style.cssText = "background: #ff477e; color: white; padding: 12px 20px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: fadeIn 0.3s ease; border-left: 5px solid #fff;";
   toast.innerText = teksts;
   konteiners.appendChild(toast);
   setTimeout(() => toast.remove(), 3500);
@@ -232,8 +237,8 @@ function pievienotNoKartes(nosaukums, cena, bildeUrl, event) {
   atjaunotGrozuVizuāli();
   pulsētGrozaPogu();
   
-  // Cross-selling ieteikums uznirstošajā paziņojumā
-  raditPaziņojumu(`🛒 ${nosaukums} pievienots! Paņem arī kādu dzērienu ko uzdzert! 🥤`);
+  // 5. UZLABOJUMS: Atver grozu vai parāda skaidru "Skatīt grozu" / Cross-selling paziņojumu
+  raditPaziņojumu(`🛒 Pievienots: ${nosaukums} (${daudzums}gb). Paņem arī gardu dzērienu! 🥤`);
 }
 
 function mainitGrozaDaudzumu(nosaukums, izmaina) {
