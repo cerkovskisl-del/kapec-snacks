@@ -29,50 +29,34 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Jaunie stili atsauksmēm un kājenei */
-    .atsauksmes-sekcija {
-      margin: 60px auto 40px auto;
-      text-align: center;
-      max-width: 1200px;
-      padding: 0 20px;
+    /* 2. UZLABOJUMS: Preču marķējumu stili */
+    .saldums-karte {
+      position: relative;
     }
-    .atsauksmes-konteiners {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 25px;
-    }
-    .atsauksme-karte {
-      background: #fff;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      max-width: 300px;
-      text-align: left;
-      border: 1px solid #ffe3e8;
-      transition: transform 0.2s;
-    }
-    .atsauksme-karte:hover {
-      transform: translateY(-5px);
-    }
-    .atsauksme-teksts {
-      font-style: italic;
-      color: #4e6488;
-      line-height: 1.5;
-      margin-bottom: 10px;
-    }
-    .atsauksme-autors {
-      color: #ff477e;
+    .preces-nozime {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
       font-weight: bold;
-      display: block;
-      font-size: 0.9rem;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      letter-spacing: 0.5px;
     }
+    .nozime-asais { background: linear-gradient(135deg, #ff3838, #ff6b6b); }
+    .nozime-top { background: linear-gradient(135deg, #ff9f43, #ffca28); }
+    .nozime-lio { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+
+    /* 4. UZLABOJUMS: Lapas kājenes stili */
     footer {
       background: #2b2b2b;
       color: #ffffff;
       text-align: center;
-      padding: 30px 20px;
+      padding: 35px 20px;
       margin-top: 60px;
       font-size: 0.95rem;
       border-top: 4px solid #ff477e;
@@ -84,18 +68,11 @@
       color: #ff477e;
       text-decoration: none;
       font-weight: bold;
+      transition: color 0.2s;
     }
     footer a:hover {
+      color: #ff7597;
       text-decoration: underline;
-    }
-
-    /* Tumšā režīma pielāgojumi jaunajām sadaļām (ja izmanto dark-mode klasi body) */
-    body.dark-mode .atsauksme-karte {
-      background: #1e1e1e;
-      border-color: #333;
-    }
-    body.dark-mode .atsauksme-teksts {
-      color: #ccc;
     }
   </style>
 </head>
@@ -131,6 +108,7 @@
       <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
         
         <div class="saldums-karte" data-kategorija="uzkodas">
+          <div class="preces-nozime nozime-asais">🔥 ASAIS</div>
           <h3>Takis Blue Heat (90g)</h3>
           <img src="https://thumbor.candypop.lt/fit-in/402x402/e7/04/463750be9855c152faeaf660e5c3.jpg" alt="Takis Blue Heat" class="salduma-bilde">
           <p class="apraksts">Kraukšķīgi kukurūzas čipsi ar ekstrēmu čili un laima garšu.</p>
@@ -144,6 +122,7 @@
         </div>
 
         <div class="saldums-karte" data-kategorija="uzkodas">
+          <div class="preces-nozime nozime-asais">🔥 EXTREME</div>
           <h3>Herr's Carolina Reaper Curls (113g)</h3>
           <img src="https://thumbor.candypop.lt/fit-in/402x402/02/7c/b8f93349a3169d1a77a7d87b035c.jpg" alt="Herrs Carolina Reaper" class="salduma-bilde">
           <p class="apraksts">Kraukšķīgas kukurūzas nūjiņas ar pasaulē asākā čili pipara garšu.</p>
@@ -170,6 +149,7 @@
         </div>
 
         <div class="saldums-karte" data-kategorija="uzkodas">
+          <div class="preces-nozime nozime-asais">🔥 PIKANTS</div>
           <h3>Uzkoda LATIAO (Hot & Spicy) 68g</h3>
           <img src="https://thumbor.candypop.lt/fit-in/402x402/e0/0f/d66183cdc5ffd03fd522656d1faf.jpg" alt="Latiao Hot" class="salduma-bilde">
           <p class="apraksts">Tradicionāla, asa un pikanta ķīniešu uzkoda.</p>
@@ -203,6 +183,7 @@
       <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
         
         <div class="saldums-karte" data-kategorija="saldumi">
+          <div class="preces-nozime nozime-top">✨ TOP REITINGA</div>
           <h3>Reese's Peanut Butter Cups</h3>
           <img src="https://thumbor.candypop.lt/fit-in/402x402/73/08/393a5f964f0ae85f1c283c74536a.jpg" alt="Reese's" class="salduma-bilde">
           <p class="apraksts">Šokolādes groziņi ar zemesriekstu sviestu.</p>
@@ -281,6 +262,7 @@
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
+          <div class="preces-nozime nozime-asais">🔥 SKĀBS</div>
           <h3>Brain Blasterz Brain Bitz (45g)</h3>
           <img src="https://thumbor.candypop.lt/fit-in/402x402/c7/58/a8d8362fcb29af6f0687040d240a.png" alt="Brain Blasterz Bitz" class="salduma-bilde">
           <p class="apraksts">Malas, kraukšķīgas konfektītes ar augļu garšu un pamatīgi skābu triecienu.</p>
@@ -307,6 +289,7 @@
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
+          <div class="preces-nozime nozime-top">✨ TIKTOK HITS</div>
           <h3>Jelly Belly Bean Boozled (45g)</h3>
           <img src="https://thumbor.candypop.lt/fit-in/402x402/b7/7c/d75f67e519e9af20e6e96fa61c17.png" alt="Bean Boozled" class="salduma-bilde">
           <p class="apraksts">Slavenā TikTok spēle! Katrai krāsai ir viena garda un viena pavisam traka garša.</p>
@@ -346,6 +329,7 @@
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
+          <div class="preces-nozime nozime-top">✨ MRBEAST</div>
           <h3>Feastables Peanut Butter (60g)</h3>
           <img src="https://thumbor.candypop.lt/fit-in/402x402/41/d8/3e6479e823450b135b3d3e2e0159.jpg" alt="Feastables Bar" class="salduma-bilde">
           <p class="apraksts">Slavenā MrBeast piena šokolādes tāfelīte ar īstu zemesriekstu sviestu.</p>
@@ -464,6 +448,7 @@
       <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%;">
         
         <div class="saldums-karte" data-kategorija="liofilizetie">
+          <div class="preces-nozime nozime-lio">🧊 KRAUKŠĶĪGS</div>
           <h3>Freeze Dried Rainbow Skittles (70g)</h3>
           <img src="https://thumbor.candypop.lt/fit-in/180x180/90/4e/bcee68af14543f9870581e6bc34f.png" alt="Freeze Dried Skittles" class="salduma-bilde">
           <p class="apraksts">Liofilizētas Skittles konfektes – neparasti kraukšķīgas un intensīvas.</p>
@@ -477,6 +462,7 @@
         </div>
 
         <div class="saldums-karte" data-kategorija="liofilizetie">
+          <div class="preces-nozime nozime-lio">🧊 GAISĪGS</div>
           <h3>Freeze Dried Jolly Rancher (30g)</h3>
           <img src="https://thumbor.candypop.lt/fit-in/402x402/0f/60/ca9c40b32c71ffece0e5b4a9390b.png" alt="Freeze Dried Jolly Rancher" class="salduma-bilde">
           <p class="apraksts">Liofilizētas Jolly Rancher konfektes – kļuvušas neticami gaisīgas un kraukšķīgas.</p>
@@ -489,24 +475,6 @@
           <button class="grozam-poga" onclick="pievienotNoKartes('Freeze Dried Jolly Rancher', 4.00, 'https://thumbor.candypop.lt/fit-in/402x402/0f/60/ca9c40b32c71ffece0e5b4a9390b.png', event)">Pievienot grozam</button>
         </div>
 
-      </div>
-    </div>
-
-    <div class="atsauksmes-sekcija">
-      <h2 style="color: #ff477e;">Ko saka mūsu kārummīļi? 🍕🍬</h2>
-      <div class="atsauksmes-konteiners">
-        <div class="atsauksme-karte">
-          <p class="atsauksme-teksts">"Takis Blue Heat atbrauca kraukšķīgi un nereāli asi! Piegāde caur Omnivu bija zibenīga."</p>
-          <span class="atsauksme-autors">- Roberts, Rīga</span>
-        </div>
-        <div class="atsauksme-karte">
-          <p class="atsauksme-teksts">"Liofilizētie Skittles ir vienkārši kosmoss, obligāti pamēģiniet! Pasūtīšu vēl."</p>
-          <span class="atsauksme-autors">- Laura, Valmiera</span>
-        </div>
-        <div class="atsauksme-karte">
-          <p class="atsauksme-teksts">"Lieliska komunikācija WhatsApp un ļoti gards iepakojums. Paldies par dāvaniņu!"</p>
-          <span class="atsauksme-autors">- Elīna, Liepāja</span>
-        </div>
       </div>
     </div>
 
