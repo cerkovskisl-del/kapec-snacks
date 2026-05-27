@@ -325,7 +325,7 @@
             <span id="skaits-Sour Patch Strawberry">1</span>
             <button onclick="mainitKartesDaudzumu('Sour Patch Strawberry', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Sour Patch Strawberry', 1.50, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Sour Patch Strawberry', 1.50, 'https://thumbor.candypop.lt/fit-in/402x402/61/76/a1a7e5466256900572d542c3433d.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -338,7 +338,7 @@
             <span id="skaits-Airheads Blue Raspberry">1</span>
             <button onclick="mainitKartesDaudzumu('Airheads Blue Raspberry', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Airheads Blue Raspberry', 1.00, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Airheads Blue Raspberry', 1.00, 'https://thumbor.candypop.lt/fit-in/402x402/82/9b/17311af78f652a6426e85d72dd4c.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="saldumi">
@@ -351,7 +351,7 @@
             <span id="skaits-Nik-L-Nip Original">1</span>
             <button onclick="mainitKartesDaudzumu('Nik-L-Nip Original', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Nik-L-Nip Original', 3.60, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Nik-L-Nip Original', 3.60, 'https://thumbor.candypop.lt/fit-in/402x402/1a/79/0b22b73d15ce2f5a0e650d805e98.jpg', event)">Pievienot grozam</button>
         </div>
 
       </div>
@@ -371,7 +371,7 @@
             <span id="skaits-Fanta Lemon">1</span>
             <button onclick="mainitKartesDaudzumu('Fanta Lemon', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Fanta Lemon', 1.80, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Fanta Lemon', 1.80, 'https://thumbor.candypop.lt/fit-in/402x402/7f/a6/4d4d9ae8994a069850f7cf6bd8d3.jpg', event)">Pievienot grozam</button>
         </div>
 
         <div class="saldums-karte" data-kategorija="dzerieni">
@@ -384,7 +384,7 @@
             <span id="skaits-Fanta Exotic">1</span>
             <button onclick="mainitKartesDaudzumu('Fanta Exotic', 1)">+</button>
           </div>
-          <button class="grozam-poga" onclick="pievienotNoKartes('Fanta Exotic', 1.80, 'https://via.placeholder.com/402', event)">Pievienot grozam</button>
+          <button class="grozam-poga" onclick="pievienotNoKartes('Fanta Exotic', 1.80, 'https://thumbor.candypop.lt/fit-in/402x402/8a/67/30a0e543db9336545b9846ce143b.png', event)">Pievienot grozam</button>
         </div>
 
       </div>
@@ -419,6 +419,7 @@
           </div>
           <button class="grozam-poga" onclick="pievienotNoKartes('Freeze Dried Jolly Rancher', 4.00, 'https://thumbor.candypop.lt/fit-in/402x402/0f/60/ca9c40b32c71ffece0e5b4a9390b.png', event)">Pievienot grozam</button>
         </div>
+
       </div>
     </div>
 
@@ -426,15 +427,19 @@
 
   <div id="groza-sanjosla" class="groza-sanjosla">
     <div class="groza-galvene">
-      <h2>Iepirkumu grozs</h2>
+      <h2>Tavs Grozs 🛒</h2>
       <button class="groza-aizvert" onclick="parslēgtGrozaSanjoslu()">✕</button>
     </div>
     
+    <div style="background: #fff3f5; padding: 10px; font-size: 0.85rem; text-align: center; border-bottom: 1px solid #ffe3e8; color: #ff477e; font-weight: bold;">
+      ⏱️ Pasūti nākamo <span id="fomo-taimeris">00st 00m 00s</span> laikā un izsūtīsim jau šodien!
+    </div>
+
     <div class="piegades-progress-konteiners">
+      <p id="piegades-progress-teksts">Ieliec preces grozā, lai redzētu piegādes statusu!</p>
       <div class="piegades-progress-fons">
         <div id="piegades-progress-josla"></div>
       </div>
-      <p id="piegades-progress-teksts">Ieliec preces grozā, lai redzētu piegādes statusu!</p>
     </div>
 
     <div class="groza-saturs">
@@ -446,6 +451,8 @@
     <div class="groza-apaksa">
       <div class="kopa">Kopā: <span id="groza-kopa">0.00</span> €</div>
       
+      <div id="minimalais-pasutijums-bridinajums" style="background:#fff3cd; color:#856404; padding:8px; border-radius:6px; font-size:0.85rem; margin-bottom:10px; text-align:center; font-weight:bold; display:none;"></div>
+
       <div class="groza-forma">
         <div class="ievades-grupa">
           <label>Tavs Vārds, Uzvārds:</label>
@@ -457,6 +464,18 @@
           <input type="tel" id="klients-telefons" placeholder="+371 20000000">
         </div>
         
+        <div class="ievades-grupa" style="margin-top: 5px;">
+          <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem; cursor:pointer;">
+            <input type="checkbox" id="saglabat-datus" checked style="width:auto !important;"> Saglabāt datus nākamajai reizei
+          </label>
+        </div>
+
+        <div class="ievades-grupa" style="margin-top:5px; margin-bottom:10px;">
+          <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem; color:#ff477e; font-weight:bold; cursor:pointer;">
+            <input type="checkbox" id="klients-iesainojums" onchange="atjaunotGrozuVizuāli()" style="width:auto !important;"> 🎁 Iesaiņot kā dāvanu (+1.50 €)
+          </label>
+        </div>
+
         <div class="ievades-grupa">
           <label>Meklēt Omniva pakomātu:</label>
           <input type="text" id="pakomatu-mekletajs" placeholder="Sāc rakstīt pilsētu (piem. Smiltene)...">
@@ -464,16 +483,24 @@
             <option value="" disabled selected>Lādē pakomātu sarakstu...</option>
           </select>
         </div>
+
+        <div class="ievades-grupa" style="margin-top:10px;">
+          <label>Atlaižu kods:</label>
+          <div style="display:flex; gap:6px;">
+            <input type="text" id="groza-kupons" placeholder="Piem. SWEET10" style="flex:1;">
+            <button type="button" onclick="pielietotKuponu()" style="background:#ff477e; color:white; border:none; padding:0 12px; border-radius:8px; font-weight:bold; cursor:pointer;">Lietot</button>
+          </div>
+        </div>
       </div>
 
       <div id="lapas-pasutijuma-nr" style="display:none; text-align:center; margin: 12px 0; font-weight:bold; color:#ff477e; font-size: 1rem;"></div>
 
       <div class="revolut-bloks">
-        <p style="margin: 0; font-size: 0.85rem; color: #4e6488; font-weight: bold;">⚡ Ātra apmaksa ar Revolut:</p>
+        <p style="margin: 0; font-size: 0.85rem; color: #4e6488; font-weight: bold;">⚡ Ātra apmaksa ar Revolut pēc koda saņemšanas:</p>
         <a href="https://revolut.me/igorsyeqd" target="_blank">revolut.me/igorsyeqd</a>
       </div>
 
-      <button class="maksa-poga" onclick="sutitUzWhatsApp()">Maksāt (Pasūtīt WhatsApp) 💬</button>
+      <button class="maksa-poga" id="whatsapp-sutisana-poga" onclick="sutitUzWhatsApp()">Maksāt (Pasūtīt WhatsApp) 💬</button>
       <button class="iztirit-poga" onclick="iztiritVisuGrozu()">Iztīrīt grozu ❌</button>
     </div>
   </div>
